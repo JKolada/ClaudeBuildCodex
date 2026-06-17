@@ -31,6 +31,11 @@ dla agenta, testowalna, bezpieczna w zmianie i godna zaufania.
 | 06 | [Współpraca i pamięć](06-wspolpraca-i-pamiec.md) | Plan→iteruj→review, pamięć, potwierdzaj nieodwracalne, raportuj uczciwie |
 | 07 | [Nowy projekt: Dzień 0](07-nowy-projekt-checklist.md) | Konkretna checklista startu nowego projektu |
 | 08 | [Zastosowanie: EchoInsight](08-echoinsight.md) | Doktryna przełożona na konkretny backlog EchoInsight.Me |
+| 09 | [Prawo i ochrona twórcy](09-prawo-i-ochrona-tworcy.md) | Regulamin, polityka prywatności, disclaimery jako zbroja osoby prywatnej / JDG |
+| 10 | [SEO i tłumaczenia](10-seo-i-tlumaczenia.md) | hreflang, JSON-LD, programmatic SEO, E-E-A-T/YMYL, parytet językowy jako test |
+| 11 | [Model danych i normalizacja](11-model-danych-normalizacja.md) | Słowniki lookup, slug zamiast ID, active-row, świadoma denormalizacja |
+| 12 | [Elastyczność i skalowalność](12-elastycznosc-i-skalowalnosc.md) | Rozdziel warstwy, feature flags, scale-to-zero vs always-on, nie over-engineeruj |
+| 13 | [Wydajność: frontend i SQL](13-wydajnosc-frontend-i-sql.md) | Mierz najpierw, indeksy + partial index, brak N+1, streaming czatu, CWV |
 
 ## Filozofia w jednym zdaniu
 
