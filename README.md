@@ -1,0 +1,44 @@
+# Rzemiosło — The Build Codex
+
+> Przykazania budowania i prowadzenia aplikacji **end-to-end** z Claude.
+> Destylat doświadczeń z [WhiskyPolska](../WhiskyPolska), pisany pod kolejne projekty — najbliższy to [EchoInsight](../EchoInsight).
+>
+> Warsztat **[jakub.solutions](https://jakub.solutions)** · Jakub Kolada — Insurance Systems Architect & IT Consultant.
+> Marka, paleta (fiolet→cyan) i typografia (Playfair Display + Outfit) spójne z [Jakub.Solutions](../Jakub.Solutions).
+
+To nie jest podręcznik frameworka. To **doktryna współpracy** — zestaw zasad, o których
+Claude ma pamiętać **rozpoczynając i prowadząc projekt z Kubą**, żeby aplikacja przez całe
+życie (od pierwszego commita po wdrożenie na prod z żywymi użytkownikami) była: zrozumiała
+dla agenta, testowalna, bezpieczna w zmianie i godna zaufania.
+
+## Jak czytać
+
+- **[index.html](index.html)** — przeglądarka dla człowieka (otwórz w przeglądarce). Spis
+  przykazań + linki do rozdziałów.
+- **Spieszysz się?** Przeczytaj [00 — Dekalog](00-przykazania.md). To cała doktryna w jednym ekranie.
+- **Zaczynasz nowy projekt?** Idź do [07 — Nowy projekt: Dzień 0](07-nowy-projekt-checklist.md).
+
+## Spis rozdziałów
+
+| # | Rozdział | O czym |
+|---|----------|--------|
+| 00 | [Dekalog](00-przykazania.md) | 10 przykazań — rdzeń doktryny, do zapamiętania |
+| 01 | [Dokumentacja i AI_README](01-dokumentacja-i-ai-readme.md) | `AI_README.md` w każdym katalogu, `CLAUDE.md` jako źródło prawdy, docs jako kod |
+| 02 | [Skille i refaktoring](02-skille-i-refaktoring.md) | Kiedy zbudować skill, slash-command, dyscyplina refaktoringu |
+| 03 | [Testowanie i weryfikacja](03-testowanie-i-weryfikacja.md) | Piramida testów, „weryfikuj, nie deklaruj", smoke testy |
+| 04 | [Skrypty i bazy danych](04-skrypty-i-bazy-danych.md) | Idempotencja, dry-run/--execute, migracje forward-only, backupy |
+| 05 | [Git i wdrożenia](05-git-i-wdrozenia.md) | Szukaj w git przed kodowaniem, taguj każdy deploy, swap bazy z zachowaniem kont |
+| 06 | [Współpraca i pamięć](06-wspolpraca-i-pamiec.md) | Plan→iteruj→review, pamięć, potwierdzaj nieodwracalne, raportuj uczciwie |
+| 07 | [Nowy projekt: Dzień 0](07-nowy-projekt-checklist.md) | Konkretna checklista startu nowego projektu |
+| 08 | [Zastosowanie: EchoInsight](08-echoinsight.md) | Doktryna przełożona na konkretny backlog EchoInsight.Me |
+
+## Filozofia w jednym zdaniu
+
+> **Buduj tak, jak rzemieślnik — wolno tam, gdzie błąd jest drogi; szybko tam, gdzie jest
+> tani; i zostaw po sobie warsztat, w którym następny (człowiek albo agent) od razu wie,
+> gdzie co leży.**
+
+---
+
+*Wersja żywa — aktualizuj po każdym projekcie, który czegoś nauczył. Doktryna, która się nie
+zmienia, jest martwa.*
