@@ -51,6 +51,34 @@ Rozdziel dwa tryby przeglądu (jak `/simplify` vs `/code-review` w WhiskyPolska)
 - **Przegląd poprawności** — adversarialne szukanie bugów.
 Nie mieszaj — każdy ma inny cel i inny próg pewności.
 
+## SOLID — projektowanie, które się nie zatyka
+
+> Nie dogmat, lecz **pięć testów na to, czy zmiana będzie tania**. Stosuj proporcjonalnie do
+> ryzyka (→ [12](12-elastycznosc-i-skalowalnosc.md): nie over-engineeruj). SOLID to nie pretekst
+> do warstw abstrakcji „na wszelki wypadek".
+
+- **S — Single responsibility.** Jeden moduł = jeden powód do zmiany. To ta sama dyscyplina, co
+  „jeden commit = jedna rzecz" (refaktor albo zachowanie, nie oba). Funkcja, którą trzeba ruszać
+  z trzech niezwiązanych powodów, to trzy funkcje.
+- **O — Open/closed.** Rozszerzaj bez rozcinania sprawdzonego kodu. Tu wpinają się **feature flags**
+  (→ [12](12-elastycznosc-i-skalowalnosc.md)): nową ścieżkę dokładasz za flagą i shipujesz dark,
+  zamiast przepisywać istniejącą gałąź i ryzykować regresję.
+- **L — Liskov.** Podtyp ma dotrzymać kontraktu nadtypu — bez „wyjątku, który wszystko psuje".
+  Jeśli implementacja łamie założenia wołającego, to nie jest podtyp, tylko pułapka.
+- **I — Interface segregation.** Wąskie, celowe interfejsy zamiast jednego boga-interfejsu.
+  Wołający nie powinien zależeć od metod, których nie używa.
+- **D — Dependency inversion.** Zależ od abstrakcji, nie od konkretu. To kodowy odpowiednik
+  „rozdziel warstwy" (→ [12](12-elastycznosc-i-skalowalnosc.md)): logika nie zna dostawcy bazy
+  czy kolejki z palca — dostaje go przez granicę, więc da się go podmienić (i przetestować, → [03](03-testowanie-i-weryfikacja.md)).
+
+### Anty-wzorce
+- 🚫 **SOLID jako kult** — pięć warstw i fabryka fabryk dla CRUD-a na trzy pola. Zasada D ma
+  ułatwiać podmianę, nie mnożyć pliki. Mierz potrzebę, nie cytuj liter.
+- 🚫 **Open/closed bez flag** — „rozszerzasz", edytując w miejscu gorącą ścieżkę bez przełącznika
+  i bez rampu (→ [12](12-elastycznosc-i-skalowalnosc.md): brak feature flags).
+- 🚫 **Abstrakcja zanim są dwa przypadki** — interfejs wyssany z jednego użycia zgaduje przyszłość.
+  Najpierw drugi konkret, potem wspólny kontrakt (reuse > rewrite, ale nie reuse > realność).
+
 ## W praktyce
 - Skille na start: `/run` (serwer + smoke), `/run-tests` (unit + e2e), `/update-ai-readme`,
   `/add-migration` (jeśli relacyjna baza). → [08](08-stack-i-technologie.md)

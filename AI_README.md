@@ -25,7 +25,7 @@ dla osób zaczynających z Claude. Szczegóły i polityki → [CLAUDE.md](CLAUDE
 | `CHANGELOG.md` | Historia wydań Claude Build Codex (semver, data = dzień publikacji). |
 | `00-przykazania.md` | **Dekalog** — 10 przykazań, 7 grzechów, złota zasada altytudy. Rdzeń. |
 | `01-dokumentacja-i-ai-readme.md` | Trzy warstwy docs: CLAUDE.md / AI_README / docs. Kiedy aktualizować. |
-| `02-skille-i-refaktoring.md` | Kiedy zbudować skill/slash-command; dyscyplina refaktoringu. |
+| `02-skille-i-refaktoring.md` | Kiedy zbudować skill/slash-command; dyscyplina refaktoringu; SOLID (z feature flags i rozdziel-warstwy). |
 | `03-testowanie-i-weryfikacja.md` | Piramida testów, „weryfikuj, nie deklaruj", smoke. |
 | `04-skrypty-i-bazy-danych.md` | Dry-run/`--execute`, idempotencja, migracje forward-only, backupy. |
 | `05-git-i-wdrozenia.md` | Szukaj w git, taguj deploy, swap bazy z zachowaniem kont. Najgęstszy rozdział. |
