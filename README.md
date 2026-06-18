@@ -3,9 +3,9 @@
 > Przykazania budowania i prowadzenia aplikacji **end-to-end** z Claude.
 > Destylat doświadczeń z realnych projektów, pisany pod **każdy kolejny projekt z Claude**.
 >
-> **Edycja: Techniczna** — dla osób ogarniających kod i stack. Edycje *BIZ-TECH* i *Biznesowa*
-> (ta sama doktryna prostszym językiem) — w planach. To repo to **zwarty rdzeń**; przystępniejsze
-> rozwinięcia tematów robi siostrzany projekt *Rzemiosło Web*.
+> To repo to **zwarty, techniczny rdzeń reguł** (po polsku) — nie produkt prezentacyjny.
+> Przystępniejsze podanie (edycje *BIZ-TECH* / *Biznesowa*), wersje językowe i gotowe paczki
+> robi osobny projekt *Rzemiosło Web (The Craft Web)*.
 >
 > Warsztat **[jakub.solutions](https://jakub.solutions)** · Jakub Kolada — Insurance Systems Architect & IT Consultant.
 > Marka, paleta (fiolet→cyan) i typografia (Playfair Display + Outfit) spójne z [jakub.solutions](https://jakub.solutions).

@@ -18,19 +18,25 @@ dla osób zaczynających z Claude. Szczegóły i polityki → [CLAUDE.md](CLAUDE
 - **To repo (`ClaudeBuildCodex`, marka „Rzemiosło") = rdzeń kanoniczny.** Forma: **techniczna, zwarta, imperatywna,
   po polsku** — źródło prawdy reguł, dołączane do projektów jako `/docs/rules/`. Optymalizowane pod
   **agenta i osobę techniczną**: gęstość ponad przystępność. Tu wersjonujemy doktrynę (codex.json).
-- **Siostrzane `ClaudeBuildCodexWeb` (marka „Rzemiosło Web") = warstwa przystępna.** Bierze tę samą doktrynę i **rozwija
-  poszczególne tematy** w przyjaźniejszej, obszerniejszej formie (wielojęzyczna witryna-opakowanie,
-  edycje BIZ-TECH/biznesowa, przykłady, narracja). Konsumuje `codex.json`/treść przy buildzie.
+- **Siostrzane `ClaudeBuildCodexWeb` (marka „Rzemiosło Web") = projekt prezentacyjny.** Bierze tę samą doktrynę i **rozwija
+  poszczególne tematy** w przyjaźniejszej, obszerniejszej formie. **To Web — nie to repo — odpowiada za:**
+  publiczną stronę, **edycje** (techniczna / BIZ-TECH / biznesowa), **wersje językowe** i **budowanie paczek
+  `docs/rules/` w konkretnym języku**. Konsumuje treść tego repo + `codex.json` przy buildzie.
 
-Zasada: **rdzeń trzymamy zwarty tutaj; rozwinięcia i „miększą" formę robi Web.** Jeśli kusi Cię,
-by w tym repo rozpisać temat szerzej „dla czytelności" — to materiał dla Web, nie dla rdzenia.
-Edycje (techniczna / BIZ-TECH / biznesowa) → [CLAUDE.md](CLAUDE.md) (sekcja „Edycje").
+> **To repo jest TYLKO zestawem reguł.** Nie jest produktem prezentacyjnym. `index.html` tutaj to
+> **minimalny czytnik lokalny/dev** (podgląd treści dla autora i agenta), **nie** publiczna witryna —
+> dlatego nie umieszczamy tu badge'y edycji, marketingu ani przełącznika języka. Cała prezentacja,
+> edycje i pakowanie wielojęzyczne dzieją się w **The Craft Web** (osobny projekt). Jeśli kusi Cię,
+> by tu dodać warstwę prezentacji/marketingu/edycji — to materiał dla Web, nie dla rdzenia.
+
+Kierunek wersji EN i pakowania per język → [docs/plans/0001-i18n-i-pakowanie.md](docs/plans/0001-i18n-i-pakowanie.md).
 
 ## Indeks plików
 
 | Plik | Po co to |
 |------|----------|
-| `index.html` | Czytnik SPA: strona główna (dekalog + karty) + widok rozdziału renderujący `.md`, przełącznik jasny/ciemny. |
+| `index.html` | **Minimalny czytnik lokalny/dev** (podgląd treści dla autora/agenta) — NIE publiczna witryna. Strona główna (dekalog + karty) + widok rozdziału + brief. |
+| `docs/` | Plany i decyzje meta repo (nie treść doktryny): `docs/AI_README.md`, `docs/plans/`. |
 | `content.js` | **Generowany** snapshot `.md` osadzony w JS — pozwala renderować treść po `file://`. Nie edytuj ręcznie. |
 | `build.py` | Skrypt buildu: łączy pliki `.md` → `content.js`. Uruchom po edycji treści (`python build.py`). |
 | `CLAUDE.md` | Konstytucja repo: czym jest, stack, jak uruchomić, polityki, stan bieżący. |

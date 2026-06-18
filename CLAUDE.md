@@ -20,23 +20,23 @@ Paleta (fiolet→cyan) i typografia (Playfair Display + Outfit) spójne z marką
    dla autora. Stąd treść ma być **generyczna**: reguły uniwersalne, a konkretne projekty służą
    tylko za ilustrację (jako „projekt referencyjny”) — nigdy za temat. Nie pisz doktryny „pod jeden projekt".
 
-## Edycje (rejestr podania, nie różne treści)
+## To repo = zestaw reguł; prezentacja = The Craft Web
 
-Ta sama doktryna w trzech rejestrach — różni się **język podania**, nie zasady:
+**To repozytorium jest TYLKO kanonicznym, zwartym rdzeniem reguł** (techniczna forma, po polsku) —
+źródło prawdy, dołączane do projektów jako `docs/rules/`. **Nie jest produktem prezentacyjnym.**
+`index.html` tutaj to **minimalny czytnik lokalny/dev**, nie publiczna witryna.
 
-1. **TECHNICZNA** — *to repo, edycja bieżąca*. Dla osób ogarniających kod, stack, git. Pełny żargon
-   (commit, deploy, migracja, partial index) bez tłumaczenia.
-2. **BIZ-TECH** *(planowana)* — pomost. Dla product/biznes z technicznym zacięciem: terminy z krótkim
-   wyjaśnieniem, decyzje z „dlaczego biznesowym”.
-3. **BIZNESOWA** *(planowana)* — dla osób nietechnicznych. Zero żargonu bez analogii, decyzje domyślne
-   + prośba o zgodę zamiast narady technicznej.
+**Prezentacją zajmuje się osobny projekt `ClaudeBuildCodexWeb` (marka „Rzemiosło Web").** To on — nie to
+repo — odpowiada za publiczną stronę, **edycje** (rejestr podania) i **wersje językowe + pakowanie**:
 
-Bieżąca edycja stemplowana w [codex.json](codex.json) (`edition`). Pisząc treść TECHNICZNĄ, twórz ją
-**przekładalnie na niższe rejestry** (zasada bez nieprzetłumaczalnego żargonu w samym sednie reguły).
+- **Edycje** (ten sam rdzeń, inny rejestr): **TECHNICZNA** (to repo) → **BIZ-TECH** (pomost) → **BIZNESOWA**
+  (nietechniczna). To warstwa podania, którą **buduje Web**, nie treść trzymana tutaj.
+- **Języki**: rdzeń jest po polsku; wersja **EN** planowana. Pisz reguły **przekładalnie** (bez
+  nieprzekładalnego żargonu w sednie). Tłumaczenia i paczki `docs/rules/<lang>/` montuje Web z treści
+  tego repo + `codex.json`.
 
-**Podział z `ClaudeBuildCodexWeb`:** to repo to **kanoniczny, zwarty rdzeń techniczny** (źródło prawdy);
-siostrzane `ClaudeBuildCodexWeb` **rozwija tematy w przystępniejszej, obszerniejszej formie** i robi
-edycje BIZ-TECH/biznesowe. Rdzeń trzymaj zwarty tutaj — rozwinięcia idą do Web (szczegóły → [AI_README](AI_README.md)).
+Tu, w rdzeniu: **nie dodawaj badge'y edycji, marketingu ani przełącznika języka.** Kierunek wersji EN
+i pakowania per język → [docs/plans/0001-i18n-i-pakowanie.md](docs/plans/0001-i18n-i-pakowanie.md).
 
 ## Stack i charakter repo
 
