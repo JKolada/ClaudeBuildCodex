@@ -98,5 +98,5 @@ Jeden plik, bez zależności build. Mechanika:
 
 - 15 rozdziałów (`00`–`14`) + `README.md`. Rdzeń: 9 plików (00–08). Pogłębienie: 6 (09–14).
 - `index.html`: 1 plik; runtime z CDN (`marked` + Google Fonts). Build: `build.py` → `content.js`
-  (16 dokumentów, ~86 tys. znaków).
+  (16 dokumentów, ~87 tys. znaków).
 - Brak testów (repo dokumentacji). „Test" = podgląd przez serwer **i** z dwukliku (`file://`) + klik po rozdziałach.

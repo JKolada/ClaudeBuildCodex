@@ -159,6 +159,8 @@
   .brief-head{max-width:var(--readw); margin:0 auto 22px}
   .brief-head h1{font-family:var(--serif); font-size:clamp(28px,4.5vw,42px); margin:.1em 0 .25em; font-weight:800}
   .brief-head p{color:var(--ink-dim); font-size:16px; margin:.3em 0}
+  .brief-how{max-width:var(--readw); margin:.4em auto; color:var(--ink-dim); font-size:15px; padding-left:20px}
+  .brief-how li{margin:.2em 0}
   form.briefform{max-width:var(--readw); margin:0 auto; display:grid; gap:20px}
   .bfield{display:grid; gap:7px}
   .bfield > label{font-weight:700; font-size:15px}
@@ -179,6 +181,10 @@
     background:var(--code-bg); border:1px solid var(--line); border-radius:12px; padding:14px}
   .brief-note{max-width:var(--readw); margin:8px auto 0; color:var(--ink-3); font-size:13px}
   .copied{color:var(--ok); font-weight:600; font-size:13px; margin-left:6px}
+  .brief-saved{color:var(--ink-3); font-weight:600; font-size:12.5px; align-self:center}
+  .brief-group{margin:22px 0 -6px; font-family:var(--serif); font-size:13px; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--accent); font-weight:700}
+  .brief-group:first-child{margin-top:0}
 
   .readbar{display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:8px}
   .back{display:inline-flex; align-items:center; gap:6px; text-decoration:none; color:var(--ink-dim); font-weight:600; font-size:14px}
@@ -382,15 +388,19 @@
 
   <div class="brief-head">
     <h1>Brief projektu</h1>
-    <p>Odpowiedz na kilka pytań, a my złożymy z nich gotowy <b>brief</b> w Markdown. Wklej go w pierwszej
-    wiadomości do Claude (albo do <code>CLAUDE.md</code>), gdy zaczynasz projekt z tym zestawem reguł
-    w <code>/docs/rules/</code>. To krok 0 z <a href="#07-nowy-projekt-checklist">rozdziału 07</a>.</p>
-    <p class="brief-note" style="margin-left:0">Nic nie wychodzi z Twojej przeglądarki — generowanie dzieje się lokalnie.</p>
+    <p>Odpowiedz na pytania (każde z podpowiedzią), a złożymy z nich gotowy <b>brief</b> w Markdown.
+    To krok 0 z <a href="#07-nowy-projekt-checklist">rozdziału 07</a>. Gdy zaczynasz nowy projekt:</p>
+    <ul class="brief-how">
+      <li><b>Zapisz</b> wynik jako <code>brief-projektu.md</code> w <b>głównym folderze projektu</b> (Craft siedzi w <code>docs/rules/</code>), <b>albo</b></li>
+      <li><b>wklej</b> całość wprost do <b>Claude Code / Claude Desktop</b> otwartego w tym folderze — jako pierwszą wiadomość.</li>
+    </ul>
+    <p class="brief-note" style="margin-left:0">Odpowiedzi <b>zapisują się roboczo w przeglądarce</b> (przeżyją odświeżenie). Nic nie wychodzi na zewnątrz — wszystko liczy się lokalnie.</p>
   </div>
 
   <form class="briefform" id="briefform" autocomplete="off">
+    <p class="brief-group">Komunikacja</p>
     <div class="bfield">
-      <label for="bf-level">Twój poziom techniczny <span class="hint">— ustawia sposób, w jaki Claude ma z Tobą rozmawiać</span></label>
+      <label for="bf-level">Twój poziom techniczny <span class="hint">— ustawia rejestr, w jakim Claude ma z Tobą rozmawiać. Wybierz najbliższe.</span></label>
       <select id="bf-level">
         <option value="">— wybierz —</option>
         <option value="Techniczny: programuję, znam git/deploy/bazy. Mów wprost, żargon OK.">Programuję — mów wprost, żargon OK</option>
@@ -399,38 +409,61 @@
       </select>
     </div>
 
+    <p class="brief-group">Produkt i problem</p>
     <div class="bfield">
-      <label for="bf-name">Nazwa / domena / pomysł w jednym zdaniu</label>
-      <input type="text" id="bf-name" placeholder="np. PriceComp — porównywarka cen dla X" />
+      <label for="bf-name">Nazwa / pomysł w jednym zdaniu <span class="hint">— elevator pitch: dokończ „To jest aplikacja, która…”</span></label>
+      <input type="text" id="bf-name" placeholder="np. PriceComp — porównywarka cen, która pokazuje, gdzie kupić X najtaniej" />
     </div>
 
     <div class="bfield">
-      <label for="bf-langs">Języki i rynki <span class="hint">— jeden czy wiele? który główny? waluty/strefy?</span></label>
+      <label for="bf-problem">Problem i grupa docelowa <span class="hint">— jaki ból rozwiązujesz i dla KOGO? im konkretniej, tym trafniejszy MVP. Podpowiedź: „kto + kiedy + czego dziś nie może”.</span></label>
+      <textarea id="bf-problem" placeholder="np. kupujący traci czas na sprawdzanie 10 sklepów; chce jednej listy cen z linkiem do zakupu"></textarea>
+    </div>
+
+    <div class="bfield">
+      <label for="bf-similar">Podobne produkty / inspiracje <span class="hint">— co już istnieje? co robią dobrze, a co chcesz zrobić inaczej/lepiej? (jeśli nie znasz — wpisz „nie wiem”)</span></label>
+      <textarea id="bf-similar" placeholder="np. Ceneo — szerokie, ale słabe na niszę X; chcę głębiej + lepsze filtry"></textarea>
+    </div>
+
+    <div class="bfield">
+      <label for="bf-langs">Języki i rynki <span class="hint">— jeden język czy wiele? który główny (źródło prawdy)? waluty / strefy / format dat? RTL?</span></label>
       <input type="text" id="bf-langs" placeholder="np. PL teraz, EN później; PLN; parytet treści wymagany" />
     </div>
 
     <div class="bfield">
-      <label for="bf-mvp">Funkcjonalności — rdzeń (MVP) <span class="hint">— bez czego produkt nie istnieje? konta? integracje?</span></label>
-      <textarea id="bf-mvp" placeholder="np. lista produktów + wyszukiwarka + konta; integracja płatności i e-mail"></textarea>
+      <label for="bf-money">Monetyzacja <span class="hint">— jak zarabia i KIEDY pojawia się płatność (Dzień 1 czy po trakcji)? dostawca, faktury/VAT?</span></label>
+      <input type="text" id="bf-money" placeholder="np. freemium + subskrypcja od Dnia 1, Stripe, faktury VAT; albo: na razie za darmo" />
+    </div>
+
+    <p class="brief-group">Funkcje i dane</p>
+    <div class="bfield">
+      <label for="bf-mvp">Funkcjonalności — rdzeń (MVP) <span class="hint">— bez czego produkt NIE istnieje? konta i role? treść statyczna czy user-generated? Podpowiedź: wypisz 3–5 rzeczy, nie 30.</span></label>
+      <textarea id="bf-mvp" placeholder="np. lista produktów + wyszukiwarka + filtry + konta; logowanie Google"></textarea>
     </div>
 
     <div class="bfield">
-      <label for="bf-later">Funkcjonalności — „później” <span class="hint">— miłe-do-mienia, poza MVP</span></label>
-      <textarea id="bf-later" placeholder="np. aplikacja mobilna, rekomendacje, panel partnera"></textarea>
+      <label for="bf-data">Dane i integracje <span class="hint">— skąd biorą się dane (ręcznie / import / scraping / API)? integracje zewnętrzne: płatności, mapy, e-mail, LLM?</span></label>
+      <textarea id="bf-data" placeholder="np. dane ze scrapingu sklepów + ręczne korekty; integracja Stripe i wysyłka e-mail"></textarea>
     </div>
 
     <div class="bfield">
-      <label for="bf-money">Monetyzacja <span class="hint">— jak zarabia? kiedy pojawia się płatność?</span></label>
-      <input type="text" id="bf-money" placeholder="np. freemium + subskrypcja od Dnia 1, Stripe, faktury VAT" />
+      <label for="bf-later">Funkcjonalności — „później” <span class="hint">— miłe-do-mienia, świadomie POZA MVP (żeby nie rozdąć startu)</span></label>
+      <textarea id="bf-later" placeholder="np. aplikacja mobilna, rekomendacje, panel partnera, powiadomienia o cenie"></textarea>
     </div>
 
     <div class="bfield">
-      <label for="bf-ux">Styl UX i kierunek wizualny <span class="hint">— grupa docelowa, ton, marka, jasny/ciemny, WCAG</span></label>
+      <label for="bf-scale">Skala i oczekiwany ruch <span class="hint">— ilu użytkowników na start i docelowo? lokalnie czy globalnie? to wpływa na bazę i hosting (→ rozdz. 08/12)</span></label>
+      <input type="text" id="bf-scale" placeholder="np. start: setki userów, PL; docelowo kilkadziesiąt tys.; ruch przewidywalny" />
+    </div>
+
+    <p class="brief-group">Marka i odczucie</p>
+    <div class="bfield">
+      <label for="bf-ux">Styl UX i kierunek wizualny <span class="hint">— grupa docelowa i ton (poważny B2B ↔ zabawowy konsumencki)? jest marka (paleta, logo) czy od zera? tryb jasny/ciemny? WCAG?</span></label>
       <textarea id="bf-ux" placeholder="np. konsumencki, przewiewny landing; jest paleta i logo; tryb jasny+ciemny; WCAG AA"></textarea>
     </div>
 
     <div class="bfield">
-      <label for="bf-anim">Animacje i „odczucie” interfejsu</label>
+      <label for="bf-anim">Animacje i „odczucie” interfejsu <span class="hint">— szybkość vs wow-efekt; wpływa na wydajność (Core Web Vitals)</span></label>
       <select id="bf-anim">
         <option value="">— wybierz —</option>
         <option value="Statyczny i szybki — minimum animacji, priorytet wydajności.">Statyczny i szybki — minimum animacji</option>
@@ -440,13 +473,25 @@
     </div>
 
     <div class="bfield">
-      <label for="bf-mkt">Wydźwięk marketingowy <span class="hint">— value prop, kto klient, ton, czego unikać</span></label>
+      <label for="bf-mkt">Wydźwięk marketingowy <span class="hint">— value prop w jednym zdaniu, kto jest klientem, jaki ton, czego UNIKAĆ</span></label>
       <textarea id="bf-mkt" placeholder="np. „najszybciej porównasz ceny X”; klient: świadomy kupujący; ton: rzeczowy, bez nachalności"></textarea>
+    </div>
+
+    <p class="brief-group">Prawo i ograniczenia</p>
+    <div class="bfield">
+      <label for="bf-privacy">Dane osobowe i compliance <span class="hint">— zbierasz dane ludzi (konta, e-maile, lokalizacja)? RODO, zgody, wiek 18+? branża wrażliwa (zdrowie/finanse)? (→ rozdz. 09)</span></label>
+      <textarea id="bf-privacy" placeholder="np. konta z e-mailem → RODO + zgody; brak danych wrażliwych; albo: bez kont, zero danych osobowych"></textarea>
+    </div>
+
+    <div class="bfield">
+      <label for="bf-constraints">Termin, budżet, zespół <span class="hint">— co jest sztywne? deadline, budżet, kto pracuje (solo + Claude czy zespół)?</span></label>
+      <input type="text" id="bf-constraints" placeholder="np. MVP w 4 tygodnie, solo + Claude, budżet minimalny (jeden VPS)" />
     </div>
 
     <div class="brief-actions">
       <button type="submit" class="btn btn-primary">Generuj brief ↓</button>
       <button type="reset" class="btn">Wyczyść</button>
+      <span class="brief-saved" id="bf-saved" hidden>Zapisano roboczo ✓</span>
     </div>
   </form>
 
@@ -457,7 +502,7 @@
       <span class="copied" id="bf-copied" hidden>Skopiowano ✓</span>
     </div>
     <textarea id="bf-result" readonly spellcheck="false"></textarea>
-    <p class="brief-note">Wklej to Claude’owi jako pierwszą wiadomość projektu. Puste pola pominęliśmy.</p>
+    <p class="brief-note"><b>Zapisz</b> jako <code>brief-projektu.md</code> w głównym folderze projektu, albo <b>wklej</b> wprost do Claude Code / Claude Desktop otwartego w tym folderze. Puste pola pominęliśmy.</p>
   </div>
 </section>
 
@@ -577,34 +622,66 @@
     window.scrollTo(0,0);
   }
 
-  // ---- Brief: złóż Markdown z odpowiedzi ----
+  // ---- Brief: złóż Markdown z odpowiedzi (z autozapisem roboczym) ----
   (function(){
     var form = document.getElementById("briefform");
     if(!form) return;
     var out = document.getElementById("brief-out");
     var result = document.getElementById("bf-result");
     var copied = document.getElementById("bf-copied");
+    var saved = document.getElementById("bf-saved");
+    var STORE = "rzemioslo-brief";
+    // Kolejność = kolejność w wygenerowanym briefie.
+    var FIELDS = ["bf-level","bf-name","bf-problem","bf-similar","bf-langs","bf-money",
+                  "bf-mvp","bf-data","bf-later","bf-scale","bf-ux","bf-anim","bf-mkt",
+                  "bf-privacy","bf-constraints"];
     function val(id){ var el = document.getElementById(id); return el ? el.value.trim() : ""; }
     function line(label, v){ return v ? ("- **"+label+":** "+v+"\n") : ""; }
 
+    // Autozapis roboczy do localStorage — odpowiedzi przeżywają odświeżenie/zamknięcie karty.
+    function save(){
+      try{
+        var data = {}; FIELDS.forEach(function(id){ data[id] = val(id); });
+        localStorage.setItem(STORE, JSON.stringify(data));
+        if(saved){ saved.hidden = false; }
+      }catch(e){}
+    }
+    function restore(){
+      try{
+        var data = JSON.parse(localStorage.getItem(STORE) || "{}");
+        FIELDS.forEach(function(id){ var el = document.getElementById(id); if(el && data[id]) el.value = data[id]; });
+        if(saved && Object.keys(data).some(function(k){return data[k];})) saved.hidden = false;
+      }catch(e){}
+    }
+    restore();
+    form.addEventListener("input", save);
+    form.addEventListener("change", save);
+
     function build(){
       var md = "# Brief projektu\n\n";
-      md += "> Brief startowy (Dzień 0) złożony w Rzemiośle (The Craft — Kolada Build). Zasady doktryny: `/docs/rules/`.\n\n";
+      md += "> Brief startowy (Dzień 0) złożony w Rzemiośle (The Craft — Kolada Build). Zasady doktryny: `docs/rules/`.\n";
+      md += "> **Co z tym zrobić:** zapisz ten plik jako `brief-projektu.md` w głównym folderze projektu, "
+          + "albo wklej całość do Claude Code / Claude Desktop otwartego w tym folderze jako pierwszą wiadomość.\n\n";
       var lvl = val("bf-level");
-      if(lvl){
-        md += "## Jak ze mną rozmawiać\n" + lvl + "\n\n";
-      }
-      md += "## Produkt\n";
+      if(lvl){ md += "## Jak ze mną rozmawiać\n" + lvl + "\n\n"; }
+      md += "## Produkt i problem\n";
       md += line("Pomysł", val("bf-name"));
+      md += line("Problem i grupa docelowa", val("bf-problem"));
+      md += line("Podobne produkty / inspiracje", val("bf-similar"));
       md += line("Języki i rynki", val("bf-langs"));
       md += line("Monetyzacja", val("bf-money"));
-      md += "\n## Funkcjonalności\n";
+      md += "\n## Funkcje i dane\n";
       md += line("Rdzeń (MVP)", val("bf-mvp"));
+      md += line("Dane i integracje", val("bf-data"));
       md += line("Później", val("bf-later"));
-      md += "\n## Doświadczenie i marka\n";
+      md += line("Skala i ruch", val("bf-scale"));
+      md += "\n## Marka i odczucie\n";
       md += line("Styl UX / wizualny", val("bf-ux"));
       md += line("Animacje", val("bf-anim"));
       md += line("Wydźwięk marketingowy", val("bf-mkt"));
+      md += "\n## Prawo i ograniczenia\n";
+      md += line("Dane osobowe / compliance", val("bf-privacy"));
+      md += line("Termin / budżet / zespół", val("bf-constraints"));
       md += "\n---\n";
       md += "Zacznij od kroku 0 z rozdziału 07: dopytaj o luki w tym briefie, oznacz przyjęte założenia, "
           + "potem złóż `CLAUDE.md` i zapisz cel w `memory/`.\n";
@@ -616,9 +693,14 @@
       result.value = build();
       out.hidden = false;
       copied.hidden = true;
+      save();
       out.scrollIntoView({behavior:"smooth", block:"start"});
     });
-    form.addEventListener("reset", function(){ out.hidden = true; });
+    form.addEventListener("reset", function(){
+      out.hidden = true;
+      try{ localStorage.removeItem(STORE); }catch(e){}
+      if(saved) saved.hidden = true;
+    });
 
     document.getElementById("bf-copy").addEventListener("click", function(){
       result.select();

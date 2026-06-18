@@ -43,6 +43,15 @@ założenie. Te same pytania zadaj **aplikując doktrynę do istniejącego proje
 > (cel biznesowy, ograniczenia — krok 10). Założenia przyjęte za usera oznacz wyraźnie, by dało
 > się je później zweryfikować.
 
+**Gdzie ląduje brief.** Najszybciej wypełnisz go w czytniku Craft (widok „Brief" → generuje
+gotowy Markdown). Wypełniony brief:
+- **zapisz jako `brief-projektu.md` w głównym folderze nowego projektu** (Craft jest dołączony jako
+  `docs/rules/`, więc brief leży *obok* — w rootcie repo projektu, nie w `docs/rules/`), **albo**
+- **wklej całość wprost do Claude Code / Claude Desktop otwartego w głównym folderze projektu** jako
+  pierwszą wiadomość.
+
+Brief to wejście do reszty Dnia 0: z niego rodzi się `CLAUDE.md` (krok 2) i wpis w `memory/` (krok 10).
+
 ### Anty-wzorce
 - 🚫 **Skok do kodu bez briefu** — „zacznę, dopytam po drodze". Język, monetyzacja i marka
   wpisane po fakcie to przepisywanie, nie poprawka.
