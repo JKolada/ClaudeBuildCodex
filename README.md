@@ -1,11 +1,11 @@
-# Claude Build Codex
+# Rzemiosło — The Craft <sub>(Kolada Build)</sub>
 
 > Przykazania budowania i prowadzenia aplikacji **end-to-end** z Claude.
 > Destylat doświadczeń z realnych projektów, pisany pod **każdy kolejny projekt z Claude**.
 >
 > **Edycja: Techniczna** — dla osób ogarniających kod i stack. Edycje *BIZ-TECH* i *Biznesowa*
 > (ta sama doktryna prostszym językiem) — w planach. To repo to **zwarty rdzeń**; przystępniejsze
-> rozwinięcia tematów robi siostrzany projekt *Claude Build Codex Web*.
+> rozwinięcia tematów robi siostrzany projekt *Rzemiosło Web*.
 >
 > Warsztat **[jakub.solutions](https://jakub.solutions)** · Jakub Kolada — Insurance Systems Architect & IT Consultant.
 > Marka, paleta (fiolet→cyan) i typografia (Playfair Display + Outfit) spójne z [jakub.solutions](https://jakub.solutions).

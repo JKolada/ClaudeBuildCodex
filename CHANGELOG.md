@@ -1,6 +1,6 @@
-# Changelog — Claude Build Codex
+# Changelog — Rzemiosło (The Craft)
 
-Wszystkie istotne zmiany doktryny **Claude Build Codex**. Wersjonowanie **semantyczne**
+Wszystkie istotne zmiany doktryny **Rzemiosło — The Craft (Kolada Build)**. Wersjonowanie **semantyczne**
 (MAJOR.MINOR.PATCH). **Data wpisu = dzień publikacji** — wtedy wersja została zdeployowana na
 [codex.jakub.solutions](https://codex.jakub.solutions) i gotowa do pobrania.
 
@@ -24,7 +24,7 @@ Pierwsze publiczne wydanie. Pełna doktryna gotowa do użycia jako `/docs/rules/
   normalizacja · elastyczność i skalowalność · wydajność frontend i SQL.
 - **Czytnik HTML** (`index.html`): render `.md` w przeglądarce, działa też z dwukliku
   (`file://`) dzięki snapshotowi `content.js`, tryb jasny/ciemny, ikony Lucide (SVG).
-- **Build Codex Web** — przyjazna, wielojęzyczna witryna-opakowanie z pobieraniem tej paczki.
+- **Rzemiosło Web** — przyjazna, wielojęzyczna witryna-opakowanie z pobieraniem tej paczki.
 
 ---
 
