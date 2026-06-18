@@ -13,8 +13,11 @@
 - **Verify numbers at the source** — not from memory, not from docs.
 - **UX with warmth.** Correctness is the minimum; the product should be pleasant. Aesthetics and tone
   matter (especially in sensitive products: minimalist, but warm).
-- **Language:** PL in conversation and changelog, EN in code/commits/technical docs — the way we
-  naturally work. Technical terms in English within Polish text are fine.
+- **Speak the user's language.** Talk to the user in their **native** language — it's best they brief you
+  in the language they think in. **Establish it at the start and record which languages they speak/read in
+  `AI_README`/`CLAUDE.md`** — collaboration config, set once (→ [07](07-new-project-day-0.md), [01](01-documentation-and-ai-readme.md)).
+  Code, commits, and technical docs stay in **English** regardless; technical terms (commit, deploy, slug)
+  stay English inside any language.
 - **Separate unrelated things** — in commits and in thinking. One topic at a time.
 
 ## Confirm what's irreversible and "external"

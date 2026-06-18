@@ -3,6 +3,27 @@
 A concrete checklist Claude runs **when starting a new project**.
 Goal: after Day 0, every subsequent session has solid ground underfoot.
 
+## Wire The Craft in first (one-time setup)
+
+Before Day 0 proper, **install the doctrine into the project so the agent actually reads it.** Rules the
+agent never opens are dead — the wiring is what makes them act.
+
+- **Place The Craft in `docs/rules/`** — as a git submodule (stays updatable) or a plain copy:
+  ```bash
+  git submodule add https://github.com/JKolada/ClaudeBuildCodex docs/rules
+  # or: just copy the files into docs/rules/
+  ```
+- **Point the project's `CLAUDE.md` at it** — so every session loads the rules and knows how to navigate
+  them. Add near the top:
+  > **Read `docs/rules/` every session — it is the build doctrine (The Craft).** For a specific topic,
+  > `grep -i <keyword>` over `docs/rules/AI_README.md` → the right chapter; read only that one (context economy).
+- **Pick the language** — English is the base (repo root); Polish lives in `pl/`. The agent reads that copy.
+- **Then run the brief** (next section); its output `brief-projektu.md` lands in the project root, and from
+  it you assemble the project's own `CLAUDE.md`.
+
+The polished install page (copy-paste commands, package/language picker) is The Craft Web's job — this is
+the minimal **canonical** wiring that travels with the files.
+
 ## 0. Product brief — ask before anything is built
 
 Before the first line of code and before `CLAUDE.md`, **ask the user a set of questions** — and don't
@@ -20,6 +41,11 @@ assumption. Ask the same questions when **applying the doctrine to an existing p
   jargon, analogies instead of terms, closed questions with a recommendation instead of open technical ones,
   default decisions plus consent instead of deliberation. Same doctrine content, different delivery
   (→ editions: technical / BIZ-TECH / business, see repo header).
+- **Your languages and your toolbox.** Which languages do you **speak/read** — so I talk to you in your
+  **native** one (it's best to brief me in the language you think in)? Which **technologies do you actually
+  know** — so I pitch explanations at the right depth and lean on your stack, not an unfamiliar one? →
+  I **record this in `CLAUDE.md`/`AI_README.md`** (how many languages you speak + your known tech), so every
+  session communicates with you in your language and at your level. This is collaboration config, set once.
 - **Target languages and markets.** One language or many? Which ones, in what order, and which is the
   source of truth? Is content parity a requirement? RTL? Currencies, timezones, date formats? → decides
   i18n from Day 0 and the data structure ([10](10-seo-and-translations.md), [11](11-data-model-and-normalization.md)).

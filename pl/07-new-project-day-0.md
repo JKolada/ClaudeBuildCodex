@@ -3,6 +3,27 @@
 Konkretna checklista, którą Claude wykonuje **rozpoczynając nowy projekt**.
 Cel: po Dniu 0 każda kolejna sesja ma grunt pod nogami.
 
+## Najpierw wepnij The Craft (jednorazowo)
+
+Zanim ruszysz właściwy Dzień 0, **wepnij doktrynę do projektu tak, żeby agent ją realnie czytał.** Reguły,
+których agent nigdy nie otworzy, są martwe — to wpięcie sprawia, że działają.
+
+- **Umieść The Craft w `docs/rules/`** — jako git submodule (zostaje aktualizowalne) albo zwykła kopia:
+  ```bash
+  git submodule add https://github.com/JKolada/ClaudeBuildCodex docs/rules
+  # albo: po prostu skopiuj pliki do docs/rules/
+  ```
+- **Wskaż na to w `CLAUDE.md` projektu** — żeby każda sesja ładowała reguły i wiedziała, jak po nich
+  nawigować. Dopisz blisko góry:
+  > **Czytaj `docs/rules/` co sesję — to doktryna budowania (The Craft).** Szukasz tematu?
+  > `grep -i <keyword>` po `docs/rules/AI_README.md` → właściwy rozdział; czytaj tylko ten (oszczędność kontekstu).
+- **Wybierz język** — angielski jest bazą (root repo), polski leży w `pl/`. Agent czyta tę kopię.
+- **Potem wypełnij brief** (następna sekcja); jego wynik `brief-projektu.md` ląduje w rootcie projektu,
+  a z niego składasz własny `CLAUDE.md` projektu.
+
+Ładną stronę instalacji (komendy do skopiowania, wybór paczki/języka) robi The Craft Web — to jest
+minimalne, **kanoniczne** wpięcie, które podróżuje razem z plikami.
+
 ## 0. Brief produktowy — dopytaj, zanim cokolwiek powstanie
 
 Przed pierwszą linią kodu i przed `CLAUDE.md` **zadaj użytkownikowi zestaw pytań** — i nie zgaduj
@@ -20,6 +41,11 @@ założenie. Te same pytania zadaj **aplikując doktrynę do istniejącego proje
   analogie zamiast terminów, pytania zamknięte z rekomendacją zamiast otwartych technicznych, decyzje
   domyślne + zgoda zamiast narady. To ta sama treść doktryny, inny język podania (→ edycje:
   techniczna / BIZ-TECH / biznesowa, zob. nagłówek repo).
+- **Twoje języki i Twój warsztat.** W jakich językach **mówisz/czytasz** — żebym rozmawiał z Tobą w Twoim
+  **natywnym** (najlepiej brief mi w języku, w którym myślisz)? Jakie **technologie realnie znasz** — żebym
+  dobrał głębię wyjaśnień i oparł się na Twoim stacku, a nie obcym? → **Zapisuję to w `CLAUDE.md`/`AI_README.md`**
+  (iloma językami mówisz + znane technologie), żeby każda sesja porozumiewała się z Tobą w Twoim języku i na
+  Twoim poziomie. To konfiguracja współpracy, ustawiana raz.
 - **Języki docelowe i rynki.** Jeden język czy wiele? Które, w jakiej kolejności, który jest
   źródłem prawdy? Parytet treści jako wymóg? RTL? Waluty/strefy/format dat? → decyduje o i18n od
   Dnia 0 i strukturze danych ([10](10-seo-and-translations.md), [11](11-data-model-and-normalization.md)).
