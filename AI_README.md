@@ -36,6 +36,7 @@ Kierunek wersji EN i pakowania per język → [docs/plans/0001-i18n-i-pakowanie.
 | Plik | Po co to |
 |------|----------|
 | `index.html` | **Minimalny czytnik lokalny/dev** (podgląd treści dla autora/agenta) — NIE publiczna witryna. Strona główna (dekalog + karty) + widok rozdziału + brief + przełącznik języka treści (PL/EN). |
+| `intro.md` | **Manifest** — „Czym jest The Craft" + artykuł „dlaczego warto". Dokument specjalny (poza numerowaną listą), routowany jako `#intro`; jest też `en/intro.md`. |
 | `00`–`14` (root) | **Treść PL** (kanoniczna, źródło prawdy). Slugi/numery = stabilne kotwice, wspólne dla wszystkich języków. |
 | `en/` | **Treść EN** — równoległy zestaw `00-*.md`…`14-*.md` (te same nazwy plików, treść po angielsku). Tłumaczenie PL. |
 | `docs/` | Plany i decyzje meta repo (nie treść doktryny): `docs/AI_README.md`, `docs/plans/`. |
@@ -114,5 +115,7 @@ Jeden plik, bez zależności build. Mechanika:
 - 15 rozdziałów (`00`–`14`) + `README.md`, w **dwóch językach** (PL root + EN `en/`).
   Rdzeń: 9 plików (00–08). Pogłębienie: 6 (09–14).
 - `index.html`: 1 plik; runtime z CDN (`marked` + Google Fonts). Build: `build.py` → `content.js`
-  (PL: 16 dok. ~87 tys. znaków; EN: 15 dok. ~85 tys. znaków; struktura `{lang:{slug:md}}`).
+  (PL: 17 dok. ~91 tys. znaków; EN: 16 dok. ~90 tys. znaków — rozdziały + `intro` + README; struktura `{lang:{slug:md}}`).
+- **Dokumenty specjalne (poza numerowaną listą):** `intro.md` (manifest, route `#intro`) i widok
+  briefu (`#brief`) — routowane osobno, nie ma ich w tablicy `CHAPTERS`.
 - Brak testów (repo dokumentacji). „Test" = podgląd przez serwer **i** z dwukliku (`file://`) + klik po rozdziałach.

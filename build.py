@@ -17,12 +17,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 
 def collect(base):
-    """Zbierz {slug: markdown} z katalogu base (rozdziały NN-*.md + README, jeśli jest)."""
+    """Zbierz {slug: markdown} z katalogu base (rozdziały NN-*.md + intro + README, jeśli są)."""
     docs = {}
     files = sorted(p for p in base.glob("[0-9][0-9]-*.md"))
-    readme = base / "README.md"
-    if readme.exists():
-        files.append(readme)
+    for extra in ("intro.md", "README.md"):  # nie-numerowane dokumenty specjalne
+        p = base / extra
+        if p.exists():
+            files.append(p)
     for path in files:
         docs[path.stem] = path.read_text(encoding="utf-8")  # slug = nazwa bez .md
     return docs

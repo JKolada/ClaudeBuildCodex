@@ -160,6 +160,11 @@
        padding:11px 20px; border-radius:12px; box-shadow:0 8px 24px rgba(60,48,160,.22);
        transition:transform .12s ease, box-shadow .12s ease}
   .cta:hover{transform:translateY(-2px); box-shadow:0 12px 30px rgba(60,48,160,.3)}
+  .manifesto-cta{max-width:var(--readw); margin:30px auto 0; text-align:center}
+  .manifesto-cta p{color:var(--ink-dim); font-size:17px; margin:.4em 0}
+  .cta-ghost{display:inline-block; margin-top:6px; font-weight:700; text-decoration:none; color:var(--accent);
+    border:1px solid var(--accent); border-radius:12px; padding:9px 18px; transition:background .12s ease, color .12s ease}
+  .cta-ghost:hover{background:var(--accent); color:#fff}
   .brief-head{max-width:var(--readw); margin:0 auto 22px}
   .brief-head h1{font-family:var(--serif); font-size:clamp(28px,4.5vw,42px); margin:.1em 0 .25em; font-weight:800}
   .brief-head p{color:var(--ink-dim); font-size:16px; margin:.3em 0}
@@ -267,6 +272,7 @@
     </a>
     <span class="spacer"></span>
     <nav>
+      <a href="#intro">Manifest</a>
       <a href="#brief">Brief</a>
       <a href="https://github.com/JKolada/ClaudeBuildCodex" target="_blank" rel="noopener" class="gh" aria-label="Kod źródłowy na GitHubie" title="GitHub — kod źródłowy">
         <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#ic-github"></use></svg>
@@ -318,6 +324,13 @@
     dołączane do każdego nowego projektu.</p>
     <p class="brandline">Warsztat <a href="https://jakub.solutions">jakub.solutions</a> · Jakub Kolada — Insurance Systems Architect &amp; IT Consultant</p>
   </header>
+
+  <section class="manifesto-cta">
+    <p>Rzemiosło to <b>sztuka stawiania aplikacji end-to-end z Claude</b> — skalowalnych, utrzymywalnych
+    i łatwych w rozwoju, migracji i zmianie, o ekstremalnie elastycznej strukturze plików i technologii,
+    z poszanowaniem prywatności osobistej i prawa (RODO/GDPR) od Dnia 0.</p>
+    <p><a class="cta-ghost" href="#intro">Czym jest The Craft i dlaczego warto spróbować? → Przeczytaj manifest</a></p>
+  </section>
 
   <hr class="rule" />
 
@@ -545,6 +558,9 @@
   try { var _l = localStorage.getItem("rzemioslo-lang"); if(_l==="pl"||_l==="en") LANG = _l; } catch(e){}
   function langPath(file){ return LANG === "pl" ? file : (LANG + "/" + file); }
 
+  // Dokument specjalny (poza numerowaną listą rozdziałów): manifest „Czym jest The Craft".
+  var INTRO = { file: "intro.md", no: "", title: "Czym jest The Craft" };
+
   // ---- Karty na stronie głównej ----
   function card(c){
     var badge = c.group === "deep" ? c.no : c.no;
@@ -591,7 +607,8 @@
     root.querySelectorAll('a[href]').forEach(function(a){
       var href = a.getAttribute("href");
       if(!href) return;
-      if(/^index\.html(#.*)?$/.test(href)){ a.setAttribute("href","#"); return; }
+      var ix = href.match(/^index\.html(#.*)?$/);
+      if(ix){ a.setAttribute("href", ix[1] || "#"); return; }
       var m = href.match(/^([^\/:?#]+)\.md(#.*)?$/);
       if(m && bySlug[m[1]]){ a.setAttribute("href","#"+m[1]+(m[2]||"")); }
       else if(/^https?:\/\//.test(href)){ a.setAttribute("target","_blank"); a.setAttribute("rel","noopener"); }
@@ -735,8 +752,8 @@
 
   function showChapter(c){
     document.body.classList.add("reading");
-    sel.value = slug(c.file);
-    document.title = c.no + " — " + c.title + " · Rzemiosło";
+    if(sel.querySelector('option[value="'+slug(c.file)+'"]')) sel.value = slug(c.file);
+    document.title = (c.no ? c.no + " — " : "") + c.title + " · Rzemiosło";
     prevNext(c);
 
     var ckey = LANG + ":" + c.file;
@@ -782,7 +799,8 @@
     var hash = location.hash.replace(/^#/,"");
     hash = hash.split("?")[0];
     if(hash === "brief"){ showBrief(); }
-    else if(hash && bySlug[hash]){ showChapter(bySlug[hash]); }
+    else if(hash === "intro"){ document.body.classList.remove("briefing"); showChapter(INTRO); }
+    else if(hash && bySlug[hash]){ document.body.classList.remove("briefing"); showChapter(bySlug[hash]); }
     else { showHome(); }
   }
 

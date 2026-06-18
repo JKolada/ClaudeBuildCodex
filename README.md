@@ -25,6 +25,7 @@ dla agenta, testowalna, bezpieczna w zmianie i godna zaufania.
   same filenames). PL (root) is canonical; `en/` is its translation. Toggle PL/EN in the reader.
 - **Edytujesz treść?** Po zmianie `.md` uruchom `python build.py`, żeby odświeżyć snapshot dla `file://`.
 - **Na GitHubie** pliki `.md` renderują się natywnie — wystarczy klikać linki w tabeli niżej.
+- **Nowy tutaj?** Zacznij od manifestu: [Czym jest The Craft i dlaczego warto](intro.md) (EN: [`en/intro.md`](en/intro.md)).
 - **Spieszysz się?** Przeczytaj [00 — Dekalog](00-przykazania.md). To cała doktryna w jednym ekranie.
 - **Zaczynasz nowy projekt?** Idź do [07 — Nowy projekt: Dzień 0](07-nowy-projekt-checklist.md).
 
