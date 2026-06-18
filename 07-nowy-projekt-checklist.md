@@ -3,6 +3,46 @@
 Konkretna checklista, którą Claude wykonuje (z Kubą) **rozpoczynając nowy projekt**.
 Cel: po Dniu 0 każda kolejna sesja ma grunt pod nogami.
 
+## 0. Brief produktowy — dopytaj, zanim cokolwiek powstanie
+
+Przed pierwszą linią kodu i przed `CLAUDE.md` **zadaj użytkownikowi zestaw pytań** — i nie zgaduj
+domyślnych odpowiedzi tam, gdzie zmieniają architekturę, prawo lub markę. Te decyzje są tańsze na
+papierze niż w kodzie (i18n dorzucony później to przepisywanie, monetyzacja po fakcie to migracja
+danych). Pytaj zwięźle, grupami; jeśli czegoś user nie wie — zaproponuj domyślną i zaznacz ją jako
+założenie. Te same pytania zadaj **aplikując doktrynę do istniejącego projektu** — wtedy jako audyt
+(„co już jest, czego brak").
+
+- **Języki docelowe i rynki.** Jeden język czy wiele? Które, w jakiej kolejności, który jest
+  źródłem prawdy? Parytet treści jako wymóg? RTL? Waluty/strefy/format dat? → decyduje o i18n od
+  Dnia 0 i strukturze danych ([10](10-seo-i-tlumaczenia.md), [11](11-model-danych-normalizacja.md)).
+- **Funkcjonalności — rdzeń vs „później".** Co jest MVP (bez czego produkt nie istnieje), a co
+  jest miłe-do-mienia? Konta i role? Treść statyczna czy user-generated? Integracje zewnętrzne
+  (płatności, mapy, AI, e-mail)? → wyznacza warstwy i feature flags ([12](12-elastycznosc-i-skalowalnosc.md)).
+- **Monetyzacja.** Darmowe, płatne, freemium, subskrypcja, jednorazowo, reklamy, afiliacja? Kiedy
+  pojawia się płatność (Dzień 1 czy po trakcji)? Dostawca (Stripe/inny), faktury, VAT/OSS? →
+  dotyka modelu danych i obowiązków prawnych ([09](09-prawo-i-ochrona-tworcy.md), [11](11-model-danych-normalizacja.md)).
+- **Styl UX i kierunek wizualny.** Grupa docelowa i ton (poważny B2B ↔ zabawowy konsumencki)?
+  Jest marka (paleta, typografia, logo) czy tworzymy od zera? Gęsty dashboard czy przewiewny
+  landing? Tryb jasny/ciemny? Dostępność (WCAG) jako wymóg?
+- **Animacje i „odczucie" interfejsu.** Statyczny i szybki, czy bogaty w mikrointerakcje
+  i przejścia? Budżet wydajności i `prefers-reduced-motion` jako zasada? → animacja nie może bić
+  się z Core Web Vitals ([13](13-wydajnosc-frontend-i-sql.md)).
+- **Wydźwięk marketingowy.** Jedno zdanie wartości (value prop), kto jest klientem, czego unikamy
+  w tonie? Nazwa/domena/hasło ustalone? To samo „dlaczego", które potem napędza changelog
+  i copy pisane językiem użytkownika ([08](08-stack-i-technologie.md) → [01](01-dokumentacja-i-ai-readme.md)).
+
+> **Zapisz odpowiedzi**, nie tylko je usłysz: twarde decyzje → `CLAUDE.md` (polityki) i `memory/`
+> (cel biznesowy, ograniczenia — krok 10). Założenia przyjęte za usera oznacz wyraźnie, by dało
+> się je później zweryfikować.
+
+### Anty-wzorce
+- 🚫 **Skok do kodu bez briefu** — „zacznę, dopytam po drodze". Język, monetyzacja i marka
+  wpisane po fakcie to przepisywanie, nie poprawka.
+- 🚫 **Zasypanie pytaniami** — 30 pytań naraz zniechęca. Pytaj grupami, o to co zmienia plan;
+  resztę zaproponuj jako domyślne.
+- 🚫 **Ciche założenia** — przyjęcie „pewnie tylko polski" albo „pewnie za darmo" bez zaznaczenia,
+  że to Twoje założenie, nie decyzja użytkownika.
+
 ## 1. Rozpoznanie (zanim cokolwiek napiszesz — Przykazanie II)
 - [ ] Przeczytaj istniejący `CLAUDE.md` / `AI_README.md` / `README`, jeśli są.
 - [ ] `git log --oneline -20`, `git status` — co już jest, co w toku, czy są sieroty/śmieci.
@@ -58,6 +98,7 @@ Cel: po Dniu 0 każda kolejna sesja ma grunt pod nogami.
 
 ---
 
-> **Minimalny Dzień 0**, gdy nie ma czasu na wszystko: `CLAUDE.md` (stack + jak uruchomić +
+> **Minimalny Dzień 0**, gdy nie ma czasu na wszystko: krótki **brief** (krok 0: język, MVP,
+> monetyzacja, ton) → `CLAUDE.md` (stack + jak uruchomić +
 > polityki) → `.gitignore` → jeden skill `/run-<projekt>` ze smoke testem → szkielet testów →
 > katalog `backups/`. Reszta dorasta z projektem.

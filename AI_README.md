@@ -30,7 +30,7 @@ dla osób zaczynających z Claude. Szczegóły i polityki → [CLAUDE.md](CLAUDE
 | `04-skrypty-i-bazy-danych.md` | Dry-run/`--execute`, idempotencja, migracje forward-only, backupy. |
 | `05-git-i-wdrozenia.md` | Szukaj w git, taguj deploy, swap bazy z zachowaniem kont. Najgęstszy rozdział. |
 | `06-wspolpraca-i-pamiec.md` | Plan→iteruj→review, pamięć, potwierdzaj nieodwracalne, raportuj uczciwie. |
-| `07-nowy-projekt-checklist.md` | Checklista „Dzień 0" nowego projektu. |
+| `07-nowy-projekt-checklist.md` | Checklista „Dzień 0": brief produktowy (język, funkcje, monetyzacja, UX, animacje, marketing) + setup repo. |
 | `08-stack-i-technologie.md` | Uniwersalny stack: Python, bazy, web/API, Docker, serwery (Hetzner) + TDD jako twardy rdzeń. |
 | `09-prawo-i-ochrona-tworcy.md` | Regulamin, polityka prywatności, disclaimery jako ochrona twórcy / JDG. |
 | `10-seo-i-tlumaczenia.md` | hreflang, JSON-LD, E-E-A-T/YMYL, parytet językowy jako test. |
