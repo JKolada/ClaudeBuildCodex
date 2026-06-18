@@ -1,0 +1,7 @@
+# editor / local
+.obsidian/
+.claude/settings.local.json
+
+# os
+.DS_Store
+Thumbs.db

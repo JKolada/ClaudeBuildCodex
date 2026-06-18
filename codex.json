@@ -1,0 +1,8 @@
+{
+  "name": "Build Codex",
+  "version": "1.0.0",
+  "released": "2026-06-18",
+  "url": "https://codex.jakub.solutions",
+  "chapters": 14,
+  "note": "Bieżące wydanie doktryny. `version` musi zgadzać się z najwyższym wpisem w CHANGELOG.md. Wersjonowanie semantyczne; data = dzień publikacji (deploy + gotowe do pobrania)."
+}
