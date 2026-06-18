@@ -1,13 +1,16 @@
 # Claude Build Codex
 
 > Przykazania budowania i prowadzenia aplikacji **end-to-end** z Claude.
-> Destylat doświadczeń z realnych projektów (m.in. WhiskyPolska), pisany pod **każdy kolejny projekt z Claude**.
+> Destylat doświadczeń z realnych projektów, pisany pod **każdy kolejny projekt z Claude**.
+>
+> **Edycja: Techniczna** — dla osób ogarniających kod i stack. Edycje *BIZ-TECH* i *Biznesowa*
+> (ta sama doktryna prostszym językiem) — w planach.
 >
 > Warsztat **[jakub.solutions](https://jakub.solutions)** · Jakub Kolada — Insurance Systems Architect & IT Consultant.
 > Marka, paleta (fiolet→cyan) i typografia (Playfair Display + Outfit) spójne z [Jakub.Solutions](../Jakub.Solutions).
 
 To nie jest podręcznik frameworka. To **doktryna współpracy** — zestaw zasad, o których
-Claude ma pamiętać **rozpoczynając i prowadząc projekt z Kubą**, żeby aplikacja przez całe
+Claude ma pamiętać **rozpoczynając i prowadząc projekt z użytkownikiem**, żeby aplikacja przez całe
 życie (od pierwszego commita po wdrożenie na prod z żywymi użytkownikami) była: zrozumiała
 dla agenta, testowalna, bezpieczna w zmianie i godna zaufania.
 

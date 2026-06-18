@@ -74,8 +74,8 @@ Jeden plik, bez zależności build. Mechanika:
 - **Nazwy plików = stabilne kotwice** (`#NN-nazwa`, cele linków względnych). Nie zmieniaj bez powodu.
 - **Marka:** zmiany kolorów rób na zmiennych CSS (`--accent`, `--accent-2`, `--grad`), nie na
   wartościach w miejscu użycia. Tryb jasny i ciemny muszą oba wyglądać dobrze.
-- **Treść generyczna, nie „pod jeden projekt".** Konkretne projekty (np. WhiskyPolska) służą
-  tylko za ilustrację (`np. …`), nigdy za temat rozdziału. Nie czyń żadnego projektu bohaterem doktryny.
+- **Treść generyczna, nie „pod jeden projekt".** Konkretne projekty służą
+  tylko za ilustrację (`np. …`, „projekt referencyjny"), nigdy za temat rozdziału. Nie czyń żadnego projektu bohaterem doktryny.
 - **Wersja angielska** planowana w przyszłości — pisz reguły przekładalnie. Na razie język = polski.
 
 ## Liczby

@@ -9,7 +9,7 @@ Dwie różne rzeczy, często mylone:
 Obie są obowiązkowe. Test, który przechodzi, nie znaczy, że feature działa w przeglądarce;
 ręczna weryfikacja bez testów nie chroni przed regresją jutro.
 
-## Piramida (z WhiskyPolska)
+## Piramida (z projektu referencyjnego)
 
 | Poziom | Narzędzie | Co pokrywa | Kiedy |
 |--------|-----------|------------|-------|
@@ -35,7 +35,7 @@ Po zmianie obserwowalnej w aplikacji **pokaż dowód**, nie proś usera, żeby s
 
 Po **deployu** — smoke test na żywym serwerze (przez `localhost` za flagą maintenance), a
 gdy znajdziesz błąd w oknie — napraw go w oknie, jeśli to trywialne i bezpieczne (w
-WhiskyPolska tak złapaliśmy i naprawiliśmy zastane `ERR_HTTP_HEADERS_SENT` na `/mapa`).
+projekcie referencyjnym tak złapaliśmy i naprawiliśmy zastane `ERR_HTTP_HEADERS_SENT` na `/mapa`).
 
 ## Raport ma być uczciwy
 - Testy padają → powiedz to **z outputem**, nie chowaj.
@@ -48,9 +48,9 @@ WhiskyPolska tak złapaliśmy i naprawiliśmy zastane `ERR_HTTP_HEADERS_SENT` na
 Nie ufaj liczbie z pamięci ani z dokumentacji — odpytaj bazę/test. Dokumentacja się starzeje;
 `SELECT COUNT(*)` nie kłamie. (Przykazanie X: „liczby weryfikuj".)
 
-## Web — sprawdzony zestaw kontroli (z jakub.solutions)
-Dla stron/projektów webowych ten zestaw testów już się u nas sprawdził (40 metod / 235
-subtestów na jakub.solutions) — przenoś go domyślnie:
+## Web — sprawdzony zestaw kontroli
+Dla stron/projektów webowych ten zestaw testów już się w praktyce sprawdził (typowy zestaw
+to kilkadziesiąt metod i kilkaset subtestów) — przenoś go domyślnie:
 - **SEO meta** (title/description per strona), **canonical + hreflang**, **JSON-LD**.
 - **Dostępność**: kontrast tokenów kolorów, nawigacja klawiaturą, sensowne `alt`/aria.
 - **Parytet EN↔PL** (i każdej pary językowej): brakujący klucz/strona w jednym języku = **test, który pada**.

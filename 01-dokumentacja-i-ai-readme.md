@@ -25,7 +25,7 @@ inny agent) zrozumiała katalog bez czytania całego kodu.** To nie jest archiwu
   Pisz je jak prawo: konkretnie, z „dlaczego".
 
 ### `AI_README.md` — w każdym katalogu
-Reguła z WhiskyPolska, którą warto przenieść: **każdy katalog ma `AI_README.md`**, a jego
+Reguła z projektu referencyjnego, którą warto przenieść: **każdy katalog ma `AI_README.md`**, a jego
 aktualizacja jest częścią workflow commita:
 
 ```
@@ -56,7 +56,7 @@ Co powinno być w `AI_README.md`:
 
 ## Dokumentacja jako kod
 - **Linki względne** między plikami `.md` — żeby dało się klikać i walidować.
-- **Jeden „spis treści"** (jak `docs/AI_README.md` w WhiskyPolska) z tabelą „gdzie zacząć dla zadania X".
+- **Jeden „spis treści"** (np. `docs/AI_README.md`) z tabelą „gdzie zacząć dla zadania X".
 - Ciężkie rzeczy (regeneracja statycznego HTML z docsów) — **nie przy każdym commicie**;
   rób zbiorczo i sugeruj userowi, nie odpalaj sam.
 

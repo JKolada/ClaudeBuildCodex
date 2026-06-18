@@ -11,35 +11,35 @@ metryka wskazuje, i **udowodnij liczbą**, że poprawiłeś. Wydajność to też
 ## Mierz najpierw
 - **Lighthouse / Core Web Vitals**: LCP (largest contentful paint), CLS (layout shift),
   INP (interaction), TBT. To są twarde liczby, nie wrażenia.
-- **Przed/po, nie „wydaje się szybciej".** WhiskyPolska — optymalizacja home: preload hero,
+- **Przed/po, nie „wydaje się szybciej".** Np. optymalizacja home: preload hero,
   GPU-promoted animacje, `content-visibility: auto` poniżej folda; raportujesz LCP przed i po,
   nie „chyba lżej". → [03](03-testowanie-i-weryfikacja.md)
 - **SQL: `EXPLAIN QUERY PLAN`** mówi, czy zapytanie używa indeksu, czy skanuje całą tabelę.
 
 ## Frontend
 - **Code-splitting** + **lazy-load below-fold** — nie ładuj tego, czego user nie widzi.
-- **Obrazy**: WebP (WhiskyPolska konwertuje wszystkie do WebP q=95), responsive `srcset`,
+- **Obrazy**: WebP (np. konwersja wszystkich do WebP q=95), responsive `srcset`,
   **preload hero** (LCP), reszta lazy.
-- **Fonty**: self-host (Playfair/Outfit jak na jakub.solutions), `font-display: swap` — tekst
+- **Fonty**: self-host (np. Playfair/Outfit, jak na jakub.solutions), `font-display: swap` — tekst
   widoczny zanim font dojdzie.
 - **`content-visibility: auto`** na sekcjach poniżej folda — przeglądarka pomija render niewidocznego.
 - **GPU-promoted animacje** (`translateZ(0)`/`transform`) zamiast layoutujących właściwości.
-- **Cache statyków**: `immutable` + długi `max-age` na prodzie (WhiskyPolska: 7 dni immutable prod).
+- **Cache statyków**: `immutable` + długi `max-age` na prodzie (np. 7 dni immutable prod).
 - **Streaming / SSE dla czatu** — odpowiedź LLM **token-by-token** (np. przez SSE), user widzi
   pierwsze słowa od razu, a nie pustkę do końca generacji. → [08](08-stack-i-technologie.md)
-- **Server-side pagination** — nigdy nie ślij całego katalogu do przeglądarki (WhiskyPolska:
-  paginacja po stronie serwera dla ~8,5k whisky).
+- **Server-side pagination** — nigdy nie ślij całego katalogu do przeglądarki (np.
+  paginacja po stronie serwera dla ~kilku tysięcy pozycji).
 
 ## SQL
 - **Indeksy** na kolumnach z `WHERE` i `JOIN` — gorące zapytanie bez indeksu to skan całej tabeli.
-- **Partial indexes** — WhiskyPolska: `uniq_prices_active … WHERE expired_at IS NULL` (indeks
+- **Partial indexes** — np. `uniq_prices_active … WHERE expired_at IS NULL` (indeks
   tylko na aktywnych cenach — mniejszy, szybszy, wymusza unikalność, → [11](11-model-danych-normalizacja.md)).
 - **`EXPLAIN QUERY PLAN`** przed i po dodaniu indeksu — dowód, że plan się zmienił.
 - **Unikaj N+1** — nie zapytanie w pętli po każdym wierszu; batch/join za jednym razem.
 - **`SELECT` tylko potrzebnych kolumn** — nie `SELECT *`, gdy potrzebujesz trzech pól.
-- **Paginacja server-side** + **cache'owane agregaty** (WhiskyPolska: `site_stats` zamiast
+- **Paginacja server-side** + **cache'owane agregaty** (np. `site_stats` zamiast
   `COUNT(*)` po całej bazie na każde wejście na home).
-- **WAL** (SQLite) — czytelnicy nie blokują pisarza; domyślny tryb w WhiskyPolska.
+- **WAL** (SQLite) — czytelnicy nie blokują pisarza; domyślny tryb w projekcie referencyjnym.
 - **Ostrożnie z `LIKE '%foo'`** — wiodący wildcard zabija indeks (full scan); rozważ FTS, jeśli
   to gorąca ścieżka wyszukiwania.
 
@@ -48,7 +48,7 @@ metryka wskazuje, i **udowodnij liczbą**, że poprawiłeś. Wydajność to też
 - 🚫 **Brak indeksu na gorącym zapytaniu** — najczęstsza przyczyna wolnej strony katalogu.
 - 🚫 **N+1 w pętli** — 200 zapytań tam, gdzie wystarczył jeden join.
 - 🚫 **`SELECT *`** — przesyłasz i deserializujesz kolumny, których nie używasz.
-- 🚫 **Client-side pagination ogromnych zbiorów** — ślesz 8,5k rekordów, by pokazać 20.
+- 🚫 **Client-side pagination ogromnych zbiorów** — ślesz kilka tysięcy rekordów, by pokazać 20.
 - 🚫 **Blokowanie UI w oczekiwaniu na pełną odpowiedź LLM** zamiast streamingu (→ [12](12-elastycznosc-i-skalowalnosc.md)).
 - 🚫 **Brak cache drogich agregatów** — `COUNT(*)` po całej bazie na każde żądanie.
 

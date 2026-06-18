@@ -10,17 +10,17 @@ Normalizuj najpierw; denormalizuj **świadomie** i z nazwanym źródłem prawdy.
 
 ## Normalizuj najpierw
 - **Bez powtarzających się grup.** Wartość raz, w jednym miejscu.
-- **Słowniki w tabelach lookup.** WhiskyPolska: `countries` / `regions` / `whisky_types` /
-  `cask_types` — nie free-text w kolumnie. Dodatkowo **`CHECK` na `whiskies.type`**
-  (`single_malt | blended | bourbon | …`) — baza odrzuca śmieć, zanim wejdzie.
-- **Tabele łączące dla M:N.** Whisky ma wiele typów beczek → **`whisky_casks`** (junction),
-  nie `primary_cask` + `finish_cask` jako dwa free-text pola (te skasowano migracją 090 —
-  junction jest jedynym magazynem beczek).
+- **Słowniki w tabelach lookup.** W projekcie referencyjnym: `countries` / `regions` / `product_types` /
+  `tag_types` — nie free-text w kolumnie. Dodatkowo **`CHECK` na `products.type`**
+  (`type_a | type_b | type_c | …`) — baza odrzuca śmieć, zanim wejdzie.
+- **Tabele łączące dla M:N.** Produkt ma wiele tagów/atrybutów → **`product_tags`** (junction),
+  nie `primary_tag` + `secondary_tag` jako dwa free-text pola (te skasowano migracją 090 —
+  junction jest jedynym magazynem atrybutów).
 
 ## Stabilne klucze — slug, nie ID
-**ID dryfują.** Po merge'ach duplikatów `whisky_id` się zmienia (kanon przejmuje wiersze,
+**ID dryfują.** Po merge'ach duplikatów `product_id` się zmienia (kanon przejmuje wiersze,
 zduplikowany ginie). Dlatego **stabilnym identyfikatorem jest slug**, nie klucz numeryczny.
-Najtwardsza lekcja z WhiskyPolska — swap prod-bazy: **dane użytkownika mapujesz po slug → nowe ID**,
+Najtwardsza lekcja z projektu referencyjnego — swap prod-bazy: **dane użytkownika mapujesz po slug → nowe ID**,
 nigdy po starym ID (recenzja trafiłaby na zły produkt). Brakujący slug **pomijasz i logujesz**,
 nie wpychasz na ślepo. → [05](05-git-i-wdrozenia.md)
 
@@ -28,18 +28,18 @@ nie wpychasz na ślepo. → [05](05-git-i-wdrozenia.md)
 Wzorzec z cen, wart przeniesienia wszędzie, gdzie historia ma wartość:
 - Kolumna **`expired_at`** (NULL = aktywny). Zmiana ceny → wygaszasz stary wiersz, wstawiasz nowy.
 - **Partial unique index** `WHERE expired_at IS NULL` — wymusza „jeden aktywny na klucz"
-  (jedna aktywna cena na (whisky, retailer)).
+  (jedna aktywna cena na (produkt, retailer)).
 - **Tabela historii** (`price_history`) zapisuje każdą cenę, jaką widziano.
 - Efekt: **audyt za darmo** — wiesz, co i kiedy się zmieniło, bez triggerów.
 
 ## Kiedy denormalizować (świadomie)
 Denormalizacja jest legalna **dla odczytu** — ale zawsze nazwij **źródło prawdy** i pilnuj spójności:
-- **Pola wyświetlane/wyliczane → licz w helperach, nie składuj.** `display_name` (brand + age +
-  bottling_name) liczony dynamicznie w `web/src/helpers.js`. Składowany dryfowałby po każdej
+- **Pola wyświetlane/wyliczane → licz w helperach, nie składuj.** `display_name` (brand + wariant +
+  nazwa edycji) liczony dynamicznie w `web/src/helpers.js`. Składowany dryfowałby po każdej
   zmianie składnika.
-- **Cache denormalizowany z jasnym źródłem.** `wb_profile_cache` trzyma dane WhiskyBase; kolumny
-  `wb_*` **usunięto z `whiskies`** (migracja 051) — cache jest jedynym źródłem, brak dwóch prawd.
-- **Snapshot z live-fallback.** `site_stats.json` to zrzut liczb (whisky/ceny/retailerzy);
+- **Cache denormalizowany z jasnym źródłem.** `ext_profile_cache` trzyma dane z zewnętrznego źródła; kolumny
+  `ext_*` **usunięto z `products`** (migracja 051) — cache jest jedynym źródłem, brak dwóch prawd.
+- **Snapshot z live-fallback.** `site_stats.json` to zrzut liczb (produkty/ceny/retailerzy);
   czytany przez home, ale z **fallbackiem na żywą bazę**, gdy snapshot nieaktualny.
 
 ## Migracje i integralność
@@ -50,13 +50,13 @@ Denormalizacja jest legalna **dla odczytu** — ale zawsze nazwij **źródło pr
   operuje (przeżywa różne stany schematu między środowiskami).
 
 ## Schemat jako udokumentowany kontrakt
-ERD + controlled vocabulary w docs (WhiskyPolska: `db_schema.md` z Mermaid ERD,
-`data_model_reference.md` z dozwolonymi wartościami `type`/`region`/`cask_types`). Schemat,
+ERD + controlled vocabulary w docs (np. `db_schema.md` z Mermaid ERD,
+`data_model_reference.md` z dozwolonymi wartościami `type`/`region`/`tag_types`). Schemat,
 którego nikt nie udokumentował, jest schematem, który następna sesja zgaduje. → [01](01-dokumentacja-i-ai-readme.md)
 
 ## Anty-wzorce
 - 🚫 **Free-text tam, gdzie powinien być słownik** (kraj jako string → 5 pisowni „Szkocja").
-- 🚫 **Duplikat źródła prawdy bez synchronizacji** (WB dane w `whiskies` *i* w cache → rozjazd).
+- 🚫 **Duplikat źródła prawdy bez synchronizacji** (dane zewnętrzne w `products` *i* w cache → rozjazd).
 - 🚫 **Mapowanie user-danych po zmiennym ID** zamiast slug → recenzja na złym produkcie.
 - 🚫 **Składowanie wartości wyliczanej, która dryfuje** (`display_name` jako kolumna).
 - 🚫 **Destrukcyjna migracja pod działającym starym kodem** (DROP kolumny, którą web jeszcze czyta).

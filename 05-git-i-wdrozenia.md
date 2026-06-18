@@ -25,7 +25,7 @@ kolumnie/fladze nieznanego pochodzenia, datowaniu regresji, przed każdym refakt
 - **Odróżniaj realny diff od szumu CRLF:** `git status` pokazuje plik jako zmieniony, a
   `git diff HEAD` jest pusty → to tylko EOL, nie praca. Nie commituj szumu.
 - **Sieroty (niezacommitowana praca w tle)** — w projekcie prowadzonym wielosesyjnie
-  („Kuba + Claude") inne sesje zostawiają zmiany w drzewie. Przed deployem: czy to realna,
+  („użytkownik + Claude") inne sesje zostawiają zmiany w drzewie. Przed deployem: czy to realna,
   kompletna praca (commituj/potwierdź), czy WIP/eksperyment (zostaw)? **Nie wmiataj cudzej
   niezacommitowanej pracy do deployu bez potwierdzenia.**
 
@@ -63,21 +63,21 @@ Pisz, **co użytkownik zyskuje**. Bump daty `updated:`. To część checklisty d
 ## Swap bazy z zachowaniem kont — runbook (najtrudniejsza operacja)
 
 Pełna podmianka prod-bazy (np. lokalny katalog z całą pracą) **z zachowaniem żywych kont**.
-To tu jest najwięcej pułapek. Lekcje z WhiskyPolska:
+To tu jest najwięcej pułapek. Lekcje z projektu referencyjnego:
 
 ### Zasady, które ratują dane userów (Przykazanie VII)
 1. **„Użytkownicy" to wiele tabel, nie jedna `users`.** Wylicz **każdą** tabelę z FK do
    użytkownika: konta, koszyki, recenzje, polubienia, odznaki, gry, czat (sesje +
    wiadomości + limity), feedback, sesje. Tabelę bez `user_id` (np. `chat_messages`) mapuj
    po jej rodzicu (`session_id`). Gateuj każdą na istnienie kolumny/tabeli.
-2. **Mapuj po STABILNYM kluczu (slug), nie po ID.** `whisky_id`/`product_id` dryfują między
+2. **Mapuj po STABILNYM kluczu (slug), nie po ID.** `product_id` dryfuje między
    bazami po merge'ach — recenzja użytkownika musi trafić po `slug → nowe_id`, a brakujący
    slug jest **pomijany i logowany**, nie wpychany na ślepo.
 3. **Źródłem prawdy dla kont jest ŻYWY prod**, nie stary snapshot — żeby nie zgubić
    rejestracji z ostatniej godziny. Migrację uruchom **w oknie maintenance, po `pm2 stop`**,
    czytając zatrzymaną, spójną prod-bazę.
 4. **Kolejność FK-safe**: WIPE dzieci przed rodzicami, INSERT rodziców przed dziećmi
-   (np. `tasting_notes` przed `review_likes`; `chat_sessions` przed `chat_messages`).
+   (np. `reviews` przed `review_likes`; `chat_sessions` przed `chat_messages`).
 5. **Backup żywego proda PRZED swapem** (`.backup replaced-prod-<ts>.db`) — to Twój rollback.
 6. **Zweryfikuj scaloną bazę**: liczba kont = prod, 0 wiszących recenzji (slug-remap OK),
    `integrity_check: ok`, naruszenia FK ≤ stan zastany (nie więcej).
@@ -103,7 +103,7 @@ właściwy plik, redirecty (np. scalone → 301 do survivora), liczby w bazie (k
 
 ### Asety gitignorowane a deploy
 Obrazki/pliki, które są w `.gitignore`, **nie jadą przez `git pull`**. Albo je zsynchronizuj
-(rsync/tar), albo wygeneruj na serwerze (jeśli ma narzędzia). W WhiskyPolska decyzja:
+(rsync/tar), albo wygeneruj na serwerze (jeśli ma narzędzia). W projekcie referencyjnym decyzja:
 **kopiujemy z lokalnej**, bo serwer nie ma Pillow, a swap zmienia katalog.
 
 ## Anty-wzorce
@@ -115,8 +115,8 @@ Obrazki/pliki, które są w `.gitignore`, **nie jadą przez `git pull`**. Albo j
 - 🚫 Transfer 1.5 GB assetów **w** oknie maintenance → długi downtime (rób przed oknem).
 
 ## Wspólna infrastruktura
-Projekty dzielą jeden **Hetzner VPS** (`46.62.203.14`): statyczne (jakub.solutions) idą przez
-`scp`/`rsync` `dist/` + nginx vhost; Node (WhiskyPolska) przez `git pull` + `pm2 reload` za
+Projekty mogą dzielić jeden **Hetzner VPS**: statyczne (build `dist/`) idą przez
+`scp`/`rsync` + nginx vhost; aplikacje Node przez `git pull` + `pm2 reload` za
 nginx. Jeden serwer = wspólny katalog `backups/`, te same nawyki (tag deployu, maintenance
 flag). Nowy projekt na tym samym boxie: osobny vhost + osobny katalog, te same reguły.
 

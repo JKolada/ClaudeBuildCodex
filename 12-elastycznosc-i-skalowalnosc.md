@@ -10,13 +10,13 @@ over-engineeruj**: prosta architektura, którą umiesz rozwinąć, bije rozprosz
 potrzebujesz.
 
 ## Rozdziel warstwy
-- **DB ↔ ingest ↔ web** to trzy oddzielne światy. WhiskyPolska: SQLite (dane) ↔ scrapery Python
+- **DB ↔ ingest ↔ web** to trzy oddzielne światy. W projekcie referencyjnym: SQLite (dane) ↔ scrapery Python
   (ingest) ↔ Node/Express (web) — łączy je **kontrakt** (schemat, → [11](11-model-danych-normalizacja.md)),
   nie wspólny kod. Wymienisz scraper bez dotykania weba.
 - **Kontrakt API jako granica** — np. front Next.js ↔ backend Python przez jawny kontrakt
   (OpenAPI). Granica, której się trzymasz, pozwala wymienić każdą stronę osobno. → [08](08-stack-i-technologie.md)
 - **Wspólny backend pod web + przyszły mobile.** ADR z wyprzedzeniem: SQLite vs Postgres, sesja
-  vs JWT (WhiskyPolska: sesja dla weba; mobile w przyszłości → rozważ JWT na wspólnym backendzie).
+  vs JWT (np. sesja dla weba; mobile w przyszłości → rozważ JWT na wspólnym backendzie).
   Decyzję **zapisz**, nie trzymaj w głowie. → [01](01-dokumentacja-i-ai-readme.md)
 
 ## Zmieniaj tak, by się dało cofnąć i rampować
@@ -31,12 +31,12 @@ potrzebujesz.
 Realna decyzja z dwóch projektów, **świadomy tradeoff koszt/latencja**:
 - **Cloud Run (scale-to-zero)** — płacisz za użycie, zero ruchu = zero kosztu, ale **cold start**
   dodaje latencję pierwszego żądania. Dobre przy nierównym, globalnym ruchu.
-- **VPS always-on (Hetzner + pm2)** — WhiskyPolska: stały koszt, **zero cold startu**, pełna
+- **VPS always-on (Hetzner + pm2)** — np. stały koszt, **zero cold startu**, pełna
   kontrola. Dobre przy przewidywalnym ruchu i SQLite na dysku.
 Wybór = profil ruchu i budżet, nie moda. Zapisz jako ADR.
 
 ## Cache i pipeline'y
-- **Warstwy cache** z jawną inwalidacją: WhiskyPolska invaliduje cache w pipeline `full`,
+- **Warstwy cache** z jawną inwalidacją: np. inwalidacja cache w pipeline `full`,
   rankingi cache'owane **10 min**, statyki z `max-age` (godzina dev / 7 dni immutable prod).
 - **Composable, idempotentne pipeline'y** — `normalize → metadata → enrich → validate → stats`;
   każdy etap odpalalny osobno, ponowne uruchomienie bezpieczne (→ [04](04-skrypty-i-bazy-danych.md)).
@@ -44,8 +44,8 @@ Wybór = profil ruchu i budżet, nie moda. Zapisz jako ADR.
   później — → [10](10-seo-i-tlumaczenia.md)).
 
 ## Nie over-engineeruj
-- **Zacznij prosto.** SQLite + statyczny build (jakub.solutions: build statyczny w Pythonie)
-  obsługują zadziwiająco duży ruch. WhiskyPolska na SQLite/WAL serwuje ~8,5k whisky bez Postgresa.
+- **Zacznij prosto.** SQLite + statyczny build (np. build statyczny w Pythonie)
+  obsługują zadziwiająco duży ruch. Projekt referencyjny na SQLite/WAL serwuje ~kilka tysięcy pozycji bez Postgresa.
 - **Skaluj, gdy metryka tego wymaga** — nie „bo kiedyś urośnie". Right-size do realnego ruchu.
 - Migracja SQLite→Postgres, monolit→serwisy: **gdy liczby tego żądają**, z ADR, nie prewencyjnie.
 

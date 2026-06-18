@@ -15,25 +15,25 @@ i tłumaczenia są interfejsem dla świata.
   (np. 16 języków → 16 wzajemnych `hreflang` + `x-default`).
 - **JSON-LD** — `Organization` (home), `Article` (blog/wpisy), `ItemList` (rankingi).
 - **`sitemap.xml`** (z priorytetami) + **`robots.txt`** (co indeksować, gdzie sitemap).
-- **Semantyczne nagłówki** (jedno `h1`, hierarchia `h2/h3`), **OG/Twitter cards** (WhiskyPolska:
-  karty OG share — ale **bez ceny na publicznej karcie**, → [09](09-prawo-i-ochrona-tworcy.md)).
-- **Czyste slugi** (`/ranking/whisky-do-200-zl`, nie `?id=42`) i **linkowanie wewnętrzne**
+- **Semantyczne nagłówki** (jedno `h1`, hierarchia `h2/h3`), **OG/Twitter cards** (np.
+  karty OG share — ale **bez ceny na publicznej karcie**, gdy domena tego wymaga, → [09](09-prawo-i-ochrona-tworcy.md)).
+- **Czyste slugi** (`/ranking/produkty-do-200-zl`, nie `?id=42`) i **linkowanie wewnętrzne**
   (nav-drawer + footer + linki kontekstowe między stronami).
 
 ## Programmatic i editorial SEO
-- **Programmatic** — kuratorskie landing pages pod **zapytania transakcyjne**. WhiskyPolska:
-  7 stron `/ranking/:slug` („whisky do 100/200/300 zł", „najlepsza torfowa", „bourbon na prezent")
+- **Programmatic** — kuratorskie landing pages pod **zapytania transakcyjne**. W projekcie
+  referencyjnym: kilka stron `/ranking/:slug` („produkty do 100/200/300 zł", „najlepszy w kategorii X", „na prezent")
   — każda to **ręcznie pisany wstęp** PL/EN + ponumerowana **TOP-N** + pełna filtrowalna tabela +
-  `ItemList` JSON-LD. **Guardy jakości** są częścią SEO: tylko 700 ml, `requireRating`,
+  `ItemList` JSON-LD. **Guardy jakości** są częścią SEO: filtry kwalifikujące, `requireRating`,
   `minShops` — żeby strona nie była cienką wydmuszką.
-- **Editorial** — huby treści/blog pod **zapytania informacyjne** (np. poradniki WhiskyPolska
-  o whisky). Treść, która **realnie odpowiada** na pytanie, nie keyword-stuffing.
+- **Editorial** — huby treści/blog pod **zapytania informacyjne** (np. poradniki tematyczne
+  o produktach). Treść, która **realnie odpowiada** na pytanie, nie keyword-stuffing.
 
 ## E-E-A-T i YMYL
 Google ocenia rygorystycznie strony **YMYL** (Your Money or Your Life) — zdrowie, finanse,
-religia, bezpieczeństwo. Wpada w to np. WhiskyPolska (alkohol, wydatki), ale też każda aplikacja
+religia, bezpieczeństwo. Wpada w to np. porównywarka cen (wydatki, treści z ograniczeniem wiekowym), ale też każda aplikacja
 zdrowia, finansów czy wsparcia. Liczy się **E-E-A-T**: Experience, Expertise, Authoritativeness, Trust.
-- Rzetelność i **źródła** (skąd cena, skąd ocena — WhiskyPolska linkuje WhiskyBase/sklep).
+- Rzetelność i **źródła** (skąd cena, skąd ocena — projekt referencyjny linkuje zewnętrzne źródło danych/sklep).
 - **Autorstwo** i operator jasno nazwany (→ [09](09-prawo-i-ochrona-tworcy.md)) budują Trust.
 - **Zero porad medycznych** w produktach zdrowia/wsparcia — disclaimer + ścieżka kryzysowa, nie diagnoza.
 
@@ -43,7 +43,7 @@ popraw (→ [13](13-wydajnosc-frontend-i-sql.md)); nie „wydaje się szybko", t
 
 ## Tłumaczenia / i18n
 - **Kompletność = test, który pada.** Brakujący klucz albo strona w którymkolwiek języku → test
-  failuje (jak na jakub.solutions: **parytet EN↔PL** + martwe linki). Żaden język „w połowie".
+  failuje (w praktyce: **parytet EN↔PL** + martwe linki). Żaden język „w połowie".
 - **hreflang** spina wersje (patrz wyżej).
 - **Ciepły rejestr w KAŻDYM języku** — to nie dosłowność, to ton. Tłumaczenie poprawne
   gramatycznie, ale zimne, jest błędem (np. „jesteśmy tu, żeby pomóc" musi brzmieć ciepło po

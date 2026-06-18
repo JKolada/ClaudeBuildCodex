@@ -2,10 +2,10 @@
 
 > Przykazania VI i X: jak pracujemy razem i jak nie tracimy kontekstu.
 
-## Styl współpracy (Kuba + Claude)
+## Styl współpracy (użytkownik + Claude)
 
 - **Plan → iteruj → review.** Najpierw pokaż plan albo **mały szkic** (3 przykłady, nie 100),
-  zbierz feedback, dopiero potem skaluj. Karty OG w WhiskyPolska: 3 → poprawki → 10 → poprawki
+  zbierz feedback, dopiero potem skaluj. Karty OG w projekcie referencyjnym: 3 → poprawki → 10 → poprawki
   → 100. Nigdy odwrotnie.
 - **Rekomenduj, nie rozkładaj parasola opcji.** Gdy ważysz wybór — daj **rekomendację** z
   uzasadnieniem, nie wyczerpującą listę, której i tak nie zrealizujesz. Pytaj tylko, gdy

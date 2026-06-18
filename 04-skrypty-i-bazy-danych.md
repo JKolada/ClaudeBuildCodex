@@ -6,7 +6,7 @@
 
 ### 1. Tryb próbny jest domyślny
 Każdy skrypt, który **zmienia dane**, działa domyślnie jako `--dry-run` i wypisuje plan:
-co, ile wierszy, gdzie. Mutację włącza świadome `--execute`. To uratowało WhiskyPolska
+co, ile wierszy, gdzie. Mutację włącza świadome `--execute`. To uratowało projekt referencyjny
 niejeden raz — widzisz „4 OK, 0 pominiętych" zanim cokolwiek się zapisze.
 
 ```
@@ -17,7 +17,7 @@ python -m scripts.x.do_thing --execute  # zapisuje
 ### 2. Idempotencja
 Skrypt odpalony dwa razy ma dać ten sam stan, nie podwojony. Migracje/loadery treści
 pisz tak, by `INSERT OR IGNORE` / `UPSERT` — żeby ponowne uruchomienie było bezpieczne
-(w WhiskyPolska loadery treści Whiskypedii są jawnie idempotentne i to jest wymóg deployu).
+(w projekcie referencyjnym loadery treści z zewnętrznej bazy są jawnie idempotentne i to jest wymóg deployu).
 
 ### 3. Organizacja przez etapy pipeline'u
 Skrypty grupuj wg fazy (`setup/`, `normalize/`, `enrich/`, `validate/`, `images/`,
@@ -42,7 +42,7 @@ przywrócenie backupu**, nie odwrotna migracja. Dlatego:
 
 ### Backup PRZED każdą zmianą schematu/danych na prodzie
 ```bash
-sqlite3 data/whisky.db ".backup backups/pre-deploy-$(date +%F_%H%M%S).db"
+sqlite3 data/app.db ".backup backups/pre-deploy-$(date +%F_%H%M%S).db"
 ```
 To nie ostrożność — to *mechanizm cofania*. Trzymaj retencję (np. 14 dni) i nazwij
 snapshoty czytelnie (`pre-deploy-*`, `pre-swap-*`, `replaced-prod-*`).
@@ -55,7 +55,7 @@ destrukcyjną na późniejszy deploy, gdy nikt już kolumny nie czyta.
 ### Integralność po fakcie
 Po każdej operacji na danych: `PRAGMA integrity_check` + `PRAGMA foreign_key_check` +
 policz wiersze. Odróżnij **szum zastany** (osierocone wiersze staging obecne i przed, i po)
-od **regresji** (nowe naruszenia, których wcześniej nie było). W WhiskyPolska merged DB
+od **regresji** (nowe naruszenia, których wcześniej nie było). W projekcie referencyjnym scalona DB
 miała *mniej* naruszeń niż lokalna — to był sygnał, że migracja posprzątała, nie zepsuła.
 
 ### Model „aktywny wiersz" zamiast nadpisywania
@@ -71,7 +71,7 @@ darmowy. Rozważ taki model wszędzie, gdzie historia ma wartość.
 - 🚫 Skrypt mutujący bez `--dry-run`.
 - 🚫 Deploy z migracją bez backupu „bo additive".
 - 🚫 DROP kolumny używanej przez działający kod.
-- 🚫 `cp whisky.db` przy włączonym serwerze → niespójny snapshot.
+- 🚫 `cp app.db` przy włączonym serwerze → niespójny snapshot.
 - 🚫 Wpięcie operacji mutującej katalog w automatyczny pipeline.
 
 ## W praktyce
