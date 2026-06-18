@@ -46,7 +46,7 @@ Direction for the EN version and per-language packaging → [docs/plans/0001-i18
 | `docs/` | Plans and meta decisions for the repo (not doctrine content): `docs/AI_README.md`, `docs/plans/`. |
 | `content.js` | **Generated** snapshot of the `.md` embedded in JS — lets content render over `file://`. Do not edit by hand. |
 | `build.py` | Build script: concatenates `.md` files → `content.js`. Run after editing content (`python build.py`). |
-| `test.py` | **Smoke test** (pure Python): PL↔EN parity, dead links, `content.js` freshness, consistency of `CHAPTERS`/tables/`codex.json`. `python test.py`. |
+| `test.py` | **Smoke test** (pure Python): PL↔EN parity, dead links, `content.js` freshness, consistency of `CHAPTERS`/tables/`codex.json`, and **static `index.html` navigation** (`href="#…"` links, `data-i18n`↔`UI`, `data-bf-label`↔`BRIEF_FIELDS`). `python test.py`. |
 | `CLAUDE.md` | Repo constitution: what it is, the stack, how to run it, policies, current state. |
 | `AI_README.md` | This file — the directory map. |
 | `README.md` | Entry point for a human: chapter list + "how to read it". |
@@ -151,5 +151,6 @@ A single file, no build dependencies. Mechanics:
 - **Special documents (outside the numbered list):** `intro.md` (manifesto, route `#intro`) and the
   brief view (`#brief`) — routed separately, not present in the `CHAPTERS` array.
 - **Smoke test:** `python test.py` (PL↔EN parity, dead links, `content.js` freshness, consistency of
-  `CHAPTERS`/tables/`codex.json`). Plus a "manual test" = preview via a server **and** from a double-click (`file://`)
-  + clicking through chapters and the PL/EN switcher (runtime JS things the smoke test doesn't catch).
+  `CHAPTERS`/tables/`codex.json`, static `index.html` navigation: `href="#…"` links + `data-i18n`↔`UI` +
+  `data-bf-label`↔`BRIEF_FIELDS`). Plus a "manual test" = preview via a server **and** from a double-click
+  (`file://`) + clicking through chapters and the EN/PL switcher (runtime JS behavior the smoke test doesn't catch).

@@ -93,6 +93,32 @@ def main():
         if f not in ai:
             err(f"AI_README.md nie wymienia rozdziału: {f}")
 
+    # 6) Nawigacja index.html: każdy STATYCZNY link `href="#..."` prowadzi gdzieś sensownie.
+    # Klasa znaków [a-z0-9_-] pomija stringi JS (`#'+slug(...)`); `#ic-*` to sprite SVG (<use>), nie nawigacja.
+    slugs = {c[:-3] for c in chapters}           # bez ".md"
+    valid_hash = slugs | {"", "brief", "intro"}  # "" = href="#" (strona główna)
+    for h in re.findall(r'href="#([a-z0-9_-]*)"', html):
+        if h.startswith("ic-"):
+            continue
+        if h not in valid_hash:
+            err(f"index.html: link #{h} nie prowadzi do strony/rozdziału (nav/footer/manifest/brief)")
+
+    # 7) Każdy `data-i18n`/`data-i18n-html` ma klucz w słowniku UI (inaczej zostaje nieprzetłumaczony).
+    m = re.search(r"var UI = \{(.*?)\n  \};", html, re.S)
+    ui_keys = set(re.findall(r"\n    ([A-Za-z0-9_]+):", m.group(1))) if m else set()
+    if not ui_keys:
+        err("index.html: nie znaleziono słownika UI (zmiana struktury?) — sprawdź test 7.")
+    for key in sorted(set(re.findall(r'data-i18n(?:-html)?="([^"]+)"', html))):
+        if key not in ui_keys:
+            err(f"index.html: data-i18n „{key}” bez klucza w UI (zostanie nieprzetłumaczone)")
+
+    # 8) Każdy `data-bf-label` (etykieta pola checkbox) ma wpis w BRIEF_FIELDS.
+    # Zawężone do `bf-...`, by pominąć selektor JS `data-bf-label="'+f.id+'"`.
+    bf_ids = set(re.findall(r'\{id:"(bf-[a-z0-9-]+)"', html))
+    for bid in sorted(set(re.findall(r'data-bf-label="(bf-[a-z0-9-]+)"', html))):
+        if bid not in bf_ids:
+            err(f"index.html: data-bf-label „{bid}” bez wpisu w BRIEF_FIELDS")
+
     if errors:
         print(f"FAIL — {len(errors)} problem(ów):")
         for e in errors:

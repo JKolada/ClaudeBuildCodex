@@ -46,7 +46,7 @@ Kierunek wersji EN i pakowania per język → [docs/plans/0001-i18n-and-packagin
 | `docs/` | Plany i decyzje meta repo (nie treść doktryny): `docs/AI_README.md`, `docs/plans/`. |
 | `content.js` | **Generowany** snapshot `.md` osadzony w JS — pozwala renderować treść po `file://`. Nie edytuj ręcznie. |
 | `build.py` | Skrypt buildu: łączy pliki `.md` → `content.js`. Uruchom po edycji treści (`python build.py`). |
-| `test.py` | **Smoke test** (czysty Python): parytet PL↔EN, martwe linki, świeżość `content.js`, spójność `CHAPTERS`/tabel/`codex.json`. `python test.py`. |
+| `test.py` | **Smoke test** (czysty Python): parytet PL↔EN, martwe linki, świeżość `content.js`, spójność `CHAPTERS`/tabel/`codex.json`, oraz **statyczna nawigacja `index.html`** (linki `href="#…"`, `data-i18n`↔`UI`, `data-bf-label`↔`BRIEF_FIELDS`). `python test.py`. |
 | `CLAUDE.md` | Konstytucja repo: czym jest, stack, jak uruchomić, polityki, stan bieżący. |
 | `AI_README.md` | Ten plik — mapa katalogu. |
 | `README.md` | Wejście dla człowieka: spis rozdziałów + „jak czytać". |
@@ -151,5 +151,6 @@ Jeden plik, bez zależności build. Mechanika:
 - **Dokumenty specjalne (poza numerowaną listą):** `intro.md` (manifest, route `#intro`) i widok
   briefu (`#brief`) — routowane osobno, nie ma ich w tablicy `CHAPTERS`.
 - **Smoke test:** `python test.py` (parytet PL↔EN, martwe linki, świeżość `content.js`, spójność
-  `CHAPTERS`/tabel/`codex.json`). Plus „test ręczny" = podgląd przez serwer **i** z dwukliku (`file://`)
-  + klik po rozdziałach i przełącznik PL/EN (rzeczy runtime JS, których smoke nie łapie).
+  `CHAPTERS`/tabel/`codex.json`, statyczna nawigacja `index.html`: linki `href="#…"` + `data-i18n`↔`UI`
+  + `data-bf-label`↔`BRIEF_FIELDS`). Plus „test ręczny" = podgląd przez serwer **i** z dwukliku (`file://`)
+  + klik po rozdziałach i przełącznik EN/PL (zachowanie runtime JS, którego smoke nie łapie).
