@@ -5,8 +5,8 @@
 ## Skills (slash-commands) — when and why
 
 A skill is a repeatable procedure wrapped in a single invocation (`/run-projekt`, `/run-tests`,
-`/update-ai-readme`, `/add-migration`). In the reference project, skills proved a lever, because they
-**codify "how we do it"** — the agent doesn't guess, it executes a proven recipe.
+`/update-ai-readme`, `/add-migration`). In the reference project, skills proved to be a lever, because they
+**codify "how we do it"** — the agent doesn't guess, it follows a proven recipe.
 
 ### Build a skill when:
 - you repeat the procedure **≥3 times** (start server + 22 smoke-checks, run tests, add a scraper);
@@ -68,19 +68,19 @@ Don't mix them — each has a different goal and a different confidence bar.
 - **I — Interface segregation.** Narrow, purposeful interfaces instead of one god-interface.
   A caller shouldn't depend on methods it doesn't use.
 - **D — Dependency inversion.** Depend on an abstraction, not a concrete. It's the code-level counterpart of
-  "separate the layers" (→ [12](12-elastycznosc-i-skalowalnosc.md)): the logic doesn't know the database
-  or queue provider firsthand — it gets it across a boundary, so it can be swapped (and tested, → [03](03-testowanie-i-weryfikacja.md)).
+  "separate the layers" (→ [12](12-elastycznosc-i-skalowalnosc.md)): the logic doesn't hardcode the database
+  or queue provider — it receives it across a boundary, so it can be swapped (and tested, → [03](03-testowanie-i-weryfikacja.md)).
 
 ### Anti-patterns
 - 🚫 **SOLID as a cult** — five layers and a factory of factories for a three-field CRUD. Rule D is meant to
   ease swapping, not multiply files. Measure the need, don't quote the letters.
 - 🚫 **Open/closed without flags** — you "extend" by editing a hot path in place with no toggle
   and no ramp (→ [12](12-elastycznosc-i-skalowalnosc.md): no feature flags).
-- 🚫 **Abstraction before there are two cases** — an interface sucked from a single use guesses the future.
-  The second concrete first, then the shared contract (reuse > rewrite, but not reuse > reality).
+- 🚫 **Abstraction before there are two cases** — an interface extrapolated from a single use guesses the future.
+  Get the second concrete case first, then the shared contract (reuse > rewrite, but not reuse > reality).
 
 ## In practice
 - Skills to start: `/run` (server + smoke), `/run-tests` (unit + e2e), `/update-ai-readme`,
   `/add-migration` (if a relational database). → [08](08-stack-i-technologie.md)
-- A refactor of a critical path (e.g. login) do as a **separate, tested** step: first a
+- Do a refactor of a critical path (e.g. login) as a **separate, tested** step: first a
   test reproducing the current state/bug, then the change. → [03](03-testowanie-i-weryfikacja.md)

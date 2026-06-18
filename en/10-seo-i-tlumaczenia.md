@@ -11,7 +11,7 @@ and translations are the interface for the world.
 ## SEO fundamentals (every page)
 - **`<title>` + `meta description`** unique per page (not one global one).
 - **Canonical** — one URL of truth for each piece of content (protects against duplicates from parameters).
-- **hreflang** — mandatory under multilingualism: each language version points to the others
+- **hreflang** — mandatory once you go multilingual: each language version points to the others
   (e.g. 16 languages → 16 reciprocal `hreflang` + `x-default`).
 - **JSON-LD** — `Organization` (home), `Article` (blog/posts), `ItemList` (rankings).
 - **`sitemap.xml`** (with priorities) + **`robots.txt`** (what to index, where the sitemap is).
@@ -31,8 +31,8 @@ and translations are the interface for the world.
 
 ## E-E-A-T and YMYL
 Google rates **YMYL** (Your Money or Your Life) pages rigorously — health, finance,
-religion, safety. A price comparison site falls into this (spending, age-restricted content), as does any application for
-health, finance or support. What counts is **E-E-A-T**: Experience, Expertise, Authoritativeness, Trust.
+religion, safety. A price comparison site falls into this, for instance (spending, age-restricted content), as does any
+health, finance or support application. What counts is **E-E-A-T**: Experience, Expertise, Authoritativeness, Trust.
 - Reliability and **sources** (where the price comes from, where the rating comes from — the reference project links the external data source/shop).
 - **Authorship** and a clearly named operator (→ [09](09-prawo-i-ochrona-tworcy.md)) build Trust.
 - **Zero medical advice** in health/support products — a disclaimer + a crisis path, not a diagnosis.
@@ -49,8 +49,8 @@ fix (→ [13](13-wydajnosc-frontend-i-sql.md)); not "it feels fast", but numbers
   grammatically correct but cold is a bug (e.g. "we're here to help" must sound warm in
   Arabic just as it does in Polish).
 - **MT + human review for sensitive content** — Gemini translates the skeleton, a human
-  reviews the disclaimers, crisis messages, legal ones (→ [09](09-prawo-i-ochrona-tworcy.md)).
-- **RTL** (Arabic) — the layout must mirror, not just the text.
+  reviews the disclaimers, the crisis messages, the legal copy (→ [09](09-prawo-i-ochrona-tworcy.md)).
+- **RTL** (Arabic) — the whole layout must mirror, not just the text.
 - **GA4 + Search Console** (anonymized) — *which queries convert*, in which language
   traffic is growing. The data steers where to write the next landing.
 

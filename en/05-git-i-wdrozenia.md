@@ -14,8 +14,8 @@ git blame <file> -L a,b               # who/when/why
 git show <commit>                     # the full change + context
 ```
 Combine this with a grep over the tree + the directory's `AI_README.md`. History + code + docs = the full
-picture in a minute. It makes the difference with: unfamiliar code, a hunch of "haven't we done this
-already", a column/flag of unknown origin, dating a regression, before every refactor.
+picture in a minute. It pays off with: unfamiliar code, a hunch of "haven't we done this
+already?", a column/flag of unknown origin, dating a regression, and before every refactor.
 
 ### B. A clean, coherent `git status`
 - **Separate unrelated changes** into distinct commits (one topic = one commit).
@@ -25,8 +25,8 @@ already", a column/flag of unknown origin, dating a regression, before every ref
 - **Tell a real diff from CRLF noise:** `git status` shows a file as changed but
   `git diff HEAD` is empty → it's only EOL, not work. Don't commit the noise.
 - **Orphans (uncommitted work in the background)** — in a project run across multiple sessions
-  ("user + Claude") other sessions leave changes in the tree. Before a deploy: is this real, complete
-  work (commit/confirm it), or WIP/experiment (leave it)? **Don't sweep someone else's uncommitted work
+  ("user + Claude"), other sessions leave changes in the tree. Before a deploy: is this real, complete
+  work (commit/confirm it), or a WIP/experiment (leave it)? **Don't sweep someone else's uncommitted work
   into a deploy without confirmation.**
 
 ### What finishes a commit
@@ -63,7 +63,7 @@ A public "What's new" — **in plain language, no jargon** (no scraper/migration
 ## Database swap preserving accounts — the runbook (the hardest operation)
 
 A full swap of the prod database (e.g. a local catalog with all the work) **while preserving live
-accounts**. This is where most of the traps are. Lessons from the reference project:
+accounts**. This is where most of the traps lie. Lessons from the reference project:
 
 ### Rules that save user data (Commandment VII)
 1. **"Users" is many tables, not one `users`.** Enumerate **every** table with an FK to the
@@ -102,13 +102,13 @@ swap the file (rm wal/shm, mv, PRAGMA journal_mode=WAL) → pm2 start → SMOKE 
 ### Smoke test after the swap (before you drop the flag)
 Via `localhost` (bypasses the nginx maintenance): home/catalog/detail → 200, og:image →
 the right file, redirects (e.g. merged → 301 to the survivor), numbers in the database (accounts/records),
-**`pm2 logs` for errors**. A found, trivial, safe bug — fix it in the window and ship it
+**`pm2 logs` for errors**. If you find a trivial, safe bug — fix it in the window and ship it
 (commit → pull → reload) instead of releasing a known 500.
 
 ### Gitignored assets and the deploy
 Images/files that are in `.gitignore` **don't ride along with `git pull`**. Either sync them
-(rsync/tar) or generate them on the server (if it has the tooling). In the reference project the call was:
-**we copy from local**, because the server has no Pillow and the swap changes the catalog.
+(rsync/tar) or generate them on the server (if it has the tooling). In the reference project the call was
+**to copy from local**, because the server has no Pillow and the swap changes the catalog.
 
 ## Anti-patterns
 - 🚫 Auto-deploy / "it's ready, so I'm shipping it".
@@ -118,8 +118,8 @@ Images/files that are in `.gitignore` **don't ride along with `git pull`**. Eith
 - 🚫 No deploy tag → "what's live?" becomes a guessing game.
 - 🚫 Transferring 1.5 GB of assets **inside** the maintenance window → long downtime (do it before the window).
 - 🚫 Sessions in a swapped database (or in process memory) → the deploy logs everyone out.
-- 🚫 A deploy-script invariant left untested — e.g. `$(date)` expanded once at file creation
-  (every backup overwrites the same file). Lock the deploy script's invariants down with a test.
+- 🚫 A deploy-script invariant left untested — e.g. `$(date)` expanded once at file-creation time
+  (so every backup overwrites the same file). Lock the deploy script's invariants down with a test.
 
 > **The runbook is the memory of incidents, not your head.** Every prod failure → an entry in the runbook
 > with a date and a numbered lesson (e.g. "never SCP a live `.db` — use `.backup`; WAL holds fresh pages").
@@ -128,10 +128,10 @@ Images/files that are in `.gitignore` **don't ride along with `git pull`**. Eith
 ## Shared infrastructure
 Projects can share a single **Hetzner VPS**: static sites (a `dist/` build) go via
 `scp`/`rsync` + an nginx vhost; Node apps via `git pull` + `pm2 reload` behind
-nginx. One server = a shared `backups/` directory, the same habits (deploy tag, maintenance
+nginx. One server = a shared `backups/` directory and the same habits (deploy tag, maintenance
 flag). A new project on the same box: a separate vhost + a separate directory, the same rules.
 
 ## In practice
 Deploy the critical path (e.g. login) with a test and a full smoke (registration, login,
-logout, session persistence). At the first real user traffic set up immediately: a nightly database
+logout, session persistence). At the first real user traffic, set up immediately: a nightly database
 backup, deploy tagging, a branded maintenance page. → [03](03-testowanie-i-weryfikacja.md)

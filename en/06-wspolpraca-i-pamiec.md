@@ -7,9 +7,9 @@
 - **Plan → iterate → review.** First show a plan or a **small sketch** (3 examples, not 100),
   gather feedback, then scale. OG cards in the reference project: 3 → fixes → 10 → fixes
   → 100. Never the other way around.
-- **Recommend, don't fan out an umbrella of options.** When weighing a choice — give a
+- **Recommend; don't lay out a menu of options.** When weighing a choice, give a
   **recommendation** with reasoning, not an exhaustive list you won't act on anyway. Ask only when
-  the answer genuinely changes what you do next (and when it doesn't follow from the code/a sensible default).
+  the answer genuinely changes what you do next (and when it doesn't follow from the code or a sensible default).
 - **Verify numbers at the source** — not from memory, not from docs.
 - **UX with warmth.** Correctness is the minimum; the product should be pleasant. Aesthetics and tone
   matter (especially in sensitive products: minimalist, but warm).
@@ -19,8 +19,8 @@
 
 ## Confirm what's irreversible and "external"
 
-Actions hard to undo or reaching beyond the machine — **confirm first**, unless you have standing
-authorization or an explicit "do it without asking":
+Actions that are hard to undo or that reach beyond the machine — **confirm first**, unless you have
+standing authorization or an explicit "do it without asking":
 - prod deploy, sending emails, publishing content, deleting/overwriting data.
 - **Consent in one context does not carry over to the next.** "Deploy X" ≠ "deploy everything, always".
 - **Before you delete/overwrite — look at the target.** If what you see contradicts the description, or

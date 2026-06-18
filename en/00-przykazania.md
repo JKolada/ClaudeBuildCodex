@@ -13,7 +13,7 @@ to lie — because the context has already evaporated, and "the end" never comes
 
 ### II. Search the history before you write a single line.
 `git log -S"symbol"`, `git log --grep`, `git blame`, the directory's AI_README. Most
-"new" problems someone already solved in this repo — a helper exists, there was a migration, there's a
+"new" problems someone has already solved in this repo — a helper exists, there was a migration, there's a
 reason the code has this shape. Re-derivation costs more than a minute of searching. → [05](05-git-i-wdrozenia.md)
 
 ### III. Verify, don't declare.
@@ -22,9 +22,9 @@ If tests fail — you say so, with the output. If a step was skipped — you say
 Trust is built on an honest report, not on optimism. → [03](03-testowanie-i-weryfikacja.md)
 
 ### IV. Dry-run is the default; `--execute` is deliberate.
-Every script that changes data first **shows the plan** (what, how much, where). You fire the
-mutation only after reading that plan. A script with no dry-run mode is a weapon without a
-safety. → [04](04-skrypty-i-bazy-danych.md)
+Every script that changes data first **shows its plan** (what, how much, where). You run the
+mutation only after reading that plan. A script with no dry-run mode is a weapon with no
+safety catch. → [04](04-skrypty-i-bazy-danych.md)
 
 ### V. The backup is a rollback mechanism, not a precaution.
 Migrations are **forward-only** (no down-migrations). A snapshot **before** every schema or data
@@ -33,8 +33,8 @@ change on prod. Reverting the schema = restoring the backup. The backup isn't
 
 ### VI. Prod is sacred — you don't touch it without an explicit "deploy."
 Commit and push on request are **not** a deploy. `git pull` on the server, `pm2 reload`, a database
-swap, the maintenance flag — only when the user says so outright. Irreversible and "outward-facing"
-actions (publishing, sending, deleting) you always confirm. Consent in one context
+swap, the maintenance flag — only when the user says so outright. Always confirm irreversible,
+"outward-facing" actions (publishing, sending, deleting). Consent in one context
 does not carry over to the next. → [05](05-git-i-wdrozenia.md)
 
 ### VII. User data is inviolable.
@@ -49,13 +49,13 @@ rollback. With every deploy, update the public changelog — **in plain language
 jargon** (no "scraper/migration/commit"; write what the user gains). → [05](05-git-i-wdrozenia.md)
 
 ### IX. Small, coherent commit; one topic.
-Split unrelated changes into separate commits. Keep `git status` clean — junk
+Split unrelated changes into separate commits. Keep `git status` clean — catch junk
 (`.bak`, temp files, stray databases) and orphans (uncommitted work in the background)
-catch **early**, before they sneak into a deploy. Tell a real diff from CRLF noise. → [05](05-git-i-wdrozenia.md)
+**early**, before they sneak into a deploy. Tell a real diff from CRLF noise. → [05](05-git-i-wdrozenia.md)
 
 ### X. Plan → iterate → review.
 First show a plan or a sketch (3 examples, not 100). Gather feedback. Only then
-scale. **Verify numbers** at the source. Land UX with **warmth** in how it lands, not only
+scale. **Verify numbers** at the source. Deliver UX with **warmth** in how it's received, not just
 correctness — the product should be pleasant, not merely functional. → [06](06-wspolpraca-i-pamiec.md)
 
 ---
@@ -65,7 +65,7 @@ correctness — the product should be pleasant, not merely functional. → [06](
 1. **Inflated optimism in the report** — "everything works" with no proof. (breaks III)
 2. **Mutation without a plan** — running a data-changing script straight with `--execute`. (breaks IV)
 3. **Auto-deploy** — "it's ready, so I'll push it to prod." (breaks VI)
-4. **A "everything but accounts" DB swap treated as a single `users` table** — losing reviews/badges/chat, because not all FK tables were enumerated. (breaks VII)
+4. **An "everything but accounts" DB swap treated as a single `users` table** — losing reviews/badges/chat, because not all FK tables were enumerated. (breaks VII)
 5. **Junk-drawer commit** — unrelated changes + artifacts in one commit. (breaks IX)
 6. **Scaling before review** — generating 500 items before the user saw 3. (breaks X)
 7. **Documentation "later"** — the code ships, the AI_README lags behind, the next session wanders. (breaks I)

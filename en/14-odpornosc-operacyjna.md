@@ -2,7 +2,7 @@
 
 > Commandments III, V, VI at the runtime layer: *prod lives in an unreliable world*. The network
 > drops, the provider blocks ports, the scraper dies halfway, a paid API costs on every request.
-> The doctrine in chapters 03–05 cares for **code and deployment**; this chapter is about what
+> The doctrine in chapters 03–05 covers **code and deployment**; this chapter is about what
 > happens **after** — when real users and independent systems hit a running service.
 
 These lessons were paid for dearly: nearly every one is a prod incident, not theory. The common
@@ -31,11 +31,11 @@ A "collect everything → save once" scraper/ETL loses 100% of its work on every
 - **Run long jobs from a real terminal**, not from a Claude session in the background. The agent's
   background is a **non-durable runner** — tearing down the session host kills the process halfway
   (it's not anti-bot, it's a vanishing runner).
-- Idempotency of the whole (→ [04](04-skrypty-i-bazy-danych.md)): a resumed job doesn't duplicate already-saved data.
+- End-to-end idempotency (→ [04](04-skrypty-i-bazy-danych.md)): a resumed job doesn't duplicate already-saved data.
 
 ## 3. Treat external sources as hostile
 
-Other people's APIs and pages drop connections, rate-limit (429), return 200 with an error HTML. Assume unreliability:
+Other people's APIs and pages drop connections, rate-limit (429), return 200 with an error page. Assume they're unreliable:
 
 - **A timeout on every call** — without it the socket hangs forever (a silent freeze, not an error).
 - **Retry with exponential backoff** (e.g. 10/20/30 s), with an upper bound on attempts.
@@ -62,7 +62,7 @@ An endpoint calling a paid API (LLM, geocoding, email) with no limit is an open 
 - **A quota per user** (monthly/daily window) with a **clear message** and a **reset date up front**.
 - **Differentiate per tier** (free vs premium), enforce it server-side.
 - **Rate-limit + security headers** (helmet/limiter) as a permanent part of the stack (→ [08](08-stack-i-technologie.md)).
-- Tie it to the law and the terms of service: a limit and how you communicate it is also protection against abuse (→ [09](09-prawo-i-ochrona-tworcy.md)).
+- Tie it to the law and the terms of service: a limit and how you communicate it are also protection against abuse (→ [09](09-prawo-i-ochrona-tworcy.md)).
 
 ## Anti-patterns
 - 🚫 **No global error catcher** — one bad request restarts the service for everyone.

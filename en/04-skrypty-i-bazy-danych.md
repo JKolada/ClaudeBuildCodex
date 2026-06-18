@@ -15,7 +15,7 @@ python -m scripts.x.do_thing --execute  # writes
 ```
 
 ### 2. Idempotency
-A script run twice should yield the same state, not a doubled one. Write migrations/content loaders
+A script run twice should yield the same state, not a doubled one. Write migrations and content loaders
 so that `INSERT OR IGNORE` / `UPSERT` make a re-run safe (in the reference project the content
 loaders from an external database are explicitly idempotent, and that's a deploy requirement).
 
@@ -23,7 +23,7 @@ loaders from an external database are explicitly idempotent, and that's a deploy
 Group scripts by phase (`setup/`, `normalize/`, `enrich/`, `validate/`, `images/`,
 `dedup/`, `orchestration/`). Leave **compatibility shims** when you move files.
 Compose them into **composable pipelines** (`post-scrape`, `full`) — but **keep
-catalog-mutating operations OUT of the automatic pipeline** (you run dedup/merge by hand:
+catalog-mutating operations OUT of the automatic pipeline** (run dedup/merge by hand:
 dry-run → review → `--execute`).
 
 ### 4. Log what you did NOT do
@@ -60,8 +60,8 @@ had *fewer* violations than the local one — a signal that the migration cleane
 
 ### "Active row" model instead of overwriting
 A pattern from prices: instead of an in-place UPDATE, **expire** the old row (`expired_at`) and insert
-a new one; a partial unique index enforces "one active per key". History is kept, the audit trail is
-free. Consider this model anywhere history has value.
+a new one; a partial unique index enforces "one active per key". History is preserved and the audit trail
+comes for free. Consider this model anywhere history has value.
 
 ### Make a transfer snapshot with `.backup` / `VACUUM INTO`, not `cp` on a live file
 A live SQLite with WAL copied via `cp` can be inconsistent. `.backup` (online-safe) or

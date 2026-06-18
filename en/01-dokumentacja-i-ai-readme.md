@@ -2,8 +2,8 @@
 
 > Commandment I: *Document for the agent, not for the archive.*
 
-Documentation in a project with an AI agent has one overriding goal: **so the next session (or
-another agent) understands the directory without reading all the code.** This is not an archive for
+Documentation in a project with an AI agent has one overriding goal: **to let the next session (or
+another agent) understand a directory without reading all of its code.** This is not an archive for
 posterity — it's an onboarding interface, read every session.
 
 ## The three layers of documentation
@@ -51,7 +51,7 @@ pointer, a new session doesn't know the maps exist.
 ## The `/docs` structure and folders
 
 Documentation "heavier than a directory map" lives in **`/docs`** — one place for stable
-reference and plans, so the `AI_README`s and `CLAUDE.md` don't bloat:
+reference and plans, so the `AI_README`s and `CLAUDE.md` don't balloon:
 
 ```
 docs/
@@ -65,7 +65,7 @@ docs/
 
 - **`/docs/plans/`** — a living backlog of decisions and designs. A plan is a document, not a thought
   in your head: problem → options → choice → "why." A finished plan stays as a record of the decision.
-- **A folder without an `AI_README.md` is a riddle-folder.** When you create a new significant directory — create it
+- **A folder without an `AI_README.md` is a mystery folder.** When you create a new significant directory, create it
   **together** with an `AI_README.md` (even a skeleton). Same when refactoring: you break a module into subdirectories →
   each new directory gets its map in the same step, not "later."
 - **The more concrete, the better.** A better folder structure (clear boundaries: data / ingest / web /
@@ -87,7 +87,7 @@ docs/
 ## Documentation as code
 - **The source of truth is `.md`** — hand-written, versioned in git like the rest of the code. The history of the docs
   (`git log` over the `.md`) tells you *when and why* a rule changed. Don't keep the truth in generated HTML.
-- **Relative links** between `.md` files — so they're clickable and validatable.
+- **Relative links** between `.md` files — so they can be clicked and validated.
 - **One "table of contents"** (e.g. `docs/AI_README.md`) with a "where to start for task X" table.
 
 ## The documentation reader and regeneration
@@ -114,5 +114,5 @@ every file. One file, no bundler; works from a double-click and from a server (t
 ## In practice
 Starting a new project: first `CLAUDE.md` (stack, how to run it, policies and **hard domain
 rules** — e.g. privacy, legal constraints), then `AI_README.md` in the directories that carry the most
-weight (auth, i18n, data pipelines). Overriding rules (e.g. privacy-by-design) you record as a
+weight (auth, i18n, data pipelines). Record overriding rules (e.g. privacy-by-design) as a
 **policy in the constitution**, not as a loose note. → [07](07-nowy-projekt-checklist.md)

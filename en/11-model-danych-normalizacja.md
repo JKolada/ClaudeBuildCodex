@@ -10,7 +10,7 @@ Normalize first; denormalize **deliberately** and with a named source of truth.
 
 ## Normalize first
 - **No repeating groups.** A value once, in one place.
-- **Lookups in lookup tables.** In the reference project: `countries` / `regions` / `product_types` /
+- **Vocabularies in lookup tables.** In the reference project: `countries` / `regions` / `product_types` /
   `tag_types` — not free-text in a column. Plus a **`CHECK` on `products.type`**
   (`type_a | type_b | type_c | …`) — the database rejects garbage before it gets in.
 - **Junction tables for M:N.** A product has many tags/attributes → **`product_tags`** (junction),
@@ -18,7 +18,7 @@ Normalize first; denormalize **deliberately** and with a named source of truth.
   the junction is the sole store of attributes).
 
 ## Stable keys — slug, not ID
-**IDs drift.** After duplicate merges `product_id` changes (the canonical row takes over the rows,
+**IDs drift.** After duplicate merges `product_id` changes (the canonical row absorbs the rows,
 the duplicate one disappears). That is why **the stable identifier is the slug**, not the numeric key.
 The hardest lesson from the reference project — the prod-database swap: **you map user data by slug → new ID**,
 never by the old ID (a review would land on the wrong product). A missing slug you **skip and log**,

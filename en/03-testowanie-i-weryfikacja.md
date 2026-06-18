@@ -7,7 +7,7 @@ Two different things, often conflated:
 - **Verification** — proof that *this specific change* does what it was meant to, **observed**, not assumed.
 
 Both are mandatory. A passing test doesn't mean the feature works in the browser;
-manual verification without tests won't protect you from a regression tomorrow.
+manual verification without tests won't protect you from tomorrow's regression.
 
 ## The pyramid (from the reference project)
 
@@ -33,8 +33,8 @@ After a change observable in the app, **show proof**; don't ask the user to chec
 - numbers from the database (how many accounts, how many prices, `integrity_check: ok`),
 - a screenshot for visual changes.
 
-After a **deploy** — a smoke test against the live server (via `localhost` behind the maintenance
-flag), and when you find a bug inside the window, fix it in the window if it's trivial and safe (in the
+After a **deploy** — a smoke test against the live server (via `localhost`, behind the maintenance
+flag); and when you find a bug inside the window, fix it in the window if it's trivial and safe (in the
 reference project this is how we caught and fixed a pre-existing `ERR_HTTP_HEADERS_SENT` on `/mapa`).
 
 ## The report must be honest
@@ -48,7 +48,7 @@ reference project this is how we caught and fixed a pre-existing `ERR_HTTP_HEADE
 Don't trust a number from memory or from the docs — query the database/test. Docs go stale;
 `SELECT COUNT(*)` doesn't lie. (Commandment X: "verify the numbers".)
 
-## Web — a proven control set
+## Web — a proven set of checks
 For web sites/projects this set of tests has already proven itself in practice (a typical set runs
 to a few dozen methods and a few hundred subtests) — carry it over by default:
 - **SEO meta** (title/description per page), **canonical + hreflang**, **JSON-LD**.
@@ -79,6 +79,6 @@ as a regression guard so the bug doesn't come back.
 > comes). → [00](00-przykazania.md), [08](08-stack-i-technologie.md)
 
 - **Test the contract, not the implementation** — otherwise a refactor crumbles tests with no real regression.
-- **Keep the suite fast and deterministic** — a slow or flaky suite stops being run;
+- **Keep the suite fast and deterministic** — a slow or flaky suite stops getting run;
   isolate I/O, set seeds, `--runInBand` on a shared port/DB.
 - **CI gates** — red tests block merge and deploy; you run critical-path tests before committing.

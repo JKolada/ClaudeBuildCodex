@@ -13,9 +13,9 @@ need.
 - **DB ↔ ingest ↔ web** are three separate worlds. In the reference project: SQLite (data) ↔ Python scrapers
   (ingest) ↔ Node/Express (web) — bound by a **contract** (the schema, → [11](11-model-danych-normalizacja.md)),
   not by shared code. You can swap the scraper without touching the web layer.
-- **The API contract is a boundary** — e.g. a Next.js front ↔ a Python backend via an explicit
+- **The API contract is the boundary** — e.g. a Next.js frontend ↔ a Python backend via an explicit
   contract (OpenAPI). A boundary you hold to lets you replace either side independently. → [08](08-stack-i-technologie.md)
-- **A shared backend for web + a future mobile app.** ADR ahead of time: SQLite vs Postgres, session
+- **A shared backend for web + a future mobile app.** An ADR ahead of time: SQLite vs Postgres, session
   vs JWT (e.g. sessions for web; mobile later → consider JWT on the shared backend).
   **Write the decision down**, don't keep it in your head. → [01](01-dokumentacja-i-ai-readme.md)
 
@@ -25,7 +25,7 @@ need.
 - **Feature flags** — `feature_flags` in the database + toggles like `BETA_ALL_PREMIUM`. **Ship dark,
   then ramp**: the code ships off, you turn it on for a slice, then for everyone. Without flags every
   change is all-or-nothing.
-- **Stateless where you can** — the less state in the process, the easier to scale horizontally.
+- **Stateless where you can** — the less state in the process, the easier it is to scale horizontally.
 
 ## Platform: scale-to-zero vs always-on
 A real decision from two projects, a **deliberate cost/latency tradeoff**:
@@ -33,7 +33,7 @@ A real decision from two projects, a **deliberate cost/latency tradeoff**:
   adds latency to the first request. Good for uneven, global traffic.
 - **VPS always-on (Hetzner + pm2)** — e.g. a fixed cost, **zero cold start**, full
   control. Good for predictable traffic and SQLite on disk.
-The choice = traffic profile and budget, not fashion. Record it as an ADR.
+The choice comes down to traffic profile and budget, not fashion. Record it as an ADR.
 
 ## Cache and pipelines
 - **Cache layers** with explicit invalidation: e.g. cache invalidation in the `full` pipeline,

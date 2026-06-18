@@ -4,9 +4,9 @@
 > and now a third exposed party joins: **you yourself.**
 
 A solo creator or a sole proprietorship shipping a public application is **personally exposed**. This is not
-a limited-liability company with a shield of indemnity — the terms of service, the privacy, the promises in your copy
-are answered for by a private individual running a business. Terms of service, the privacy policy and
-disclaimers are **the private person's armor**, not a formality at the end. You write them just as
+a limited-liability company with a liability shield — a private individual running a business answers
+for the terms of service, the privacy policy and the promises in the copy. Terms of service, the privacy policy and
+disclaimers are **the private person's armor**, not a formality tacked on at the end. You write them just as
 carefully as a migration on prod — because a mistake is just as costly, only paid in a different currency.
 
 > ⚠️ **These are engineering pointers, not legal advice.** When you start binding real users
@@ -14,19 +14,19 @@ carefully as a migration on prod — because a mistake is just as costly, only p
 > that zeroes it out.
 
 ## Terms of service — what must be there
-- **The correct operator.** "[Full name] running a business under the firm …, tax ID …,
-  address …". **The same entity** in the terms, the policy, the footer, invoices and UI. A discrepancy
+- **The correct operator.** "[Full name], trading as …, tax ID …,
+  address …". **The same entity** across the terms, the policy, the footer, invoices and the UI. A discrepancy
   is the first thing an unhappy user notices.
-- **Nature of the service.** Take a price comparison site: *a comparison engine, not a seller* — it does not run
-  sales, does not act as an intermediary, it links to shops. By analogy, an advisory application must clearly
+- **Nature of the service.** Take a price comparison site: *a comparison engine, not a seller* — it does not sell,
+  does not act as an intermediary, it links to shops. By analogy, an advisory application must clearly
   state what it is **not**: *information/support, not a regulated service* (medical, legal, financial, therapeutic).
 - **User obligations** (lawful use, no abuse/scraping, acceptance of age restrictions, e.g. 18+).
 - **Limitation of liability** — service "as is", no warranty of availability/correctness
   of data, **no liability for decisions** made on its basis (a price at a retailer may
   be stale; a chatbot's advice does not replace a specialist).
 - **Moderation and termination** — the right to suspend/delete an account on abuse.
-- **IP** — the user **retains** their content (reviews, conversations) and licenses you its
-  processing within the scope of the service; your content (catalog, code, brand) is **reserved**.
+- **IP** — the user **retains** their content (reviews, conversations) and grants you a license to
+  process it within the scope of the service; your content (catalog, code, brand) is **reserved**.
 - **Governing law = Poland**, competent court, complaints procedure, **changes** to the terms (how
   you notify), **contact**.
 
@@ -39,11 +39,11 @@ carefully as a migration on prod — because a mistake is just as costly, only p
 - **Third parties** (Google Cloud / GA4, Resend, Hetzner) — listed, with purpose.
 - **Rights**: access, rectification, **erasure** (e.g. a 14-day grace period → purge,
   public reviews anonymized to "Account deleted"), export, objection.
-- **Cookies** (GA4 is an analytics cookie — list it), **age** (e.g. 18+, if content is age-restricted), **contact** to the controller.
+- **Cookies** (GA4 is an analytics cookie — list it), **age** (e.g. 18+, if content is age-restricted), **contact** for the controller.
 
 ## Protecting the private person
 - **Separate the legal entity from your private identity.** The operator is the *sole proprietorship*, not a private
-  home address, where it can be avoided.
+  home address, wherever that can be avoided.
 - **Do not invent legal data.** Tax ID, address, company name = **placeholders to be filled in**
   by the owner, never made up. A visible `[tax ID to be filled in]` is better than a plausible-looking,
   false number in the product.
@@ -81,6 +81,6 @@ Put the three legal documents (terms of service, policy, disclaimers) into the *
 (→ [07](07-nowy-projekt-checklist.md)) as a task with `[to be filled in]` placeholders, not
 "later". Settle the operator (company name / full name) once and insert it consistently everywhere.
 Every claim about data ("we anonymize", "we delete after N days", "we do not share")
-**verify in the code** before publishing. With real traffic — a lawyer on review. This is the chapter
+**verify in the code** before publishing. Once you have real traffic — get a lawyer to review it. This is the chapter
 where "verify, don't declare" (→ [03](03-testowanie-i-weryfikacja.md)) protects not the users,
 but you.

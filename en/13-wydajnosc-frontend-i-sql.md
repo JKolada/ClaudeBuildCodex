@@ -38,7 +38,7 @@ to, and **prove with a number** that you improved it. Performance is also SEO (C
 - **Partial indexes** — e.g. `uniq_prices_active … WHERE expired_at IS NULL` (an index
   only on active prices — smaller, faster, enforces uniqueness, → [11](11-model-danych-normalizacja.md)).
 - **`EXPLAIN QUERY PLAN`** before and after adding an index — proof the plan changed.
-- **Avoid N+1** — not a query in a loop per row; batch/join in one shot.
+- **Avoid N+1** — no query in a loop per row; batch/join in one shot.
 - **`SELECT` only the columns you need** — not `SELECT *` when you need three fields.
 - **Server-side pagination** + **cached aggregates** (e.g. `site_stats` instead of
   `COUNT(*)` over the whole database on every visit to the home page).
@@ -60,6 +60,6 @@ Add to Day 0 (→ [07](07-nowy-projekt-checklist.md)): a **Lighthouse baseline**
 first working page (you have a reference point), indexes on filter columns from the first
 migration, `EXPLAIN QUERY PLAN` as a habit on every hot query. The overriding rule:
 **no optimization without a before-and-after number** — because without proof an "optimization" can
-be a regression in disguise (→ [03](03-testowanie-i-weryfikacja.md)). Speed is at once SEO
+be a regression in disguise (→ [03](03-testowanie-i-weryfikacja.md)). Speed is both SEO
 (→ [10](10-seo-i-tlumaczenia.md)) and infrastructure cost (→ [12](12-elastycznosc-i-skalowalnosc.md))
 — one investment, three returns.
