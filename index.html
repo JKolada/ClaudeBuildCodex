@@ -4,8 +4,16 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Rzemiosło — The Build Codex · jakub.solutions</title>
+<meta name="description" content="Rzemiosło — The Build Codex. Doktryna budowania i prowadzenia aplikacji end-to-end z Claude. Przykazania, reguły i antywzorce. Warsztat jakub.solutions.">
 <meta name="theme-color" content="#0e0e18" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#f3f2ee" media="(prefers-color-scheme: light)">
+<script>
+  /* Ustaw motyw zanim cokolwiek się wyrenderuje — bez mignięcia (FOUC). */
+  (function(){ try{ var t=localStorage.getItem("rzemioslo-theme"); if(t==="light"||t==="dark"){ document.documentElement.setAttribute("data-theme",t); } }catch(e){} })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
   /* Paleta i typografia spójne z marką jakub.solutions (fiolet→cyan, Playfair + Outfit). */
   :root{
@@ -18,26 +26,81 @@
     --accent:    #5548d9;   /* violet */
     --accent-2:  #2a7db5;   /* cyan */
     --accent-soft:#eceafb;
+    --code-bg:   #f4f3fb;
+    --danger:    #c8475b;   /* anty-wzorzec / „nie" */
+    --ok:        #2f9e6b;   /* „tak" / zrobione */
+    --warn:      #bd8400;   /* ostrzeżenie */
     --grad:      linear-gradient(135deg,#3e2fc0 0%,#4fbfdf 100%);
     --radius:    14px;
     --maxw:      980px;
+    --readw:     720px;
     --serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
     --sans:  'Outfit', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --mono:  'JetBrains Mono', ui-monospace, SFMono-Regular, 'Cascadia Code', Consolas, monospace;
   }
+  /* Ciemny motyw: automatycznie wg systemu (gdy brak ręcznego wyboru jasnego)… */
   @media (prefers-color-scheme: dark){
-    :root{
+    :root:not([data-theme="light"]){
       --bg:#0e0e18; --surface:#161626; --ink:#f0f0fa; --ink-dim:#b8b8d8; --ink-3:#9898bc;
       --line:rgba(255,255,255,.08); --accent:#8b78f0; --accent-2:#7adcf5; --accent-soft:#1e1b33;
+      --code-bg:#1b1b2e; --danger:#f0788a; --ok:#5fd0a0; --warn:#e0b24a;
     }
+  }
+  /* …oraz na żądanie z przełącznika (nadpisuje system). */
+  :root[data-theme="dark"]{
+    --bg:#0e0e18; --surface:#161626; --ink:#f0f0fa; --ink-dim:#b8b8d8; --ink-3:#9898bc;
+    --line:rgba(255,255,255,.08); --accent:#8b78f0; --accent-2:#7adcf5; --accent-soft:#1e1b33;
+    --code-bg:#1b1b2e;
   }
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
   body{
     margin:0; background:var(--bg); color:var(--ink);
-    font:16px/1.65 var(--sans); -webkit-font-smoothing:antialiased;
+    font:16px/1.65 var(--sans); -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
   }
   .wrap{max-width:var(--maxw); margin:0 auto; padding:0 22px}
-  header.hero{padding:64px 0 40px; text-align:center}
+  a{color:var(--accent)}
+
+  /* ---- Sticky topbar ---- */
+  .topbar{
+    position:sticky; top:0; z-index:50; backdrop-filter:saturate(140%) blur(10px);
+    background:color-mix(in srgb, var(--bg) 82%, transparent);
+    border-bottom:1px solid var(--line);
+  }
+  .topbar .wrap{display:flex; align-items:center; gap:14px; min-height:56px}
+  .brand{display:flex; align-items:center; gap:10px; text-decoration:none; color:inherit; font-weight:700; letter-spacing:.01em}
+  .brand .dot{width:12px; height:12px; border-radius:4px; background:var(--grad); flex:0 0 auto}
+  .brand .en{color:var(--ink-3); font-weight:500; font-size:13px}
+  .topbar .spacer{flex:1}
+  .topbar nav{display:flex; align-items:center; gap:14px}
+  .topbar nav a{font-size:13.5px; color:var(--ink-dim); text-decoration:none; font-weight:600}
+  .topbar nav a:hover{color:var(--accent)}
+  .theme-toggle{
+    display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px;
+    border:1px solid var(--line); border-radius:10px; background:var(--surface); color:var(--ink-dim);
+    cursor:pointer; padding:0; transition:color .12s ease, border-color .12s ease, transform .12s ease;
+  }
+  .theme-toggle:hover{color:var(--accent); border-color:var(--accent)}
+  .theme-toggle:active{transform:scale(.94)}
+  .theme-toggle svg{width:18px; height:18px}
+  .theme-toggle .i-moon{display:none}
+  .theme-toggle.dark .i-sun{display:none}
+  .theme-toggle.dark .i-moon{display:block}
+  @media (max-width:560px){ .brand .en{display:none} }
+
+  /* Ikony Lucide (SVG) — geometria w sprite <symbol> na dole strony, tu tylko styl. */
+  .icon{
+    width:1.05em; height:1.05em; vertical-align:-.16em; flex:0 0 auto;
+    fill:none; stroke:currentColor; stroke-width:2.1; stroke-linecap:round; stroke-linejoin:round;
+  }
+  .icon-ban,.icon-x{color:var(--danger)}
+  .icon-check{color:var(--ok)}
+  .icon-warn{color:var(--warn)}
+  .prose .icon{margin-right:.18em}
+  a.card .no .icon{width:16px; height:16px; vertical-align:-3px; color:var(--accent); stroke-width:2}
+
+  header.hero{padding:60px 0 38px; text-align:center}
+  .barline{height:4px; border-radius:999px; background:var(--grad); max-width:120px; margin:0 auto 8px}
   .kicker{font-size:13px; letter-spacing:.22em; text-transform:uppercase; color:var(--accent); font-weight:700}
   h1{font-family:var(--serif); font-size:clamp(36px,6vw,60px); margin:.16em 0 .12em; font-weight:800; letter-spacing:-.01em}
   h1 .en{color:var(--ink-3); font-weight:600; font-style:italic}
@@ -70,22 +133,134 @@
   .pill{display:inline-block; background:var(--accent-soft); color:var(--accent); border-radius:999px; padding:3px 12px; font-size:12.5px; font-weight:700; letter-spacing:.04em}
   .golden{background:var(--accent-soft); border:1px solid var(--line); border-radius:var(--radius); padding:18px 22px; color:var(--ink); font-size:16px}
   .golden b{color:var(--accent)}
-  .barline{height:4px; border-radius:999px; background:var(--grad); max-width:120px; margin:0 auto 8px}
   footer{color:var(--ink-3); font-size:13.5px; text-align:center; padding:46px 0 60px}
   footer a{color:var(--accent-2)}
   .sins{columns:2; column-gap:28px; color:var(--ink-dim); font-size:14.5px}
   @media (max-width:560px){ .sins{columns:1} .commandments li{grid-template-columns:34px 1fr; gap:10px} }
+
+  /* ---- Reader (markdown view) ---- */
+  #reader{display:none; padding:26px 0 10px}
+  body.reading #home{display:none}
+  body.reading #reader{display:block}
+
+  .readbar{display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:8px}
+  .back{display:inline-flex; align-items:center; gap:6px; text-decoration:none; color:var(--ink-dim); font-weight:600; font-size:14px}
+  .back:hover{color:var(--accent)}
+  .readbar .spacer{flex:1}
+  .chapsel{
+    font:inherit; font-size:14px; font-weight:600; color:var(--ink); background:var(--surface);
+    border:1px solid var(--line); border-radius:10px; padding:8px 12px; max-width:100%; cursor:pointer;
+  }
+
+  .prose{max-width:var(--readw); margin:18px auto 0; font-size:17px; line-height:1.74}
+  .prose > *:first-child{margin-top:0}
+  .prose h1{font-family:var(--serif); font-size:clamp(28px,5vw,40px); font-weight:800; letter-spacing:-.01em; margin:.2em 0 .5em; line-height:1.15}
+  .prose h2{font-family:var(--serif); font-size:1.5em; font-weight:700; margin:1.7em 0 .55em; padding-top:.2em; line-height:1.25}
+  .prose h3{font-size:1.18em; font-weight:700; margin:1.5em 0 .4em; color:var(--ink)}
+  .prose h2{border-top:1px solid var(--line); padding-top:.9em}
+  .prose p{margin:.85em 0}
+  .prose a{color:var(--accent); text-decoration:none; border-bottom:1px solid color-mix(in srgb, var(--accent) 35%, transparent)}
+  .prose a:hover{border-bottom-color:var(--accent)}
+  .prose ul,.prose ol{padding-left:1.4em; margin:.7em 0}
+  .prose li{margin:.32em 0}
+  .prose li::marker{color:var(--accent)}
+  .prose strong{font-weight:700}
+  .prose code{font-family:var(--mono); font-size:.86em; background:var(--code-bg); border:1px solid var(--line); border-radius:6px; padding:.1em .42em}
+  .prose pre{background:var(--code-bg); border:1px solid var(--line); border-radius:12px; padding:16px 18px; overflow-x:auto; margin:1.1em 0; line-height:1.5}
+  .prose pre code{background:none; border:none; padding:0; font-size:.86em}
+  .prose blockquote{
+    margin:1.1em 0; padding:.4em 1.1em; color:var(--ink-dim);
+    border-left:3px solid var(--accent); background:color-mix(in srgb, var(--accent-soft) 60%, transparent);
+    border-radius:0 10px 10px 0;
+  }
+  .prose blockquote p{margin:.4em 0}
+  .prose hr{border:none; border-top:1px solid var(--line); margin:2em 0}
+  .prose .tablewrap{overflow-x:auto; margin:1.1em 0; border:1px solid var(--line); border-radius:12px}
+  .prose table{border-collapse:collapse; width:100%; font-size:.92em}
+  .prose th,.prose td{text-align:left; padding:10px 14px; border-bottom:1px solid var(--line); vertical-align:top}
+  .prose thead th{background:var(--accent-soft); color:var(--ink); font-weight:700; white-space:nowrap}
+  .prose tbody tr:last-child td{border-bottom:none}
+
+  .prevnext{display:flex; gap:12px; max-width:var(--readw); margin:32px auto 0; padding-top:18px; border-top:1px solid var(--line)}
+  .prevnext a{
+    flex:1; text-decoration:none; color:inherit; background:var(--surface); border:1px solid var(--line);
+    border-radius:12px; padding:12px 16px; transition:border-color .12s ease;
+  }
+  .prevnext a:hover{border-color:var(--accent)}
+  .prevnext .lbl{font-size:11.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3); font-weight:700}
+  .prevnext .ttl{font-weight:600; font-size:14.5px; margin-top:2px}
+  .prevnext a.next{text-align:right}
+  .prevnext a.empty{visibility:hidden}
+
+  .notice{max-width:var(--readw); margin:24px auto; background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:20px 22px; color:var(--ink-dim); font-size:15px}
+  .notice b{color:var(--ink)}
+  .notice code{font-family:var(--mono); font-size:.88em; background:var(--code-bg); border:1px solid var(--line); border-radius:6px; padding:.12em .45em}
+  .loading{max-width:var(--readw); margin:40px auto; text-align:center; color:var(--ink-3)}
 </style>
 </head>
 <body>
-<div class="wrap">
+
+<!-- ============ Centralny rejestr ikon (Lucide) — jedyne miejsce z geometrią SVG ============ -->
+<svg aria-hidden="true" style="position:absolute; width:0; height:0; overflow:hidden" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="ic-ban" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/></symbol>
+  <symbol id="ic-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="ic-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+  <symbol id="ic-warn" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
+  <symbol id="ic-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></symbol>
+  <symbol id="ic-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol>
+  <symbol id="ic-book" viewBox="0 0 24 24"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></symbol>
+</svg>
+
+<div class="topbar">
+  <div class="wrap">
+    <a class="brand" href="#" aria-label="Rzemiosło — strona główna">
+      <span class="dot"></span>
+      <span>Rzemiosło <span class="en">· The Build Codex</span></span>
+    </a>
+    <span class="spacer"></span>
+    <nav>
+      <a href="https://jakub.solutions">jakub.solutions</a>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Przełącz motyw" title="Przełącz jasny / ciemny">
+        <svg class="i-sun"  fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#ic-sun"></use></svg>
+        <svg class="i-moon" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#ic-moon"></use></svg>
+      </button>
+    </nav>
+  </div>
+</div>
+
+<script>
+  /* Przełącznik motywu: jasny ⇄ ciemny, zapamiętany; bez wyboru = wg systemu. */
+  (function(){
+    var root=document.documentElement, KEY="rzemioslo-theme";
+    var btn=document.getElementById("themeToggle");
+    var mq=window.matchMedia("(prefers-color-scheme: dark)");
+    function effective(){ return root.getAttribute("data-theme") || (mq.matches?"dark":"light"); }
+    function sync(){
+      var dark=effective()==="dark";
+      btn.classList.toggle("dark", dark);
+      btn.setAttribute("aria-label", dark ? "Przełącz na jasny motyw" : "Przełącz na ciemny motyw");
+    }
+    btn.addEventListener("click", function(){
+      var next = effective()==="dark" ? "light" : "dark";
+      root.setAttribute("data-theme", next);
+      try{ localStorage.setItem(KEY, next); }catch(e){}
+      sync();
+    });
+    if(mq.addEventListener){ mq.addEventListener("change", function(){ if(!root.getAttribute("data-theme")) sync(); }); }
+    sync();
+  })();
+</script>
+
+<!-- ========================= STRONA GŁÓWNA ========================= -->
+<main id="home" class="wrap">
 
   <header class="hero">
     <div class="barline"></div>
     <div class="kicker">Doktryna budowania z Claude</div>
     <h1>Rzemiosło <span class="en">· The Build Codex</span></h1>
-    <p class="tagline">Przykazania budowania i prowadzenia aplikacji <b>end-to-end</b> z Claude.
-    Destylat doświadczeń z WhiskyPolska — pisany pod kolejne projekty (najbliższy: EchoInsight).</p>
+    <p class="tagline">Zwarta doktryna budowania i prowadzenia aplikacji <b>end-to-end</b> z Claude —
+    zestaw konkretnych <b>reguł, przykazań i antywzorców</b>. Pomyślana jak <code>/docs/rules/</code>
+    dołączane do każdego nowego projektu.</p>
     <p class="brandline">Warsztat <a href="https://jakub.solutions">jakub.solutions</a> · Jakub Kolada — Insurance Systems Architect &amp; IT Consultant</p>
   </header>
 
@@ -107,28 +282,11 @@
 
   <hr class="rule" />
 
-  <h2 class="section">Rozdziały</h2>
-  <div class="grid">
-    <a class="card" href="00-przykazania.md"><div class="no">00</div><h3>Dekalog</h3><p>Rdzeń doktryny + siedem grzechów głównych.</p></a>
-    <a class="card" href="01-dokumentacja-i-ai-readme.md"><div class="no">01</div><h3>Dokumentacja i AI_README</h3><p>AI_README w każdym katalogu, CLAUDE.md jako źródło prawdy.</p></a>
-    <a class="card" href="02-skille-i-refaktoring.md"><div class="no">02</div><h3>Skille i refaktoring</h3><p>Kiedy zbudować skill; dyscyplina refaktoringu.</p></a>
-    <a class="card" href="03-testowanie-i-weryfikacja.md"><div class="no">03</div><h3>Testowanie i weryfikacja</h3><p>Piramida testów, „weryfikuj, nie deklaruj", smoke.</p></a>
-    <a class="card" href="04-skrypty-i-bazy-danych.md"><div class="no">04</div><h3>Skrypty i bazy danych</h3><p>Dry-run/--execute, idempotencja, migracje, backupy.</p></a>
-    <a class="card" href="05-git-i-wdrozenia.md"><div class="no">05</div><h3>Git i wdrożenia</h3><p>Szukaj w git, taguj deploy, swap bazy z zachowaniem kont.</p></a>
-    <a class="card" href="06-wspolpraca-i-pamiec.md"><div class="no">06</div><h3>Współpraca i pamięć</h3><p>Plan→iteruj→review, potwierdzaj nieodwracalne, raportuj uczciwie.</p></a>
-    <a class="card" href="07-nowy-projekt-checklist.md"><div class="no">07</div><h3>Nowy projekt: Dzień 0</h3><p>Konkretna checklista startu.</p></a>
-    <a class="card" href="08-echoinsight.md"><div class="no">08</div><h3>Zastosowanie: EchoInsight</h3><p>Doktryna jako backlog EchoInsight.Me.</p></a>
-    <a class="card" href="README.md"><div class="no">★</div><h3>README</h3><p>Spis i jak czytać ten zestaw.</p></a>
-  </div>
+  <h2 class="section">Rozdziały — fundament</h2>
+  <div class="grid" id="cards-core"></div>
 
   <h2 class="section" style="margin-top:34px">Rozdziały — pogłębienie</h2>
-  <div class="grid">
-    <a class="card" href="09-prawo-i-ochrona-tworcy.md"><div class="no">09</div><h3>Prawo i ochrona twórcy</h3><p>Regulamin, polityka prywatności, disclaimery jako zbroja osoby prywatnej.</p></a>
-    <a class="card" href="10-seo-i-tlumaczenia.md"><div class="no">10</div><h3>SEO i tłumaczenia</h3><p>hreflang, JSON-LD, E-E-A-T/YMYL, parytet językowy jako test.</p></a>
-    <a class="card" href="11-model-danych-normalizacja.md"><div class="no">11</div><h3>Model danych i normalizacja</h3><p>Słowniki, slug zamiast ID, active-row, świadoma denormalizacja.</p></a>
-    <a class="card" href="12-elastycznosc-i-skalowalnosc.md"><div class="no">12</div><h3>Elastyczność i skalowalność</h3><p>Rozdziel warstwy, feature flags, scale-to-zero vs always-on, nie over-engineeruj.</p></a>
-    <a class="card" href="13-wydajnosc-frontend-i-sql.md"><div class="no">13</div><h3>Wydajność: frontend i SQL</h3><p>Mierz najpierw, indeksy i partial index, brak N+1, streaming czatu.</p></a>
-  </div>
+  <div class="grid" id="cards-deep"></div>
 
   <hr class="rule" />
 
@@ -153,9 +311,182 @@
   <footer>
     <span class="pill">Rzemiosło</span><br/><br/>
     Wersja żywa — aktualizuj po każdym projekcie, który czegoś nauczył.<br/>
-    Doktryna, która się nie zmienia, jest martwa. · Warsztat <a href="https://jakub.solutions">jakub.solutions</a> · Start: <a href="07-nowy-projekt-checklist.md">Dzień 0</a>
+    Doktryna, która się nie zmienia, jest martwa. · Warsztat <a href="https://jakub.solutions">jakub.solutions</a> · Start: <a href="#07-nowy-projekt-checklist">Dzień 0</a>
   </footer>
 
-</div>
+</main>
+
+<!-- ========================= CZYTNIK ROZDZIAŁU ========================= -->
+<section id="reader" class="wrap">
+  <div class="readbar">
+    <a class="back" href="#">← Wszystkie rozdziały</a>
+    <span class="spacer"></span>
+    <select class="chapsel" id="chapsel" aria-label="Wybierz rozdział"></select>
+  </div>
+  <article class="prose" id="content"></article>
+  <nav class="prevnext" id="prevnext"></nav>
+</section>
+
+<!-- Snapshot rozdziałów (generowany przez build.py) — pozwala czytać treść po file://. -->
+<script src="content.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+<script>
+(function(){
+  "use strict";
+
+  // Jedno źródło prawdy: lista rozdziałów (plik .md + metadane do kart / nawigacji).
+  var CHAPTERS = [
+    {file:"00-przykazania.md",            no:"00", group:"core", title:"Dekalog",                     desc:"Rdzeń doktryny + siedem grzechów głównych."},
+    {file:"01-dokumentacja-i-ai-readme.md",no:"01", group:"core", title:"Dokumentacja i AI_README",   desc:"AI_README w każdym katalogu, CLAUDE.md jako źródło prawdy."},
+    {file:"02-skille-i-refaktoring.md",   no:"02", group:"core", title:"Skille i refaktoring",        desc:"Kiedy zbudować skill; dyscyplina refaktoringu."},
+    {file:"03-testowanie-i-weryfikacja.md",no:"03", group:"core", title:"Testowanie i weryfikacja",   desc:"Piramida testów, „weryfikuj, nie deklaruj”, smoke."},
+    {file:"04-skrypty-i-bazy-danych.md",  no:"04", group:"core", title:"Skrypty i bazy danych",       desc:"Dry-run/--execute, idempotencja, migracje, backupy."},
+    {file:"05-git-i-wdrozenia.md",        no:"05", group:"core", title:"Git i wdrożenia",             desc:"Szukaj w git, taguj deploy, swap bazy z zachowaniem kont."},
+    {file:"06-wspolpraca-i-pamiec.md",    no:"06", group:"core", title:"Współpraca i pamięć",         desc:"Plan→iteruj→review, potwierdzaj nieodwracalne, raportuj uczciwie."},
+    {file:"07-nowy-projekt-checklist.md", no:"07", group:"core", title:"Nowy projekt: Dzień 0",       desc:"Konkretna checklista startu."},
+    {file:"08-stack-i-technologie.md",    no:"08", group:"core", title:"Stack i technologie",        desc:"Python, baza, web/API, Docker, serwer (Hetzner), TDD."},
+    {file:"09-prawo-i-ochrona-tworcy.md", no:"09", group:"deep", title:"Prawo i ochrona twórcy",      desc:"Regulamin, polityka prywatności, disclaimery jako zbroja twórcy."},
+    {file:"10-seo-i-tlumaczenia.md",      no:"10", group:"deep", title:"SEO i tłumaczenia",           desc:"hreflang, JSON-LD, E-E-A-T/YMYL, parytet językowy jako test."},
+    {file:"11-model-danych-normalizacja.md",no:"11",group:"deep", title:"Model danych i normalizacja",desc:"Słowniki, slug zamiast ID, active-row, świadoma denormalizacja."},
+    {file:"12-elastycznosc-i-skalowalnosc.md",no:"12",group:"deep",title:"Elastyczność i skalowalność",desc:"Rozdziel warstwy, feature flags, scale-to-zero vs always-on."},
+    {file:"13-wydajnosc-frontend-i-sql.md",no:"13", group:"deep", title:"Wydajność: frontend i SQL",  desc:"Mierz najpierw, indeksy i partial index, brak N+1, streaming."}
+  ];
+
+  var slug = function(file){ return file.replace(/\.md$/,""); };
+  var bySlug = {}; CHAPTERS.forEach(function(c){ bySlug[slug(c.file)] = c; });
+
+  // ---- Karty na stronie głównej ----
+  function card(c){
+    var badge = c.group === "deep" ? c.no : c.no;
+    return '<a class="card" href="#'+slug(c.file)+'">'
+         +    '<div class="no">'+badge+'</div>'
+         +    '<h3>'+c.title+'</h3>'
+         +    '<p>'+c.desc+'</p>'
+         +  '</a>';
+  }
+  document.getElementById("cards-core").innerHTML =
+    CHAPTERS.filter(function(c){return c.group==="core";}).map(card).join("") +
+    '<a class="card" href="README.md"><div class="no"><svg class="icon" aria-hidden="true"><use href="#ic-book"></use></svg></div><h3>README</h3><p>Spis i jak czytać ten zestaw (plik źródłowy).</p></a>';
+  document.getElementById("cards-deep").innerHTML =
+    CHAPTERS.filter(function(c){return c.group==="deep";}).map(card).join("");
+
+  // ---- Select rozdziałów w czytniku ----
+  var sel = document.getElementById("chapsel");
+  sel.innerHTML = CHAPTERS.map(function(c){
+    return '<option value="'+slug(c.file)+'">'+c.no+' — '+c.title+'</option>';
+  }).join("");
+  sel.addEventListener("change", function(){ location.hash = "#"+sel.value; });
+
+  // marked: render bezpieczny dla naszego zaufanego markdown.
+  if (window.marked && marked.setOptions){
+    marked.setOptions({ gfm:true, breaks:false, headerIds:false, mangle:false });
+  }
+
+  var contentEl = document.getElementById("content");
+  var prevnextEl = document.getElementById("prevnext");
+  var cache = {};
+
+  // Emoji w treści .md → ikony Lucide ze sprite'u (jedyne źródło geometrii to <symbol> na dole).
+  function iconSvg(id, cls){ return '<svg class="icon '+cls+'" aria-hidden="true"><use href="#ic-'+id+'"></use></svg>'; }
+  function swapIcons(html){
+    return html
+      .replace(/⚠️?/g, iconSvg("warn","icon-warn"))   /* ⚠️ ostrzeżenie */
+      .replace(/[\u{1F6AB}⛔]/gu, iconSvg("ban","icon-ban"))/* 🚫 ⛔ anty-wzorzec / zakaz */
+      .replace(/✅/g, iconSvg("check","icon-check"))        /* ✅ tak */
+      .replace(/❌/g, iconSvg("x","icon-x"));               /* ❌ nie */
+  }
+
+  function rewriteLinks(root){
+    // .md → hash (nawigacja w aplikacji); index.html → strona główna.
+    root.querySelectorAll('a[href]').forEach(function(a){
+      var href = a.getAttribute("href");
+      if(!href) return;
+      if(/^index\.html(#.*)?$/.test(href)){ a.setAttribute("href","#"); return; }
+      var m = href.match(/^([^\/:?#]+)\.md(#.*)?$/);
+      if(m && bySlug[m[1]]){ a.setAttribute("href","#"+m[1]+(m[2]||"")); }
+      else if(/^https?:\/\//.test(href)){ a.setAttribute("target","_blank"); a.setAttribute("rel","noopener"); }
+    });
+    // Tabele → responsywne opakowanie.
+    root.querySelectorAll("table").forEach(function(t){
+      if(t.parentElement && t.parentElement.classList.contains("tablewrap")) return;
+      var w = document.createElement("div"); w.className = "tablewrap";
+      t.parentNode.insertBefore(w, t); w.appendChild(t);
+    });
+  }
+
+  function prevNext(c){
+    var i = CHAPTERS.indexOf(c);
+    var prev = CHAPTERS[i-1], next = CHAPTERS[i+1];
+    function block(ch, dir){
+      if(!ch) return '<a class="empty"></a>';
+      var lbl = dir === "prev" ? "← Poprzedni" : "Następny →";
+      return '<a class="'+dir+' '+(dir==="next"?"next":"")+'" href="#'+slug(ch.file)+'">'
+           +   '<div class="lbl">'+lbl+'</div>'
+           +   '<div class="ttl">'+ch.no+' — '+ch.title+'</div>'
+           + '</a>';
+    }
+    prevnextEl.innerHTML = block(prev,"prev") + block(next,"next");
+  }
+
+  function showHome(){
+    document.body.classList.remove("reading");
+    document.title = "Rzemiosło — The Build Codex · jakub.solutions";
+    window.scrollTo(0,0);
+  }
+
+  function showChapter(c){
+    document.body.classList.add("reading");
+    sel.value = slug(c.file);
+    document.title = c.no + " — " + c.title + " · Rzemiosło";
+    prevNext(c);
+
+    if(cache[c.file]){ contentEl.innerHTML = cache[c.file]; rewriteLinks(contentEl); window.scrollTo(0,0); return; }
+
+    contentEl.innerHTML = '<div class="loading">Wczytywanie…</div>';
+    window.scrollTo(0,0);
+
+    function render(md){
+      var html = window.marked ? marked.parse(md) : ("<pre>"+md.replace(/[&<>]/g,function(ch){return {"&":"&amp;","<":"&lt;",">":"&gt;"}[ch];})+"</pre>");
+      html = swapIcons(html);
+      cache[c.file] = html;
+      contentEl.innerHTML = html;
+      rewriteLinks(contentEl);
+    }
+    function embedded(){
+      return (window.RZEMIOSLO_DOCS && window.RZEMIOSLO_DOCS[slug(c.file)]) || null;
+    }
+
+    // Najpierw świeży .md przez fetch (działa, gdy strona jest serwowana — zawsze aktualne).
+    fetch(c.file, {cache:"no-cache"}).then(function(r){
+      if(!r.ok) throw new Error("HTTP "+r.status);
+      return r.text();
+    }).then(render).catch(function(){
+      // Fetch zablokowany (najczęściej otwarcie przez file://) → snapshot z content.js.
+      var snap = embedded();
+      if(typeof snap === "string"){ render(snap); return; }
+      // Brak i fetcha, i snapshotu — pokaż instrukcję.
+      contentEl.innerHTML =
+        '<div class="notice">'
+        + '<p><b>Nie udało się wczytać treści.</b> Brakuje snapshotu <code>content.js</code>, '
+        + 'a przeglądarka blokuje odczyt plików <code>.md</code> przez <code>file://</code>.</p>'
+        + '<p>Wygeneruj snapshot (<code>python build.py</code>) albo uruchom serwer lokalny:</p>'
+        + '<pre style="background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:12px 14px;overflow-x:auto"><code>python -m http.server 8080</code></pre>'
+        + '<p>…i otwórz <code>http://localhost:8080/</code>. W każdej chwili możesz otworzyć surowy plik: '
+        + '<a href="'+c.file+'">'+c.file+'</a>.</p>'
+        + '</div>';
+    });
+  }
+
+  function route(){
+    var hash = location.hash.replace(/^#/,"");
+    hash = hash.split("?")[0];
+    if(hash && bySlug[hash]){ showChapter(bySlug[hash]); }
+    else { showHome(); }
+  }
+
+  window.addEventListener("hashchange", route);
+  route();
+})();
+</script>
 </body>
 </html>
