@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="icon" type="image/png" href="public/logo.png" />
 <title>Rzemiosło · The Craft — Kolada Build · jakub.solutions</title>
 <meta name="description" content="Rzemiosło — The Craft (Kolada Build). Doktryna budowania i prowadzenia aplikacji end-to-end z Claude. Przykazania, reguły i antywzorce. Warsztat jakub.solutions.">
 <meta name="theme-color" content="#0e0e18" media="(prefers-color-scheme: dark)">
@@ -70,6 +71,7 @@
   .topbar .wrap{display:flex; align-items:center; gap:14px; min-height:56px}
   .brand{display:flex; align-items:center; gap:10px; text-decoration:none; color:inherit; font-weight:700; letter-spacing:.01em}
   .brand .dot{width:12px; height:12px; border-radius:4px; background:var(--grad); flex:0 0 auto}
+  .brand-logo{height:24px; width:auto; display:block; flex:0 0 auto}
   .brand .en{color:var(--ink-3); font-weight:500; font-size:13px}
   .topbar .spacer{flex:1}
   .topbar nav{display:flex; align-items:center; gap:14px}
@@ -279,7 +281,7 @@
 <div class="topbar">
   <div class="wrap">
     <a class="brand" href="#" aria-label="Rzemiosło — strona główna">
-      <span class="dot"></span>
+      <img class="brand-logo" src="public/logo.png" alt="JK — Jakub Kolada" />
       <span>Rzemiosło <span class="en">· The Craft</span></span>
     </a>
     <span class="spacer"></span>
