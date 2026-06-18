@@ -11,8 +11,21 @@ inny agent) zrozumiała katalog bez czytania całego kodu.** To nie jest archiwu
 | Warstwa | Plik | Rola |
 |---------|------|------|
 | **Konstytucja** | `CLAUDE.md` (root) | Źródło prawdy o projekcie: stack, jak uruchomić, polityki (np. „nigdy nie deployuj automatycznie"), aktualny stan. Ładowane co sesję. |
-| **Mapa katalogu** | `AI_README.md` (w każdym istotnym katalogu) | Co tu jest, API modułów, gotchas, liczby. Czytasz **przed** dotknięciem kodu w tym katalogu. |
+| **Mapa katalogu** | `AI_README.md` (w każdym istotnym katalogu) | Co tu jest, API modułów, gotchas, liczby, grep-index. Czytasz **przed** dotknięciem kodu w tym katalogu. |
 | **Encyklopedia / plany** | `docs/` | Stabilna referencja (architektura, schemat DB), plany na przyszłość, standardy. |
+
+`README.md` **nie** jest jedną z tych warstw — to **front door GitHuba**: opis dla odwiedzających
+(czym projekt jest, jak go wpiąć, spis treści). Trzymaj z dala od niego szczegóły utrzymania; te żyją
+w `CLAUDE.md`. Podział wg **odbiorcy** trzyma duplikację przy zerze:
+
+- **`README.md` → dla człowieka na GitHubie.** Czym jest, po co, jak zacząć. Po angielsku (publiczna twarz).
+- **`CLAUDE.md` → dla agenta/utrzymującego *to* repo.** Jak uruchomić, zbudować, testować, polityki.
+  **Jeden język roboczy — nie tłumaczony** (tłumaczenie własnej konstytucji repo nic nie daje).
+- **`AI_README.md` → dla agenta nawigującego po *treści*.** Mapa katalogu + grep-index słowo→plik.
+  **Tłumaczony per język** — podróżuje w `docs/rules/<lang>/`, więc agent w docelowym projekcie grepuje
+  go w swoim języku. Każdy język ma swój `AI_README` obok rozdziałów.
+
+Gdy nie wiesz, gdzie wpada fakt: *kto to czyta?* To wybiera plik — i znaczy, że jest napisany raz.
 
 ### `CLAUDE.md` — konstytucja
 - Krótkie „Quick orientation" (tabela: warstwa → tech → lokalizacja).

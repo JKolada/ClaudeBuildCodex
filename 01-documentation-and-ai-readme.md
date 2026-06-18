@@ -11,8 +11,21 @@ posterity — it's an onboarding interface, read every session.
 | Layer | File | Role |
 |---------|------|------|
 | **Constitution** | `CLAUDE.md` (root) | Source of truth about the project: stack, how to run it, policies (e.g. "never deploy automatically"), current state. Loaded every session. |
-| **Directory map** | `AI_README.md` (in every significant directory) | What's here, the module APIs, gotchas, numbers. You read it **before** touching code in this directory. |
+| **Directory map** | `AI_README.md` (in every significant directory) | What's here, the module APIs, gotchas, numbers, the grep index. You read it **before** touching code in this directory. |
 | **Encyclopedia / plans** | `docs/` | Stable reference (architecture, DB schema), future plans, standards. |
+
+`README.md` is **not** one of these layers — it's the **GitHub front door**: a description for visitors
+(what the project is, how to adopt it, a table of contents). Keep maintenance detail out of it; that lives
+in `CLAUDE.md`. Splitting by **audience** is what keeps duplication near zero:
+
+- **`README.md` → for a human browsing GitHub.** What it is, why, how to start. English (the public face).
+- **`CLAUDE.md` → for the agent/maintainer of *this* repo.** How to run, build, test, the policies. **One
+  working language — not translated** (translating the repo's own constitution buys nothing).
+- **`AI_README.md` → for an agent navigating *content*.** Directory map + the keyword→file grep index.
+  **Translated per language** — it ships inside `docs/rules/<lang>/`, so the target-project agent greps it
+  in its own language. Each language gets its `AI_README` next to its chapters.
+
+When in doubt where a fact goes: *who reads it?* That picks the file — and means it's written once.
 
 ### `CLAUDE.md` — the constitution
 - A short "Quick orientation" (a table: layer → tech → location).

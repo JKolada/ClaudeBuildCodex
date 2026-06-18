@@ -80,6 +80,10 @@ python test.py                  # smoke: parytet PL/EN, martwe linki, świeżoś
 - **Parytet EN↔PL.** EN (root) jest kanonem/bazą; **`pl/` to tłumaczenie** o tych samych nazwach plików.
   Zmiana reguły w EN → zaktualizuj odpowiednik w `pl/` w tym samym kroku (inaczej PL kłamie). Nie
   lokalizuj nazw plików — tylko treść w środku.
+- **Podział plików meta (mała duplikacja, wg odbiorcy →[01](01-documentation-and-ai-readme.md)):**
+  `README.md` = opis dla GitHuba (publiczny, **EN**). **`AI_README.md` tłumaczony per język** (EN root +
+  `pl/AI_README.md`) — mapa + grep-index, podróżuje w `docs/rules/<lang>/`. **`CLAUDE.md` (ten plik) =
+  konstytucja repo, jeden język, NIE tłumaczona.** Fakt piszesz raz, w pliku jego odbiorcy.
 - **Po edycji `.md` uruchom `python build.py`** — regeneruje `content.js` (snapshot dla `file://`).
   `content.js` jest **generowany** (commituj go, ale nie edytuj ręcznie — nadpisze go build).
 - **Przed commitem uruchom `python test.py`** — smoke test (parytet PL↔EN, martwe linki, świeżość
