@@ -1,78 +1,78 @@
-# 15 — Scraping, API AI i konfigurowalne chatboty
+# 15 — Scraping, AI APIs, and configurable chatbots
 
-> Pozyskiwanie danych z sieci i delegowanie zadań do AI to dziś rdzeń wielu produktów. Rób to
-> **skutecznie, tanio i z kontraktem** — nie magią. Warstwę operacyjną (timeouty, backoff, rotacja,
-> kwoty, wznawialność) trzyma → [14](14-operational-resilience.md); ten rozdział jest o tym, **jak
-> używać tych mocy jako funkcji produktu**: skąd brać dane, jak delegować zadania do AI i jak zbudować
-> asystenta, którym da się sterować bez deployu.
+> Pulling data from the web and delegating tasks to AI is the core of many products today. Do it
+> **effectively, cheaply, and with a contract** — not by magic. The operational layer (timeouts,
+> backoff, rotation, quotas, resumability) lives in → [14](14-operational-resilience.md); this chapter is
+> about **using those powers as product features**: where to get data, how to delegate tasks to AI, and
+> how to build an assistant you can steer without a deploy.
 
-## Skuteczny scraping — dane z sieci
+## Effective scraping — data from the web
 
-- **Najpierw oficjalne źródło.** API, feed, eksport, sitemap — scraping HTML to **ostateczność**, nie
-  pierwszy ruch. Oficjalny kontrakt nie pęka przy każdym redesignie strony.
-- **Szanuj źródło.** Respektuj `robots.txt`/ToS, rozsądny throttle, identyfikuj się. Cel to **dane,
-  nie DoS** — agresywny scraper to problem prawny i etyczny (→ [09](09-law-and-protecting-the-creator.md)).
-- **Parsuj odpornie.** Selektory padają przy redesignie — **waliduj kształt** wyniku, nie tylko status
-  (klasyczne „200 + strona błędu", → [14](14-operational-resilience.md)). Drift selektora → alarm, nie ciche zera.
-- **Normalizuj u wejścia.** Dane z sieci są brudne: fuzzy-match i dedup do **słowników lookup**, slug,
-  jedno źródło prawdy (→ [11](11-data-model-and-normalization.md)). Surowiec wpada, czysty rekord zostaje.
-- **Inkrementalnie.** Pobieraj **deltę** (co się zmieniło od ostatniego razu), nie cały katalog co noc —
-  taniej, szybciej, mniej obciąża źródło. Checkpoint i wznawialność → [14](14-operational-resilience.md).
-- **Idempotentne loadery.** Ponowny import tych samych danych nie tworzy duplikatów (→ [04](04-scripts-and-databases.md)).
+- **Official source first.** An API, a feed, an export, a sitemap — HTML scraping is the **last resort**,
+  not the first move. An official contract doesn't break on every site redesign.
+- **Respect the source.** Honor `robots.txt`/ToS, throttle reasonably, identify yourself. The goal is
+  **data, not a DoS** — an aggressive scraper is a legal and ethical problem (→ [09](09-law-and-protecting-the-creator.md)).
+- **Parse defensively.** Selectors break on redesigns — **validate the shape** of the result, not just the
+  status (the classic "200 + error page," → [14](14-operational-resilience.md)). Selector drift → an alert, not silent zeros.
+- **Normalize at the entry point.** Web data is dirty: fuzzy-match and dedup against **lookup tables**,
+  slug, one source of truth (→ [11](11-data-model-and-normalization.md)). Raw material goes in, a clean record stays.
+- **Incrementally.** Fetch the **delta** (what changed since last time), not the whole catalog every night —
+  cheaper, faster, lighter on the source. Checkpoint and resumability → [14](14-operational-resilience.md).
+- **Idempotent loaders.** Re-importing the same data creates no duplicates (→ [04](04-scripts-and-databases.md)).
 
-### Anty-wzorce
-- 🚫 **Scraping zamiast API**, które istnieje — kruchość bez powodu.
-- 🚫 **Selektor bez walidacji kształtu** — cicha awaria zalewa bazę śmieciem/zerami.
-- 🚫 **Pełny re-scrape codziennie** zamiast delty — marnotrawstwo i ryzyko bana.
-- 🚫 **Brak throttle/identyfikacji** — DoS dla źródła, problem prawny dla Ciebie.
+### Anti-patterns
+- 🚫 **Scraping instead of an API** that exists — fragility for no reason.
+- 🚫 **A selector with no shape validation** — a silent failure floods the database with junk/zeros.
+- 🚫 **A full re-scrape every day** instead of the delta — waste and a ban risk.
+- 🚫 **No throttle/identification** — a DoS for the source, a legal problem for you.
 
-## API AI do konkretnych zadań — nie do wszystkiego
+## AI APIs for specific tasks — not for everything
 
-- **LLM tam, gdzie kod deterministyczny nie da rady:** ekstrakcja z nieustrukturyzowanego tekstu,
-  klasyfikacja, podsumowanie, normalizacja opisów, generowanie treści. **Nie** do tego, co zrobi
-  `regex`, `SQL` czy zwykła funkcja — to drożej, wolniej i mniej pewnie.
-- **Dobierz model do zadania.** Tani/szybki do prostych (klasyfikacja, ekstrakcja), mocny do złożonego
-  rozumowania. Claude jako default (→ [08](08-stack-and-technologies.md)). **Mierz koszt i latencję**, nie zgaduj.
-- **Wymuś kontrakt wyjścia.** Struktura (JSON schema / tool use), **walidacja** i retry przy niezgodności —
-  nie parsuj prozy na nadzieję. Wyjście LLM traktuj jak niezaufane wejście (→ niżej, guardrails).
-- **Cache + idempotencja.** Te same wejścia → zapisany wynik; nie wołaj LLM w pętli po tym, co się nie
-  zmienia. Drogie wywołania to koszt i latencja (→ [13](13-performance-frontend-and-sql.md)).
-- **Kwoty i budżet.** Limit per user/endpoint, monitoring kosztu, twarda kwota na płatnym API (→ [14](14-operational-resilience.md)).
-- **Batch, gdy nie trzeba realtime.** Wzbogacanie danych offline w pipelinie z checkpointem (→ [14](14-operational-resilience.md))
-  bije wołanie LLM na żywo w żądaniu użytkownika.
+- **An LLM where deterministic code can't cope:** extraction from unstructured text, classification,
+  summarization, normalizing descriptions, generating content. **Not** for what a `regex`, `SQL`, or a
+  plain function will do — that's pricier, slower, and less certain.
+- **Match the model to the task.** Cheap/fast for the simple things (classification, extraction), powerful
+  for complex reasoning. Claude as the default (→ [08](08-stack-and-technologies.md)). **Measure cost and latency**, don't guess.
+- **Force an output contract.** Structure (JSON schema / tool use), **validation**, and a retry on mismatch —
+  don't parse prose and hope. Treat LLM output as untrusted input (→ guardrails below).
+- **Cache + idempotency.** The same inputs → a stored result; don't call the LLM in a loop over what hasn't
+  changed. Expensive calls are cost and latency (→ [13](13-performance-frontend-and-sql.md)).
+- **Quotas and budget.** A limit per user/endpoint, cost monitoring, a hard quota on a paid API (→ [14](14-operational-resilience.md)).
+- **Batch when you don't need realtime.** Enriching data offline in a pipeline with checkpoints (→ [14](14-operational-resilience.md))
+  beats calling the LLM live inside a user request.
 
-### Anty-wzorce
-- 🚫 **LLM do tego, co zrobi `regex`/`SQL`** — koszt i niepewność tam, gdzie wystarczy kod.
-- 🚫 **Brak kontraktu wyjścia** — parsujesz wolną prozę i modlisz się o format.
-- 🚫 **Brak cache** drogich wywołań — rachunek rośnie liniowo z ruchem.
-- 🚫 **Ślepe zaufanie do wyjścia** jako kodu/SQL/HTML — wektor wstrzyknięcia.
+### Anti-patterns
+- 🚫 **An LLM for what a `regex`/`SQL` will do** — cost and uncertainty where code suffices.
+- 🚫 **No output contract** — you parse free prose and pray for the format.
+- 🚫 **No cache** on expensive calls — the bill grows linearly with traffic.
+- 🚫 **Blind trust in the output** as code/SQL/HTML — an injection vector.
 
-## Konfigurowalne chatboty — asystent jako funkcja
+## Configurable chatbots — the assistant as a feature
 
-- **Persona i zasady = konfiguracja, nie kod.** System prompt, zakres, ton, granice trzymaj jako
-  **dane** (plik/baza), wersjonowane w git — iterujesz asystenta bez deployu. „Zaszyty" prompt w kodzie
-  to martwa konfiguracja.
-- **Grounding obowiązkowy.** Asystent odpowiada z **Twoich danych** (kontekst z bazy / RAG), nie z pamięci
-  modelu. Cytuj źródło (→ [11](11-data-model-and-normalization.md)). Halucynacja na cenie/fakcie = bug, nie „cecha AI".
-- **Zdefiniuj zakres i odmowę.** Co asystent **robi** i czego **nie robi**; bezpieczne „nie wiem"/„to poza
-  moim zakresem" zamiast zmyślania. Pewność siebie modelu ≠ poprawność.
-- **Streaming UX.** Odpowiedź token-by-token (SSE), historia rozmowy, jasne limity (→ [13](13-performance-frontend-and-sql.md), [14](14-operational-resilience.md)).
-- **Bezpieczeństwo (prompt injection).** Treść użytkownika i dane z sieci to **dane, nie instrukcje**.
-  Nie wykonuj akcji side-effect z czatu bez potwierdzenia, nie wyciekaj sekretów ani promptu systemowego (→ [09](09-law-and-protecting-the-creator.md)).
-- **Eval jak testy.** Golden set pytań kontrolnych; zmiana promptu → przepuść przez niego i mierz
-  regresje (→ [03](03-testing-and-verification.md)). Prompt bez evala dryfuje po cichu.
-- **Prawo.** Disclaimer („to nie porada specjalistyczna"), RODO przy zapisie rozmów i danych (→ [09](09-law-and-protecting-the-creator.md)).
+- **Persona and rules = configuration, not code.** Keep the system prompt, scope, tone, and boundaries as
+  **data** (a file/database), versioned in git — you iterate the assistant without a deploy. A prompt
+  "baked into" the code is dead configuration.
+- **Grounding is mandatory.** The assistant answers from **your data** (context from the database / RAG),
+  not the model's memory. Cite the source (→ [11](11-data-model-and-normalization.md)). A hallucinated price/fact is a bug, not an "AI feature."
+- **Define scope and refusal.** What the assistant **does** and **doesn't** do; a safe "I don't know" / "that's
+  outside my scope" instead of making things up. The model's confidence ≠ correctness.
+- **Streaming UX.** A token-by-token response (SSE), conversation history, clear limits (→ [13](13-performance-frontend-and-sql.md), [14](14-operational-resilience.md)).
+- **Security (prompt injection).** User content and web data are **data, not instructions**. Don't perform
+  side-effect actions from the chat without confirmation, and don't leak secrets or the system prompt (→ [09](09-law-and-protecting-the-creator.md)).
+- **Eval like tests.** A golden set of control questions; a prompt change → run it through and measure
+  regressions (→ [03](03-testing-and-verification.md)). A prompt with no eval drifts silently.
+- **Law.** A disclaimer ("this is not professional advice"), GDPR for storing conversations and data (→ [09](09-law-and-protecting-the-creator.md)).
 
-### Anty-wzorce
-- 🚫 **Persona zaszyta w kodzie** — każda zmiana tonu to deploy zamiast edycji konfigu.
-- 🚫 **Brak groundingu** — asystent „pewnie" zmyśla fakty/ceny.
-- 🚫 **Brak limitu/kwoty** — czat to otwarty rachunek i wektor nadużyć (→ [14](14-operational-resilience.md)).
-- 🚫 **Akcje z czatu bez potwierdzenia** — model wykonuje nieodwracalne na słowo użytkownika.
-- 🚫 **Traktowanie treści użytkownika jako instrukcji** — prompt injection wycieka prompt/sekrety.
+### Anti-patterns
+- 🚫 **Persona baked into the code** — every tone change is a deploy instead of a config edit.
+- 🚫 **No grounding** — the assistant "confidently" invents facts/prices.
+- 🚫 **No limit/quota** — chat is an open bill and an abuse vector (→ [14](14-operational-resilience.md)).
+- 🚫 **Actions from the chat without confirmation** — the model does something irreversible on a user's word.
+- 🚫 **Treating user content as instructions** — prompt injection leaks the prompt/secrets.
 
-## Dla nowych projektów
-Jeśli produkt żyje z danych z sieci: zacznij od **oficjalnego źródła**, dołóż walidację kształtu i
-idempotentny loader **zanim** zbierzesz pierwszy tysiąc rekordów. Jeśli używasz AI: **kontrakt wyjścia
-i cache od pierwszego wywołania**, kwota od pierwszego użytkownika. Asystenta projektuj jako
-**konfigurowalny i ugruntowany** od początku — system prompt jako dane, golden set jako test (→ [03](03-testing-and-verification.md)),
-limit jako reguła (→ [14](14-operational-resilience.md)). Reszta dorasta z projektem.
+## For new projects
+If the product lives on web data: start from the **official source**, add shape validation and an
+idempotent loader **before** you collect the first thousand records. If you use AI: an **output contract
+and a cache from the first call**, a quota from the first user. Design the assistant to be **configurable
+and grounded** from the start — the system prompt as data, a golden set as a test (→ [03](03-testing-and-verification.md)),
+a limit as a rule (→ [14](14-operational-resilience.md)). The rest grows with the project.

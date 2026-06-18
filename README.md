@@ -21,11 +21,11 @@ dla agenta, testowalna, bezpieczna w zmianie i godna zaufania.
   z `.md` w przeglądarce, wygodne na telefonie i desktopie, z przełącznikiem jasny/ciemny
   **i przełącznikiem treści PL/EN**. **Otwórz z dwukliku** (działa dzięki snapshotowi `content.js`)
   lub przez serwer (`python -m http.server 8080`) / hosting — serwowane zawsze pokazuje świeże `.md`.
-- **🇬🇧 English:** the doctrine is available in English under [`en/`](en/00-commandments.md) (same chapters,
-  same filenames). PL (root) is canonical; `en/` is its translation. Toggle PL/EN in the reader.
+- **🇬🇧 English is the base** — the canonical doctrine lives in the repo root ([00-commandments.md](00-commandments.md) …).
+  **🇵🇱 Polski:** tłumaczenie pod [`pl/`](pl/00-commandments.md) (te same rozdziały i nazwy plików). Przełącznik EN/PL w czytniku (domyślnie EN).
 - **Edytujesz treść?** Po zmianie `.md` uruchom `python build.py`, żeby odświeżyć snapshot dla `file://`.
 - **Na GitHubie** pliki `.md` renderują się natywnie — wystarczy klikać linki w tabeli niżej.
-- **Nowy tutaj?** Zacznij od manifestu: [Czym jest The Craft i dlaczego warto](intro.md) (EN: [`en/intro.md`](en/intro.md)).
+- **Nowy tutaj?** Zacznij od manifestu: [What The Craft is](intro.md) (PL: [`pl/intro.md`](pl/intro.md)).
 - **Spieszysz się?** Przeczytaj [00 — Dekalog](00-commandments.md). To cała doktryna w jednym ekranie.
 - **Zaczynasz nowy projekt?** Idź do [07 — Nowy projekt: Dzień 0](07-new-project-day-0.md).
 

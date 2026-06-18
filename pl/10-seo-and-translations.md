@@ -1,0 +1,70 @@
+# 10 — SEO i tłumaczenia
+
+> Przykazanie III rozszerzone na widoczność: *weryfikuj, nie deklaruj* — także to, że strona
+> jest indeksowalna, kompletna we wszystkich językach i mierzona, a nie „chyba wygląda OK".
+
+Aplikacja, której nikt nie znajdzie, nie istnieje. SEO i i18n to nie warstwa marketingu doklejana
+na końcu — to **kontrakt z wyszukiwarką i z użytkownikiem**, że strona jest zrozumiała dla
+crawlera i kompletna w jego języku. Tak jak AI_README jest interfejsem dla agenta, tak metadane
+i tłumaczenia są interfejsem dla świata.
+
+## Fundamenty SEO (każda strona)
+- **`<title>` + `meta description`** unikalne per strona (nie jeden globalny).
+- **Canonical** — jeden URL prawdy dla każdej treści (chroni przed duplikatami z parametrów).
+- **hreflang** — przy wielojęzyczności obowiązkowe: każda wersja językowa wskazuje pozostałe
+  (np. 16 języków → 16 wzajemnych `hreflang` + `x-default`).
+- **JSON-LD** — `Organization` (home), `Article` (blog/wpisy), `ItemList` (rankingi).
+- **`sitemap.xml`** (z priorytetami) + **`robots.txt`** (co indeksować, gdzie sitemap).
+- **Semantyczne nagłówki** (jedno `h1`, hierarchia `h2/h3`), **OG/Twitter cards** (np.
+  karty OG share — ale **bez ceny na publicznej karcie**, gdy domena tego wymaga, → [09](09-law-and-protecting-the-creator.md)).
+- **Czyste slugi** (`/ranking/produkty-do-200-zl`, nie `?id=42`) i **linkowanie wewnętrzne**
+  (nav-drawer + footer + linki kontekstowe między stronami).
+
+## Programmatic i editorial SEO
+- **Programmatic** — kuratorskie landing pages pod **zapytania transakcyjne**. W projekcie
+  referencyjnym: kilka stron `/ranking/:slug` („produkty do 100/200/300 zł", „najlepszy w kategorii X", „na prezent")
+  — każda to **ręcznie pisany wstęp** PL/EN + ponumerowana **TOP-N** + pełna filtrowalna tabela +
+  `ItemList` JSON-LD. **Guardy jakości** są częścią SEO: filtry kwalifikujące, `requireRating`,
+  `minShops` — żeby strona nie była cienką wydmuszką.
+- **Editorial** — huby treści/blog pod **zapytania informacyjne** (np. poradniki tematyczne
+  o produktach). Treść, która **realnie odpowiada** na pytanie, nie keyword-stuffing.
+
+## E-E-A-T i YMYL
+Google ocenia rygorystycznie strony **YMYL** (Your Money or Your Life) — zdrowie, finanse,
+religia, bezpieczeństwo. Wpada w to np. porównywarka cen (wydatki, treści z ograniczeniem wiekowym), ale też każda aplikacja
+zdrowia, finansów czy wsparcia. Liczy się **E-E-A-T**: Experience, Expertise, Authoritativeness, Trust.
+- Rzetelność i **źródła** (skąd cena, skąd ocena — projekt referencyjny linkuje zewnętrzne źródło danych/sklep).
+- **Autorstwo** i operator jasno nazwany (→ [09](09-law-and-protecting-the-creator.md)) budują Trust.
+- **Zero porad medycznych** w produktach zdrowia/wsparcia — disclaimer + ścieżka kryzysowa, nie diagnoza.
+
+## Core Web Vitals jako czynnik rankingowy
+Szybkość to nie tylko UX — to sygnał rankingowy. LCP/CLS/INP wpadają do oceny strony. Mierz i
+popraw (→ [13](13-performance-frontend-and-sql.md)); nie „wydaje się szybko", tylko liczby.
+
+## Tłumaczenia / i18n
+- **Kompletność = test, który pada.** Brakujący klucz albo strona w którymkolwiek języku → test
+  failuje (w praktyce: **parytet EN↔PL** + martwe linki). Żaden język „w połowie".
+- **hreflang** spina wersje (patrz wyżej).
+- **Ciepły rejestr w KAŻDYM języku** — to nie dosłowność, to ton. Tłumaczenie poprawne
+  gramatycznie, ale zimne, jest błędem (np. „jesteśmy tu, żeby pomóc" musi brzmieć ciepło po
+  arabsku tak samo jak po polsku).
+- **MT + review człowieka dla treści wrażliwych** — Gemini tłumaczy szkielet, człowiek
+  przegląda disclaimery, komunikaty kryzysowe, prawne (→ [09](09-law-and-protecting-the-creator.md)).
+- **RTL** (arabski) — layout musi się odbić, nie tylko tekst.
+- **GA4 + Search Console** (zanonimizowane) — *które zapytania konwertują*, w którym języku
+  ruch rośnie. Dane sterują tym, gdzie pisać następny landing.
+
+## Anty-wzorce
+- 🚫 **SEO-spam** / keyword-stuffing — Google to karze, nie nagradza.
+- 🚫 **Cienkie strony programmatic** bez wartości (TOP-N bez guardów jakości, 2-sklepowe wydmuszki).
+- 🚫 **Brak hreflang** w aplikacji wielojęzycznej → wyszukiwarka serwuje zły język.
+- 🚫 **Zimne / błędne MT** w produkcie wrażliwym bez review człowieka.
+- 🚫 **Angielskie UI lub strony prawne** w aplikacji 16-językowej (→ [09](09-law-and-protecting-the-creator.md)).
+- 🚫 **Ignorowanie Core Web Vitals** — wolna strona traci ranking i użytkownika (→ [13](13-performance-frontend-and-sql.md)).
+
+## W praktyce
+i18n od pierwszego dnia w aplikacji globalnej (np. 16 języków, next-intl): hreflang dla każdej
+pary, **test parytetu** jako bramka CI, RTL dla języków pisanych od prawej, ciepły rejestr w
+każdym języku. Treści YMYL (zdrowie/wsparcie/finanse) — zero porad regulowanych, jasne autorstwo
+i operator, zasoby kryzysowe per region. Search Console od startu, żeby wiedzieć, **które języki
+i tematy** ciągną ruch. → [09](09-law-and-protecting-the-creator.md), [13](13-performance-frontend-and-sql.md)

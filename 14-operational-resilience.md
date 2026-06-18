@@ -1,78 +1,79 @@
-# 14 — Odporność operacyjna i zewnętrzne zależności
+# 14 — Operational resilience and external dependencies
 
-> Przykazania III, V, VI w warstwie runtime: *prod żyje w zawodnym świecie*. Sieć rwie,
-> provider blokuje porty, scraper pada w połowie, płatne API kosztuje przy każdym żądaniu.
-> Doktryna z rozdziałów 03–05 dba o **kod i wdrożenie**; ten rozdział o tym, co dzieje się
-> **po** — gdy realni użytkownicy i niezależne systemy uderzają w działający serwis.
+> Commandments III, V, VI at the runtime layer: *prod lives in an unreliable world*. The network
+> drops, the provider blocks ports, the scraper dies halfway, a paid API costs on every request.
+> The doctrine in chapters 03–05 covers **code and deployment**; this chapter is about what
+> happens **after** — when real users and independent systems hit a running service.
 
-Te lekcje są drogo opłacone: prawie każda to incydent na prodzie, nie teoria. Wspólny mianownik —
-**najgorsze bugi nie krzyczą, tylko cicho zawieszają, wylogowują albo drenują budżet.**
+These lessons were paid for dearly: nearly every one is a prod incident, not theory. The common
+denominator — **the worst bugs don't shout, they quietly hang, log out, or drain the budget.**
 
-## 1. Jeden zły request nie może położyć procesu
+## 1. One bad request must not take down the process
 
-Niezłapany `throw`/rejection w handlerze async potrafi ubić **cały** serwer (Node/Express:
-rejection → exit procesu → pętla restartów pm2). Zbuduj siatkę na poziomie procesu:
+An uncaught `throw`/rejection in an async handler can kill the **entire** server (Node/Express:
+rejection → process exit → pm2 restart loop). Build a net at the process level:
 
-- **Globalne łapacze**: `process.on('unhandledRejection')` i `'uncaughtException')` — logują i
-  kontrolowanie kończą, nie zostawiają zombie-procesu.
-- **Wrapper async-route** przekazujący błąd do `next(err)` zamiast gubić go w niezłapanym promise.
-- **Middleware 500**, który **nie wycieka stack trace** użytkownikowi (→ [09](09-law-and-protecting-the-creator.md)).
-- **Defensywa na danych z brzegu**: konto OAuth bez hasła, pole `null` tam gdzie kod zakłada string —
-  to realne wejścia, gdy wpuścisz prawdziwych userów (często ujawnia się **po swapie bazy**, → [05](05-git-and-deployments.md)).
+- **Global catchers**: `process.on('unhandledRejection')` and `'uncaughtException')` — they log and
+  shut down in a controlled way, leaving no zombie process.
+- **An async-route wrapper** that passes the error to `next(err)` instead of losing it in an uncaught promise.
+- **500 middleware** that **doesn't leak the stack trace** to the user (→ [09](09-law-and-protecting-the-creator.md)).
+- **Defense on edge data**: an OAuth account with no password, a `null` field where the code assumes a string —
+  these are real inputs once you let real users in (often surfaces **after a database swap**, → [05](05-git-and-deployments.md)).
 
-> Reguła: *throw w jednym żądaniu degraduje to żądanie, nie serwis.* Otestuj regresyjnie (→ [03](03-testing-and-verification.md)).
+> Rule: *a throw in one request degrades that request, not the service.* Test it for regressions (→ [03](03-testing-and-verification.md)).
 
-## 2. Długie zadania: wznawialne i odpięte od sesji agenta
+## 2. Long jobs: resumable and detached from the agent session
 
-Scraper/ETL „zbierz wszystko → zapisz raz" traci 100% pracy przy każdym crashu. Pisz **batchami**:
+A "collect everything → save once" scraper/ETL loses 100% of its work on every crash. Write in **batches**:
 
-- **Checkpoint zrobionych jednostek** (plik/tabela z URL-ami/ID) — restart wznawia od miejsca, nie od zera.
-- **Zapis co N**, nie na końcu — crash kosztuje ostatni batch, nie cały run.
-- **Długi run odpalaj z realnego terminala**, nie z tła sesji Claude. Tło agenta to **nietrwały
-  runner** — teardown hosta sesji ubija proces w połowie (to nie anti-bot, to znikający runner).
-- Idempotencja całości (→ [04](04-scripts-and-databases.md)): wznowiony job nie dubluje już zapisanych danych.
+- **Checkpoint completed units** (a file/table of URLs/IDs) — a restart resumes from where it left off, not from scratch.
+- **Save every N**, not at the end — a crash costs the last batch, not the whole run.
+- **Run long jobs from a real terminal**, not from a Claude session in the background. The agent's
+  background is a **non-durable runner** — tearing down the session host kills the process halfway
+  (it's not anti-bot, it's a vanishing runner).
+- End-to-end idempotency (→ [04](04-scripts-and-databases.md)): a resumed job doesn't duplicate already-saved data.
 
-## 3. Zewnętrzne źródła traktuj jak wrogie
+## 3. Treat external sources as hostile
 
-Cudze API i strony rwą połączenia, rate-limitują (429), zwracają 200 z HTML-em błędu. Zakładaj zawodność:
+Other people's APIs and pages drop connections, rate-limit (429), return 200 with an error page. Assume they're unreliable:
 
-- **Timeout na każde wywołanie** — bez niego socket wisi w nieskończoność (cichy zawis, nie błąd).
-- **Retry z exponential backoff** (np. 10/20/30 s), z górnym limitem prób.
-- **Rotacja sesji i User-Agent** przy masowym I/O — nowe `Session` (świeże TCP/cookies) co batch,
-  UA z puli realnych przeglądarek (część hostów rwie po ~kilkuset żądaniach z jednej sesji).
-- **Waliduj odpowiedź, nie status** — „200 + strona błędu" to porażka; sprawdź kształt danych.
+- **A timeout on every call** — without it the socket hangs forever (a silent freeze, not an error).
+- **Retry with exponential backoff** (e.g. 10/20/30 s), with an upper bound on attempts.
+- **Rotate session and User-Agent** under heavy I/O — a fresh `Session` (new TCP/cookies) per batch,
+  a UA from a pool of real browsers (some hosts drop you after a few hundred requests from one session).
+- **Validate the response, not the status** — a "200 + error page" is a failure; check the shape of the data.
 
-## 4. Infrastruktura providera narzuca limity — weryfikuj end-to-end
+## 4. The provider's infrastructure imposes limits — verify end-to-end
 
-Hosting ma własne reguły sieciowe, które kładą „działający" kod dopiero na prodzie:
+Hosting has its own network rules that break "working" code only in prod:
 
-- **Porty bywają blokowane.** Np. wyjściowy SMTP 465 potrafi być zamknięty → użyj **587 + STARTTLS**.
-  `secure:true` na zablokowanym porcie **zawiesza każdą wysyłkę** aż do timeoutu — ustaw twarde
-  connection/greeting timeouts, żeby błąd był głośny.
-- **Deliverability poczty to nie „wysłałem".** Zweryfikowana domena nadawcy (SPF/DKIM), realne
-  wysłanie testowe, opt-in zgodny z RODO (→ [09](09-law-and-protecting-the-creator.md)). E-mail, który
-  „wyszedł", a wylądował w spamie/nigdzie, to bug.
-- **Sprawdź to na prodzie/stagingu providera**, nie lokalnie — lokalna sieć nie ma tych blokad (→ [03](03-testing-and-verification.md)).
+- **Ports can be blocked.** E.g. outbound SMTP 465 may be closed → use **587 + STARTTLS**.
+  `secure:true` on a blocked port **hangs every send** until timeout — set hard
+  connection/greeting timeouts so the error is loud.
+- **Mail deliverability isn't "I sent it."** A verified sender domain (SPF/DKIM), a real
+  test send, GDPR-compliant opt-in (→ [09](09-law-and-protecting-the-creator.md)). An email that
+  "went out" but landed in spam/nowhere is a bug.
+- **Check this on the provider's prod/staging**, not locally — your local network doesn't have these blocks (→ [03](03-testing-and-verification.md)).
 
-## 5. Każdy płatny zasób za twardą kwotą
+## 5. Every paid resource behind a hard quota
 
-Endpoint wołający płatne API (LLM, geokodowanie, e-mail) bez limitu to otwarty rachunek i wektor nadużyć:
+An endpoint calling a paid API (LLM, geocoding, email) with no limit is an open tab and an abuse vector:
 
-- **Kwota per użytkownik** (okno miesięczne/dobowe) z **jasnym komunikatem** i **datą resetu z góry**.
-- **Różnicuj per tier** (free vs premium), egzekwuj po stronie serwera.
-- **Rate-limit + nagłówki bezpieczeństwa** (helmet/limiter) jako stały element stacku (→ [08](08-stack-and-technologies.md)).
-- Powiąż z prawem i regulaminem: limit i jego komunikacja to też ochrona przed abuse (→ [09](09-law-and-protecting-the-creator.md)).
+- **A quota per user** (monthly/daily window) with a **clear message** and a **reset date up front**.
+- **Differentiate per tier** (free vs premium), enforce it server-side.
+- **Rate-limit + security headers** (helmet/limiter) as a permanent part of the stack (→ [08](08-stack-and-technologies.md)).
+- Tie it to the law and the terms of service: a limit and how you communicate it are also protection against abuse (→ [09](09-law-and-protecting-the-creator.md)).
 
-## Anty-wzorce
-- 🚫 **Brak globalnego łapacza błędów** — jeden zły request restartuje serwis dla wszystkich.
-- 🚫 **Scraper bez checkpointów** odpalany z tła sesji — crash = run od zera, znikający runner = wieczna porażka.
-- 🚫 **Zewnętrzne wywołanie bez timeoutu i backoffu** — cichy zawis albo ban po serii 429.
-- 🚫 **„Wysłałem maila" ≠ dostarczyłem** — brak weryfikacji portu/domeny/dostarczalności.
-- 🚫 **Płatne API bez kwoty** — niespodziewany rachunek i otwarty wektor nadużyć.
-- 🚫 **Sesje w pamięci procesu** — każdy deploy wylogowuje wszystkich (→ [05](05-git-and-deployments.md)).
+## Anti-patterns
+- 🚫 **No global error catcher** — one bad request restarts the service for everyone.
+- 🚫 **A scraper with no checkpoints** run from the session background — crash = run from scratch, vanishing runner = perpetual failure.
+- 🚫 **An external call with no timeout and backoff** — a silent freeze or a ban after a string of 429s.
+- 🚫 **"I sent the email" ≠ I delivered it** — no verification of port/domain/deliverability.
+- 🚫 **A paid API with no quota** — a surprise bill and an open abuse vector.
+- 🚫 **Sessions in process memory** — every deploy logs everyone out (→ [05](05-git-and-deployments.md)).
 
-## Dla nowych projektów
-Wpisz do Dnia 0 (→ [07](07-new-project-day-0.md)) **zanim** pojawi się pierwszy realny user:
-globalny error-handler + 500 bez wycieku, timeouty i backoff na każdym zewnętrznym I/O, kwoty na
-płatnych endpointach, trwały store sesji w osobnym pliku. To tańsze teraz niż jako incydent o 2 w nocy.
-Każdy incydent prod → wpis w runbooku z datą i ponumerowaną lekcją (→ [05](05-git-and-deployments.md), [06](06-collaboration-and-memory.md)).
+## For new projects
+Add to Day 0 (→ [07](07-new-project-day-0.md)) **before** the first real user shows up:
+a global error handler + a 500 with no leak, timeouts and backoff on every external I/O, quotas on
+paid endpoints, a durable session store in a separate file. It's cheaper now than as a 2 a.m. incident.
+Every prod incident → an entry in the runbook with a date and a numbered lesson (→ [05](05-git-and-deployments.md), [06](06-collaboration-and-memory.md)).

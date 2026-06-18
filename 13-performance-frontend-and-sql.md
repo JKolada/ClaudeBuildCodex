@@ -1,65 +1,65 @@
-# 13 — Wydajność: frontend i SQL
+# 13 — Performance: frontend and SQL
 
-> Przykazanie III w czystej postaci: *weryfikuj, nie deklaruj* — zastosowane do szybkości.
-> „Wydaje się szybciej" nie istnieje. Istnieją **liczby przed/po**.
+> Commandment III in pure form: *verify, don't declare* — applied to speed.
+> "Feels faster" doesn't exist. **Before/after numbers** exist.
 
-Wydajność to nie przeczucie, to pomiar. Najczęstszy błąd optymalizacji: zgadywanie, co jest
-wolne, i „poprawianie" tego bez dowodu, że było problemem. Mierz **najpierw**, popraw to, co
-metryka wskazuje, i **udowodnij liczbą**, że poprawiłeś. Wydajność to też SEO (Core Web Vitals
-→ [10](10-seo-and-translations.md)) i koszt (szybsze zapytanie = tańszy serwer → [12](12-flexibility-and-scalability.md)).
+Performance isn't a hunch, it's a measurement. The most common optimization mistake: guessing what's
+slow and "fixing" it without proof it was the problem. Measure **first**, fix what the metric points
+to, and **prove with a number** that you improved it. Performance is also SEO (Core Web Vitals
+→ [10](10-seo-and-translations.md)) and cost (a faster query = a cheaper server → [12](12-flexibility-and-scalability.md)).
 
-## Mierz najpierw
+## Measure first
 - **Lighthouse / Core Web Vitals**: LCP (largest contentful paint), CLS (layout shift),
-  INP (interaction), TBT. To są twarde liczby, nie wrażenia.
-- **Przed/po, nie „wydaje się szybciej".** Np. optymalizacja home: preload hero,
-  GPU-promoted animacje, `content-visibility: auto` poniżej folda; raportujesz LCP przed i po,
-  nie „chyba lżej". → [03](03-testing-and-verification.md)
-- **SQL: `EXPLAIN QUERY PLAN`** mówi, czy zapytanie używa indeksu, czy skanuje całą tabelę.
+  INP (interaction), TBT. These are hard numbers, not impressions.
+- **Before/after, not "feels faster."** E.g. home-page optimization: preload hero,
+  GPU-promoted animations, `content-visibility: auto` below the fold; you report LCP before and after,
+  not "probably lighter." → [03](03-testing-and-verification.md)
+- **SQL: `EXPLAIN QUERY PLAN`** tells you whether a query uses an index or scans the whole table.
 
 ## Frontend
-- **Code-splitting** + **lazy-load below-fold** — nie ładuj tego, czego user nie widzi.
-- **Obrazy**: WebP (np. konwersja wszystkich do WebP q=95), responsive `srcset`,
-  **preload hero** (LCP), reszta lazy.
-- **Fonty**: self-host (np. Playfair/Outfit, jak na jakub.solutions), `font-display: swap` — tekst
-  widoczny zanim font dojdzie.
-- **`content-visibility: auto`** na sekcjach poniżej folda — przeglądarka pomija render niewidocznego.
-- **GPU-promoted animacje** (`translateZ(0)`/`transform`) zamiast layoutujących właściwości.
-- **Cache statyków**: `immutable` + długi `max-age` na prodzie (np. 7 dni immutable prod).
-- **Cache-busting per deploy**: skoro CSS/JS są `immutable`, doklej `?v=<git-short-hash>` do
-  każdego linku — każdy deploy zmienia URL → świeży pobór. Bez tego user widzi **starą apkę**
-  (rozjechany layout) aż do twardego odświeżenia (→ [05](05-git-and-deployments.md)).
-- **Streaming / SSE dla czatu** — odpowiedź LLM **token-by-token** (np. przez SSE), user widzi
-  pierwsze słowa od razu, a nie pustkę do końca generacji. → [08](08-stack-and-technologies.md)
-- **Server-side pagination** — nigdy nie ślij całego katalogu do przeglądarki (np.
-  paginacja po stronie serwera dla ~kilku tysięcy pozycji).
+- **Code-splitting** + **lazy-load below-fold** — don't load what the user can't see.
+- **Images**: WebP (e.g. convert everything to WebP q=95), responsive `srcset`,
+  **preload hero** (LCP), the rest lazy.
+- **Fonts**: self-host (e.g. Playfair/Outfit, as on jakub.solutions), `font-display: swap` — text
+  visible before the font arrives.
+- **`content-visibility: auto`** on sections below the fold — the browser skips rendering what's offscreen.
+- **GPU-promoted animations** (`translateZ(0)`/`transform`) instead of layout-triggering properties.
+- **Static caching**: `immutable` + long `max-age` in prod (e.g. 7 days immutable in prod).
+- **Cache-busting per deploy**: since CSS/JS are `immutable`, append `?v=<git-short-hash>` to
+  every link — each deploy changes the URL → fresh fetch. Without it the user sees the **old app**
+  (broken layout) until a hard refresh (→ [05](05-git-and-deployments.md)).
+- **Streaming / SSE for chat** — the LLM response **token-by-token** (e.g. via SSE), the user sees
+  the first words right away instead of a blank screen until generation finishes. → [08](08-stack-and-technologies.md)
+- **Server-side pagination** — never ship the whole catalog to the browser (e.g.
+  server-side pagination for a few thousand items).
 
 ## SQL
-- **Indeksy** na kolumnach z `WHERE` i `JOIN` — gorące zapytanie bez indeksu to skan całej tabeli.
-- **Partial indexes** — np. `uniq_prices_active … WHERE expired_at IS NULL` (indeks
-  tylko na aktywnych cenach — mniejszy, szybszy, wymusza unikalność, → [11](11-data-model-and-normalization.md)).
-- **`EXPLAIN QUERY PLAN`** przed i po dodaniu indeksu — dowód, że plan się zmienił.
-- **Unikaj N+1** — nie zapytanie w pętli po każdym wierszu; batch/join za jednym razem.
-- **`SELECT` tylko potrzebnych kolumn** — nie `SELECT *`, gdy potrzebujesz trzech pól.
-- **Paginacja server-side** + **cache'owane agregaty** (np. `site_stats` zamiast
-  `COUNT(*)` po całej bazie na każde wejście na home).
-- **WAL** (SQLite) — czytelnicy nie blokują pisarza; domyślny tryb w projekcie referencyjnym.
-- **Ostrożnie z `LIKE '%foo'`** — wiodący wildcard zabija indeks (full scan); rozważ FTS, jeśli
-  to gorąca ścieżka wyszukiwania.
+- **Indexes** on columns in `WHERE` and `JOIN` — a hot query without an index is a full table scan.
+- **Partial indexes** — e.g. `uniq_prices_active … WHERE expired_at IS NULL` (an index
+  only on active prices — smaller, faster, enforces uniqueness, → [11](11-data-model-and-normalization.md)).
+- **`EXPLAIN QUERY PLAN`** before and after adding an index — proof the plan changed.
+- **Avoid N+1** — no query in a loop per row; batch/join in one shot.
+- **`SELECT` only the columns you need** — not `SELECT *` when you need three fields.
+- **Server-side pagination** + **cached aggregates** (e.g. `site_stats` instead of
+  `COUNT(*)` over the whole database on every visit to the home page).
+- **WAL** (SQLite) — readers don't block the writer; the default mode in the reference project.
+- **Careful with `LIKE '%foo'`** — a leading wildcard kills the index (full scan); consider FTS if
+  it's a hot search path.
 
-## Anty-wzorce
-- 🚫 **Optymalizacja bez pomiaru** — „poprawiłem", nie wiedząc, czy było wolne (→ [03](03-testing-and-verification.md)).
-- 🚫 **Brak indeksu na gorącym zapytaniu** — najczęstsza przyczyna wolnej strony katalogu.
-- 🚫 **N+1 w pętli** — 200 zapytań tam, gdzie wystarczył jeden join.
-- 🚫 **`SELECT *`** — przesyłasz i deserializujesz kolumny, których nie używasz.
-- 🚫 **Client-side pagination ogromnych zbiorów** — ślesz kilka tysięcy rekordów, by pokazać 20.
-- 🚫 **Blokowanie UI w oczekiwaniu na pełną odpowiedź LLM** zamiast streamingu (→ [12](12-flexibility-and-scalability.md)).
-- 🚫 **Brak cache drogich agregatów** — `COUNT(*)` po całej bazie na każde żądanie.
+## Anti-patterns
+- 🚫 **Optimization without measurement** — "I improved it" without knowing whether it was slow (→ [03](03-testing-and-verification.md)).
+- 🚫 **No index on a hot query** — the most common cause of a slow catalog page.
+- 🚫 **N+1 in a loop** — 200 queries where one join would do.
+- 🚫 **`SELECT *`** — you transfer and deserialize columns you don't use.
+- 🚫 **Client-side pagination of huge sets** — shipping a few thousand records to show 20.
+- 🚫 **Blocking the UI waiting for the full LLM response** instead of streaming (→ [12](12-flexibility-and-scalability.md)).
+- 🚫 **No cache on expensive aggregates** — `COUNT(*)` over the whole database on every request.
 
-## Dla nowych projektów
-Wpisz do Dnia 0 (→ [07](07-new-project-day-0.md)): **baseline Lighthouse** zaraz po
-pierwszej działającej stronie (masz punkt odniesienia), indeksy na kolumnach filtrów od
-pierwszej migracji, `EXPLAIN QUERY PLAN` jako nawyk przy każdym gorącym zapytaniu. Reguła
-nadrzędna: **żadna optymalizacja bez liczby przed i po** — bo bez dowodu „optymalizacja" bywa
-regresją w przebraniu (→ [03](03-testing-and-verification.md)). Szybkość to jednocześnie SEO
-(→ [10](10-seo-and-translations.md)) i koszt infrastruktury (→ [12](12-flexibility-and-scalability.md))
-— jedna inwestycja, trzy zwroty.
+## For new projects
+Add to Day 0 (→ [07](07-new-project-day-0.md)): a **Lighthouse baseline** right after the
+first working page (you have a reference point), indexes on filter columns from the first
+migration, `EXPLAIN QUERY PLAN` as a habit on every hot query. The overriding rule:
+**no optimization without a before-and-after number** — because without proof an "optimization" can
+be a regression in disguise (→ [03](03-testing-and-verification.md)). Speed is both SEO
+(→ [10](10-seo-and-translations.md)) and infrastructure cost (→ [12](12-flexibility-and-scalability.md))
+— one investment, three returns.

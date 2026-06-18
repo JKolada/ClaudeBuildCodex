@@ -15,7 +15,7 @@ from pathlib import Path
 import build  # współdzielone: build.content_js(), build.collect()
 
 ROOT = Path(__file__).resolve().parent
-EN = ROOT / "en"
+TR = ROOT / "pl"   # tłumaczenie (PL); kanon (EN) jest w rootcie
 errors = []
 
 try:  # Windows: konsola bywa cp1252 — wymuś UTF-8, by polskie znaki nie wywaliły printu.
@@ -38,24 +38,24 @@ def cross_links(path):
 
 
 def main():
-    pl = chapter_files(ROOT)
-    en = chapter_files(EN) if EN.is_dir() else []
+    base = chapter_files(ROOT)              # kanon (EN) w rootcie
+    tr = chapter_files(TR) if TR.is_dir() else []   # tłumaczenie (PL) w pl/
 
-    # 1) Parytet PL↔EN — ten sam zestaw nazw plików (rozdziały + intro).
-    if set(pl) != set(en):
-        only_pl = sorted(set(pl) - set(en))
-        only_en = sorted(set(en) - set(pl))
-        if only_pl:
-            err(f"Parytet: rozdziały bez odpowiednika EN: {only_pl}")
-        if only_en:
-            err(f"Parytet: rozdziały EN bez odpowiednika PL: {only_en}")
+    # 1) Parytet EN↔PL — ten sam zestaw nazw plików (rozdziały + intro).
+    if set(base) != set(tr):
+        only_base = sorted(set(base) - set(tr))
+        only_tr = sorted(set(tr) - set(base))
+        if only_base:
+            err(f"Parytet: rozdziały bez tłumaczenia PL (pl/): {only_base}")
+        if only_tr:
+            err(f"Parytet: rozdziały w pl/ bez kanonu EN: {only_tr}")
     for extra in ("intro.md",):
-        if (ROOT / extra).exists() and not (EN / extra).exists():
-            err(f"Parytet: brak tłumaczenia en/{extra}")
+        if (ROOT / extra).exists() and not (TR / extra).exists():
+            err(f"Parytet: brak tłumaczenia pl/{extra}")
 
     # 2) Martwe linki między rozdziałami (cel musi istnieć w tym samym katalogu).
-    docs = [ROOT / n for n in pl] + [ROOT / "intro.md"]
-    docs += [EN / n for n in en] + [EN / "intro.md"]
+    docs = [ROOT / n for n in base] + [ROOT / "intro.md"]
+    docs += [TR / n for n in tr] + [TR / "intro.md"]
     for d in docs:
         if not d.exists():
             continue
@@ -74,10 +74,10 @@ def main():
     chapters = re.findall(r'file:"(\d\d-[a-z0-9-]+\.md)"', html)
     for f in chapters:
         if not (ROOT / f).exists():
-            err(f"CHAPTERS: wpis bez pliku PL: {f}")
-        if EN.is_dir() and not (EN / f).exists():
-            err(f"CHAPTERS: wpis bez pliku EN: en/{f}")
-    missing_in_chapters = sorted(set(pl) - set(chapters))
+            err(f"CHAPTERS: wpis bez pliku kanonu (EN): {f}")
+        if TR.is_dir() and not (TR / f).exists():
+            err(f"CHAPTERS: wpis bez tłumaczenia: pl/{f}")
+    missing_in_chapters = sorted(set(base) - set(chapters))
     if missing_in_chapters:
         err(f"CHAPTERS: rozdziały na dysku nieobecne w index.html: {missing_in_chapters}")
     codex = json.loads((ROOT / "codex.json").read_text(encoding="utf-8"))
@@ -87,7 +87,7 @@ def main():
     # 5) Każdy rozdział wymieniony w README i AI_README (reguła „trzy miejsca w zgodzie").
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     ai = (ROOT / "AI_README.md").read_text(encoding="utf-8")
-    for f in pl:
+    for f in base:
         if f not in readme:
             err(f"README.md nie wymienia rozdziału: {f}")
         if f not in ai:
@@ -98,7 +98,7 @@ def main():
         for e in errors:
             print(f"  - {e}")
         return 1
-    print(f"OK — {len(pl)} rozdziałów PL/EN, content.js świeży, linki i metadane spójne.")
+    print(f"OK — {len(base)} rozdziałów EN(kanon)/PL, content.js świeży, linki i metadane spójne.")
     return 0
 
 

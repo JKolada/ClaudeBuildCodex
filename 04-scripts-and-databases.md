@@ -1,82 +1,82 @@
-# 04 — Skrypty i bazy danych
+# 04 — Scripts and Databases
 
-> Przykazania IV i V: *Dry-run jest domyślny; backup to mechanizm rollbacku.*
+> Commandments IV and V: *Dry-run is the default; the backup is your rollback mechanism.*
 
-## Skrypty — zasady
+## Scripts — the rules
 
-### 1. Tryb próbny jest domyślny
-Każdy skrypt, który **zmienia dane**, działa domyślnie jako `--dry-run` i wypisuje plan:
-co, ile wierszy, gdzie. Mutację włącza świadome `--execute`. To uratowało projekt referencyjny
-niejeden raz — widzisz „4 OK, 0 pominiętych" zanim cokolwiek się zapisze.
+### 1. Dry-run is the default
+Every script that **changes data** runs as `--dry-run` by default and prints the plan:
+what, how many rows, where. A deliberate `--execute` turns on the mutation. This has saved the
+reference project more than once — you see "4 OK, 0 skipped" before anything is written.
 
 ```
-python -m scripts.x.do_thing            # dry-run: pokazuje plan
-python -m scripts.x.do_thing --execute  # zapisuje
+python -m scripts.x.do_thing            # dry-run: shows the plan
+python -m scripts.x.do_thing --execute  # writes
 ```
 
-### 2. Idempotencja
-Skrypt odpalony dwa razy ma dać ten sam stan, nie podwojony. Migracje/loadery treści
-pisz tak, by `INSERT OR IGNORE` / `UPSERT` — żeby ponowne uruchomienie było bezpieczne
-(w projekcie referencyjnym loadery treści z zewnętrznej bazy są jawnie idempotentne i to jest wymóg deployu).
+### 2. Idempotency
+A script run twice should yield the same state, not a doubled one. Write migrations and content loaders
+so that `INSERT OR IGNORE` / `UPSERT` make a re-run safe (in the reference project the content
+loaders from an external database are explicitly idempotent, and that's a deploy requirement).
 
-### 3. Organizacja przez etapy pipeline'u
-Skrypty grupuj wg fazy (`setup/`, `normalize/`, `enrich/`, `validate/`, `images/`,
-`dedup/`, `orchestration/`). Zostaw **shim-y kompatybilności**, gdy przenosisz pliki.
-Złóż je w **komponowalne pipeline'y** (`post-scrape`, `full`) — ale **mutujące katalog
-operacje trzymaj POZA automatycznym pipeline'em** (dedup/merge odpalasz ręcznie:
+### 3. Organize by pipeline stage
+Group scripts by phase (`setup/`, `normalize/`, `enrich/`, `validate/`, `images/`,
+`dedup/`, `orchestration/`). Leave **compatibility shims** when you move files.
+Compose them into **composable pipelines** (`post-scrape`, `full`) — but **keep
+catalog-mutating operations OUT of the automatic pipeline** (run dedup/merge by hand:
 dry-run → review → `--execute`).
 
-### 4. Loguj, czego NIE zrobiłeś
-Jeśli skrypt ucina zakres (top-N, sampling, pominięte wiersze) — **wypisz to**. Ciche
-ucięcie czyta się jako „pokryłem wszystko", a nie pokryłeś.
+### 4. Log what you did NOT do
+If a script truncates scope (top-N, sampling, skipped rows) — **print it**. A silent
+truncation reads as "I covered everything" when you didn't.
 
-### 5. Środowisko zapisz w dokumentacji
-Interpreter, zmienne (`PYTHONIOENCODING=utf-8` na Windows), skąd brać venv. Agent nie
-zgaduje ścieżki do Pythona — czyta ją z `CLAUDE.md`.
+### 5. Record the environment in the docs
+The interpreter, the variables (`PYTHONIOENCODING=utf-8` on Windows), where to get the venv. The agent
+doesn't guess the path to Python — it reads it from `CLAUDE.md`.
 
-## Bazy danych i migracje
+## Databases and migrations
 
-### Migracje są forward-only
-Brak down-migracji. Jeden numerowany plik = jeden krok naprzód. **Rollback schematu =
-przywrócenie backupu**, nie odwrotna migracja. Dlatego:
+### Migrations are forward-only
+No down-migrations. One numbered file = one step forward. **Rolling back a schema =
+restoring the backup**, not a reverse migration. Therefore:
 
-### Backup PRZED każdą zmianą schematu/danych na prodzie
+### Back up BEFORE every schema/data change on prod
 ```bash
 sqlite3 data/app.db ".backup backups/pre-deploy-$(date +%F_%H%M%S).db"
 ```
-To nie ostrożność — to *mechanizm cofania*. Trzymaj retencję (np. 14 dni) i nazwij
-snapshoty czytelnie (`pre-deploy-*`, `pre-swap-*`, `replaced-prod-*`).
+This isn't caution — it's the *undo mechanism*. Keep a retention window (e.g. 14 days) and name the
+snapshots legibly (`pre-deploy-*`, `pre-swap-*`, `replaced-prod-*`).
 
 ### Additive > destructive
-`ADD COLUMN` jest backward-compatible (stary kod dalej działa). **Nigdy nie DROP/RENAME
-kolumny w tej samej migracji, której wciąż używa działający stary kod** — rozbij zmianę
-destrukcyjną na późniejszy deploy, gdy nikt już kolumny nie czyta.
+`ADD COLUMN` is backward-compatible (old code still works). **Never DROP/RENAME a
+column in the same migration where running old code still uses it** — split the destructive
+change into a later deploy, once nothing reads the column anymore.
 
-### Integralność po fakcie
-Po każdej operacji na danych: `PRAGMA integrity_check` + `PRAGMA foreign_key_check` +
-policz wiersze. Odróżnij **szum zastany** (osierocone wiersze staging obecne i przed, i po)
-od **regresji** (nowe naruszenia, których wcześniej nie było). W projekcie referencyjnym scalona DB
-miała *mniej* naruszeń niż lokalna — to był sygnał, że migracja posprzątała, nie zepsuła.
+### Integrity after the fact
+After every data operation: `PRAGMA integrity_check` + `PRAGMA foreign_key_check` +
+count the rows. Distinguish **pre-existing noise** (orphaned staging rows present both before and after)
+from a **regression** (new violations that weren't there before). In the reference project the merged DB
+had *fewer* violations than the local one — a signal that the migration cleaned up rather than broke things.
 
-### Model „aktywny wiersz" zamiast nadpisywania
-Wzorzec z cen: zamiast UPDATE in-place, **wygaszaj** stary wiersz (`expired_at`) i wstawiaj
-nowy; partial unique index pilnuje „jeden aktywny na klucz". Historia zostaje, audyt jest
-darmowy. Rozważ taki model wszędzie, gdzie historia ma wartość.
+### "Active row" model instead of overwriting
+A pattern from prices: instead of an in-place UPDATE, **expire** the old row (`expired_at`) and insert
+a new one; a partial unique index enforces "one active per key". History is preserved and the audit trail
+comes for free. Consider this model anywhere history has value.
 
-### Snapshot do transferu rób przez `.backup` / `VACUUM INTO`, nie `cp` żywego pliku
-Żywy SQLite z WAL skopiowany `cp` bywa niespójny. `.backup` (online-safe) albo
-`VACUUM INTO` dają spójną, zdefragmentowaną kopię. **Nigdy nie SCP żywego `.db`.**
+### Make a transfer snapshot with `.backup` / `VACUUM INTO`, not `cp` on a live file
+A live SQLite with WAL copied via `cp` can be inconsistent. `.backup` (online-safe) or
+`VACUUM INTO` give a consistent, defragmented copy. **Never SCP a live `.db`.**
 
-## Anty-wzorce
-- 🚫 Skrypt mutujący bez `--dry-run`.
-- 🚫 Deploy z migracją bez backupu „bo additive".
-- 🚫 DROP kolumny używanej przez działający kod.
-- 🚫 `cp app.db` przy włączonym serwerze → niespójny snapshot.
-- 🚫 Wpięcie operacji mutującej katalog w automatyczny pipeline.
+## Anti-patterns
+- 🚫 A mutating script without `--dry-run`.
+- 🚫 A deploy with a migration but no backup "because it's additive".
+- 🚫 DROPping a column used by running code.
+- 🚫 `cp app.db` with the server running → an inconsistent snapshot.
+- 🚫 Wiring a catalog-mutating operation into the automatic pipeline.
 
-## W praktyce
-- Relacyjna baza → migracje forward-only + backup przed każdą.
-- **Pipeline przetwarzający dane wrażliwe** (np. anonimizacja / destylacja wniosków) = osobny,
-  idempotentny skrypt z dry-run; kontrakt: na wejściu dane surowe, na wyjściu **dane bez PII**,
-  z testem, że re-identyfikacja jest niemożliwa. Trzymaj go POZA ścieżką user-facing. →
+## In practice
+- Relational database → forward-only migrations + a backup before each one.
+- **A pipeline processing sensitive data** (e.g. anonymization / distilling submissions) = a separate,
+  idempotent script with dry-run; the contract: raw data in, **PII-free data** out,
+  with a test that re-identification is impossible. Keep it OUT of the user-facing path. →
   [09](09-law-and-protecting-the-creator.md), [11](11-data-model-and-normalization.md)

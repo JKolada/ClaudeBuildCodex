@@ -30,11 +30,11 @@ def collect(base):
 
 def content_js():
     """Zwróć (tekst content.js, mapę {lang:{slug:md}}). Jedno źródło prawdy buildu — używa go też test."""
-    # Wielojęzycznie: PL kanonicznie w rootcie, EN w en/. Każdy język = osobny namespace.
-    langs = {"pl": ROOT}
-    en_dir = ROOT / "en"
-    if en_dir.is_dir():
-        langs["en"] = en_dir
+    # Wielojęzycznie: EN kanonicznie w rootcie, PL w pl/. Każdy język = osobny namespace.
+    langs = {"en": ROOT}
+    pl_dir = ROOT / "pl"
+    if pl_dir.is_dir():
+        langs["pl"] = pl_dir
     by_lang = {code: collect(base) for code, base in langs.items()}
     # ensure_ascii=True → czysty ASCII (odporne na detekcję kodowania po file://).
     payload = json.dumps(by_lang, ensure_ascii=True, sort_keys=True)

@@ -538,11 +538,10 @@
   var slug = function(file){ return file.replace(/\.md$/,""); };
   var bySlug = {}; CHAPTERS.forEach(function(c){ bySlug[slug(c.file)] = c; });
 
-  // Język TREŚCI rozdziałów. PL kanonicznie w rootcie, EN w en/. Chrome (strona główna,
-  // brief) pozostaje po polsku — pełna prezentacja wielojęzyczna to The Craft Web.
-  var LANG = "pl";
+  // Język interfejsu i treści. EN kanonicznie w rootcie (baza), PL w pl/. Domyślnie EN.
+  var LANG = "en";
   try { var _l = localStorage.getItem("rzemioslo-lang"); if(_l==="pl"||_l==="en") LANG = _l; } catch(e){}
-  function langPath(file){ return LANG === "pl" ? file : (LANG + "/" + file); }
+  function langPath(file){ return LANG === "en" ? file : ("pl/" + file); }
 
   // Dokument specjalny (poza numerowaną listą rozdziałów): manifest „Czym jest The Craft".
   var INTRO = { file: "intro.md", no: "", title: "Czym jest The Craft", title_en: "What The Craft is" };
@@ -629,7 +628,7 @@
     briefCopied:{pl:"Skopiowano ✓",en:"Copied ✓"},
     briefOutNote_html:{pl:"<b>Zapisz</b> jako <code>brief-projektu.md</code> w głównym folderze projektu, albo <b>wklej</b> wprost do Claude Code / Claude Desktop otwartego w tym folderze. Puste pola pominęliśmy.",en:"<b>Save</b> as <code>brief-projektu.md</code> in your project's main folder, or <b>paste</b> straight into Claude Code / Claude Desktop opened in that folder. Empty fields were skipped."}
   };
-  function t(key){ var e=UI[key]; return e ? (e[LANG]||e.pl) : key; }
+  function t(key){ var e=UI[key]; return e ? (e[LANG]||e.en) : key; }
   function applyI18n(){
     document.querySelectorAll("[data-i18n]").forEach(function(el){ el.textContent = t(el.getAttribute("data-i18n")); });
     document.querySelectorAll("[data-i18n-html]").forEach(function(el){ el.innerHTML = t(el.getAttribute("data-i18n-html")); });

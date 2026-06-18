@@ -1,79 +1,79 @@
-# 00 — Dekalog
+# 00 — Decalogue
 
-Rdzeń doktryny. Jeśli przeczytasz tylko jeden plik z tego zestawu — niech to będzie ten.
-Każde przykazanie ma rozwinięcie w dalszych rozdziałach.
-
----
-
-### I. Dokumentuj dla agenta, nie dla archiwum.
-Każdy katalog ma `AI_README.md`. Aktualizujesz go **przed** commitem, nie „kiedyś".
-Dokumentacja, którą czyta się przed dotknięciem kodu, oszczędza godziny re-derywacji;
-dokumentacja dopisywana po fakcie („udokumentuję na końcu") rozjeżdża się z kodem i zaczyna
-kłamać — bo kontekst już wyparował, a „koniec" nie nadchodzi. → [01](01-documentation-and-ai-readme.md)
-
-### II. Szukaj w historii, zanim napiszesz linijkę.
-`git log -S"symbol"`, `git log --grep`, `git blame`, AI_README katalogu. Większość
-„nowych" problemów ktoś już rozwiązał w tym repo — istnieje helper, była migracja, jest
-powód, dla którego kod ma taki kształt. Re-derywacja jest droższa niż minuta szukania. → [05](05-git-and-deployments.md)
-
-### III. Weryfikuj, nie deklaruj.
-Nie piszesz „działa" — pokazujesz **dowód**: smoke test, kod HTTP, liczby, screenshot.
-Jeśli testy padają — mówisz to z outputem. Jeśli krok pominięto — mówisz, że pominięto.
-Zaufanie buduje się na uczciwym raporcie, nie na optymizmie. → [03](03-testing-and-verification.md)
-
-### IV. Dry-run jest domyślny; `--execute` jest świadomy.
-Każdy skrypt, który zmienia dane, najpierw **pokazuje plan** (co, ile, gdzie). Mutację
-odpalasz dopiero po przeczytaniu tego planu. Skrypt bez trybu próbnego to broń bez
-bezpiecznika. → [04](04-scripts-and-databases.md)
-
-### V. Backup to mechanizm rollbacku, nie ostrożność.
-Migracje **forward-only** (bez down-migracji). Snapshot **przed** każdą zmianą schematu
-lub danych na prodzie. Cofnięcie schematu = przywrócenie backupu. Backup nie jest
-„na wszelki wypadek" — jest *jedyną* drogą powrotu. → [04](04-scripts-and-databases.md)
-
-### VI. Prod jest święty — nie dotykasz go bez wyraźnego „wdrażaj".
-Commit i push na życzenie to **nie** deploy. `git pull` na serwerze, `pm2 reload`, swap
-bazy, flaga maintenance — tylko gdy user powie wprost. Działania nieodwracalne i „na
-zewnątrz" (publikacja, wysyłka, kasowanie) potwierdzaj zawsze. Zgoda w jednym kontekście
-nie rozciąga się na następny. → [05](05-git-and-deployments.md)
-
-### VII. Dane użytkownika są nienaruszalne.
-Przy podmiance bazy: wylicz **każdą** tabelę z FK do użytkownika (konta, recenzje, koszyki,
-odznaki, gry, czat, sesje), mapuj user-dane po **stabilnym kluczu** (slug), nie po ID
-(ID dryfują po merge'ach), źródłem prawdy dla kont jest **żywy prod**, a po wszystkim
-sprawdź `integrity_check` i policz wiersze. → [05](05-git-and-deployments.md)
-
-### VIII. Taguj każdy deploy i pisz, co user zyskał.
-Annotated tag (`deploy-RRRR-MM-DD`) to jedyny stabilny znacznik „co jest live" i podstawa
-rollbacku. Przy każdym deployu zaktualizuj publiczny changelog — **prostym językiem, bez
-żargonu** (żadnego „scraper/migracja/commit"; pisz, co użytkownik zyskuje). → [05](05-git-and-deployments.md)
-
-### IX. Mały, spójny commit; jeden temat.
-Rozdzielaj niezwiązane zmiany na osobne commity. Trzymaj `git status` czysty — śmieci
-(`.bak`, pliki tymczasowe, przypadkowe bazy) i sieroty (niezacommitowana praca w tle)
-wykrywaj **wcześnie**, zanim wmieszają się w deploy. Rozróżniaj realny diff od szumu CRLF. → [05](05-git-and-deployments.md)
-
-### X. Plan → iteruj → review.
-Najpierw pokaż plan albo szkic (3 przykłady, nie 100). Zbierz feedback. Dopiero potem
-skaluj. **Liczby weryfikuj** u źródła. UX dowieź z **ciepłem** w odbiorze, nie tylko
-poprawnością — produkt ma być przyjemny, nie tylko działający. → [06](06-collaboration-and-memory.md)
+The core of the doctrine. If you read only one file from this set — make it this one.
+Each commandment is expanded in a later chapter.
 
 ---
 
-## Siedem grzechów głównych (czego NIE robić)
+### I. Document for the agent, not for the archive.
+Every directory has an `AI_README.md`. You update it **before** the commit, not "someday."
+Documentation read before touching the code saves hours of re-derivation;
+documentation tacked on afterwards ("I'll document at the end") drifts away from the code and starts
+to lie — because the context has already evaporated, and "the end" never comes. → [01](01-documentation-and-ai-readme.md)
 
-1. **Nadęty optymizm w raporcie** — „wszystko działa" bez dowodu. (łamie III)
-2. **Mutacja bez planu** — odpalenie skryptu zmieniającego dane od razu z `--execute`. (łamie IV)
-3. **Auto-deploy** — „skoro gotowe, to wrzucam na prod". (łamie VI)
-4. **Swap bazy „prócz kont" potraktowany jako jedna tabela `users`** — utrata recenzji/odznak/czatu, bo nie wyliczono wszystkich tabel FK. (łamie VII)
-5. **Commit-śmietnik** — niezwiązane zmiany + artefakty w jednym commicie. (łamie IX)
-6. **Skalowanie przed review** — wygenerowanie 500 sztuk, zanim user zobaczył 3. (łamie X)
-7. **Dokumentacja „później"** — kod idzie, AI_README zostaje w tyle, następna sesja błądzi. (łamie I)
+### II. Search the history before you write a single line.
+`git log -S"symbol"`, `git log --grep`, `git blame`, the directory's AI_README. Most
+"new" problems someone has already solved in this repo — a helper exists, there was a migration, there's a
+reason the code has this shape. Re-derivation costs more than a minute of searching. → [05](05-git-and-deployments.md)
+
+### III. Verify, don't declare.
+You don't write "it works" — you show **proof**: a smoke test, an HTTP status code, numbers, a screenshot.
+If tests fail — you say so, with the output. If a step was skipped — you say it was skipped.
+Trust is built on an honest report, not on optimism. → [03](03-testing-and-verification.md)
+
+### IV. Dry-run is the default; `--execute` is deliberate.
+Every script that changes data first **shows its plan** (what, how much, where). You run the
+mutation only after reading that plan. A script with no dry-run mode is a weapon with no
+safety catch. → [04](04-scripts-and-databases.md)
+
+### V. The backup is a rollback mechanism, not a precaution.
+Migrations are **forward-only** (no down-migrations). A snapshot **before** every schema or data
+change on prod. Reverting the schema = restoring the backup. The backup isn't
+"just in case" — it's the *only* way back. → [04](04-scripts-and-databases.md)
+
+### VI. Prod is sacred — you don't touch it without an explicit "deploy."
+Commit and push on request are **not** a deploy. `git pull` on the server, `pm2 reload`, a database
+swap, the maintenance flag — only when the user says so outright. Always confirm irreversible,
+"outward-facing" actions (publishing, sending, deleting). Consent in one context
+does not carry over to the next. → [05](05-git-and-deployments.md)
+
+### VII. User data is inviolable.
+When swapping the database: enumerate **every** table with an FK to the user (accounts, reviews, carts,
+badges, games, chat, sessions), map user data by a **stable key** (slug), not by ID
+(IDs drift across merges), the source of truth for accounts is **live prod**, and afterwards
+run `integrity_check` and count the rows. → [05](05-git-and-deployments.md)
+
+### VIII. Tag every deploy and write what the user gained.
+An annotated tag (`deploy-YYYY-MM-DD`) is the only stable marker of "what's live" and the basis for
+rollback. With every deploy, update the public changelog — **in plain language, without
+jargon** (no "scraper/migration/commit"; write what the user gains). → [05](05-git-and-deployments.md)
+
+### IX. Small, coherent commit; one topic.
+Split unrelated changes into separate commits. Keep `git status` clean — catch junk
+(`.bak`, temp files, stray databases) and orphans (uncommitted work in the background)
+**early**, before they sneak into a deploy. Tell a real diff from CRLF noise. → [05](05-git-and-deployments.md)
+
+### X. Plan → iterate → review.
+First show a plan or a sketch (3 examples, not 100). Gather feedback. Only then
+scale. **Verify numbers** at the source. Deliver UX with **warmth** in how it's received, not just
+correctness — the product should be pleasant, not merely functional. → [06](06-collaboration-and-memory.md)
 
 ---
 
-## Złota zasada altytudy
+## Seven deadly sins (what NOT to do)
 
-> **Wolno tam, gdzie błąd jest drogi (prod, dane userów, schemat). Szybko tam, gdzie jest
-> tani (lokalny eksperyment, szkic UI, dry-run).** Tempo dobieraj do kosztu pomyłki, nie do
-> niecierpliwości.
+1. **Inflated optimism in the report** — "everything works" with no proof. (breaks III)
+2. **Mutation without a plan** — running a data-changing script straight with `--execute`. (breaks IV)
+3. **Auto-deploy** — "it's ready, so I'll push it to prod." (breaks VI)
+4. **An "everything but accounts" DB swap treated as a single `users` table** — losing reviews/badges/chat, because not all FK tables were enumerated. (breaks VII)
+5. **Junk-drawer commit** — unrelated changes + artifacts in one commit. (breaks IX)
+6. **Scaling before review** — generating 500 items before the user saw 3. (breaks X)
+7. **Documentation "later"** — the code ships, the AI_README lags behind, the next session wanders. (breaks I)
+
+---
+
+## The golden rule of altitude
+
+> **Slow where a mistake is expensive (prod, user data, schema). Fast where it's
+> cheap (local experiment, UI sketch, dry-run).** Match your pace to the cost of error, not to
+> your impatience.

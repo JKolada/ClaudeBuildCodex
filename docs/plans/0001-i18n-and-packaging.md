@@ -1,8 +1,13 @@
 # 0001 — Wersje językowe i pakowanie per język
 
-> Status: **EN zrealizowane** (2026-06-18) — repo jest dwujęzyczne (PL + EN). Pakowanie per język
+> Status: **EN zrealizowane; od 2026-06-19 EN jest BAZĄ.** Repo dwujęzyczne. Pakowanie per język
 > (Web) i kolejne języki — nadal otwarte. Dotyczy podziału ról między **to repo (rdzeń reguł)**
 > a **The Craft Web (prezentacja + pakowanie)**.
+>
+> **Aktualizacja 2026-06-19 — odwrócenie kanonu:** angielski stał się **bazą**. Układ jest teraz
+> **EN w rootcie (kanon), PL w `pl/`** (wcześniej PL root + `en/`). Domyślny język czytnika = EN.
+> `codex.json`: `default_language: "en"`, `lang_paths {"en":".","pl":"pl"}`. Poniższe wzmianki o
+> „PL w rootcie / `en/`" są historyczne — obowiązuje wersja z tej notki.
 
 ## Zrealizowane (2026-06-18)
 

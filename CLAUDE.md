@@ -31,10 +31,10 @@ repo — odpowiada za publiczną stronę, **edycje** (rejestr podania) i **wersj
 
 - **Edycje** (ten sam rdzeń, inny rejestr): **TECHNICZNA** (to repo) → **BIZ-TECH** (pomost) → **BIZNESOWA**
   (nietechniczna). To warstwa podania, którą **buduje Web**, nie treść trzymana tutaj.
-- **Języki**: **PL (kanon, root) + EN (`en/`)** — równoległy zestaw `00-*.md`…`14-*.md` o tych samych
-  nazwach plików (EN = tłumaczenie, nie osobna doktryna). Pisz reguły **przekładalnie**; zmiana reguły
-  w PL pociąga aktualizację EN (parytet → [10](10-seo-and-translations.md)). Czytnik ma minimalny
-  **przełącznik treści PL/EN** (dev). Paczki `docs/rules/<lang>/` per język montuje Web z treści tego repo.
+- **Języki**: **EN (kanon, root) + PL (`pl/`)** — równoległy zestaw `00-*.md`…`15-*.md` o tych samych
+  nazwach plików (PL = tłumaczenie, nie osobna doktryna). **Angielski jest bazą** (domyślny w czytniku).
+  Pisz reguły **przekładalnie**; zmiana reguły w EN pociąga aktualizację PL (parytet → [10](10-seo-and-translations.md)).
+  Czytnik ma pełny **przełącznik EN/PL**. Paczki `docs/rules/<lang>/` per język montuje Web z treści tego repo.
 
 Tu, w rdzeniu: **nie dodawaj badge'y edycji ani marketingu** (to warstwa Web). Konwencja i18n i pakowania
 → [docs/plans/0001-i18n-and-packaging.md](docs/plans/0001-i18n-and-packaging.md).
@@ -43,7 +43,7 @@ Tu, w rdzeniu: **nie dodawaj badge'y edycji ani marketingu** (to warstwa Web). K
 
 | Warstwa | Tech | Lokalizacja |
 |---------|------|-------------|
-| Treść (źródło prawdy) | Markdown, ręcznie pisany (PL root + EN `en/`) | `00-*.md` … `15-*.md`, `intro.md`, `README.md` |
+| Treść (źródło prawdy) | Markdown, ręcznie pisany (EN root = baza + PL `pl/`) | `00-*.md` … `15-*.md`, `intro.md`, `README.md` |
 | Przeglądarka treści | Jeden statyczny plik, SPA | `index.html` |
 | Render markdown | `marked` z CDN (jsdelivr), hash-routing | inline w `index.html` |
 | Snapshot treści (artefakt) | `.md` osadzone w JS, by działało po `file://` | `content.js` (generowany) |
@@ -77,8 +77,8 @@ python test.py                  # smoke: parytet PL/EN, martwe linki, świeżoś
 
 - **Treść = pliki `.md`.** `index.html` ich nie zawiera — czyta je przez `fetch` (świeże) lub ze
   snapshotu `content.js` (file://). Jedno źródło prawdy. Edytujesz rozdział → edytujesz `.md`, nie HTML.
-- **Parytet PL↔EN.** PL (root) jest kanonem; **`en/` to tłumaczenie** o tych samych nazwach plików.
-  Zmiana reguły w PL → zaktualizuj odpowiednik w `en/` w tym samym kroku (inaczej EN kłamie). Nie
+- **Parytet EN↔PL.** EN (root) jest kanonem/bazą; **`pl/` to tłumaczenie** o tych samych nazwach plików.
+  Zmiana reguły w EN → zaktualizuj odpowiednik w `pl/` w tym samym kroku (inaczej PL kłamie). Nie
   lokalizuj nazw plików — tylko treść w środku.
 - **Po edycji `.md` uruchom `python build.py`** — regeneruje `content.js` (snapshot dla `file://`).
   `content.js` jest **generowany** (commituj go, ale nie edytuj ręcznie — nadpisze go build).
@@ -94,9 +94,9 @@ python test.py                  # smoke: parytet PL/EN, martwe linki, świeżoś
   je na hash-route w locie, a na GitHubie działają natywnie. Nie wpisuj `#`-linków w `.md`.
 - **Ton i forma:** zwarte, imperatywne, z „dlaczego". Każdy rozdział = jedno przykazanie/temat,
   zakończony antywzorcami. Bez lania wody — to codex, nie esej.
-- **Dwa języki:** PL (kanon, root) i **EN (`en/`)**. Terminy techniczne (commit, dry-run, deploy)
+- **Dwa języki:** **EN (kanon, root, baza)** i PL (`pl/`). Terminy techniczne (commit, dry-run, deploy)
   zostają po angielsku w obu. Pisz reguły **przekładalnie** (bez nieprzekładalnych gier słownych
-  w samym sednie). Zmiana w PL → aktualizacja `en/` (parytet, [10](10-seo-and-translations.md)).
+  w samym sednie). Zmiana w EN → aktualizacja `pl/` (parytet, [10](10-seo-and-translations.md)).
 - **Marka:** zachowaj paletę CSS (`--accent` fiolet, `--accent-2` cyan), Playfair w nagłówkach,
   minimalistyczny styl. Tryb jasny/ciemny: domyślnie wg systemu (`prefers-color-scheme`),
   z ręcznym przełącznikiem (`[data-theme]` na `<html>`, zapis w `localStorage`).
@@ -112,11 +112,11 @@ python test.py                  # smoke: parytet PL/EN, martwe linki, świeżoś
 ## Stan bieżący (2026-06-18)
 
 - **16 rozdziałów** (`00`–`15`) + `README.md`. Rdzeń: 00–08; pogłębienie: 09–15.
-- **Dwa języki:** PL kanonicznie w rootcie, **EN w `en/`** (te same nazwy plików). `content.js`
+- **Dwa języki:** **EN kanonicznie w rootcie (baza)**, PL w `pl/` (te same nazwy plików). `content.js`
   trzyma oba: `{lang:{slug:md}}`.
 - `index.html` — SPA-czytnik: strona główna (dekalog + karty) i widok rozdziału (render `.md`,
   select rozdziałów, prev/next, responsywny, przełącznik jasny/ciemny **i przełącznik treści PL/EN**).
-  Treść: fetch świeżych `.md` (PL z rootu / EN z `en/`), a po `file://` — snapshot `content.js`.
+  Treść: fetch świeżych `.md` (EN z rootu / PL z `pl/`), a po `file://` — snapshot `content.js`.
 - `build.py` → `content.js` (snapshot dla `file://`). `CLAUDE.md` + `AI_README.md` — dokumentacja repo.
 - Brak otwartych TODO w treści. Wersja żywa — rozszerzana po projektach, które czegoś nauczyły.
 

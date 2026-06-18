@@ -1,70 +1,70 @@
-# 11 — Model danych i normalizacja
+# 11 — Data model and normalization
 
-> Przykazania V i VII u korzenia: *backup to rollback, dane usera nienaruszalne* — ale zanim
-> coś zabezpieczysz, musi mieć **kształt**, w którym zmiana jest tania i przewidywalna.
+> Commandments V and VII at the root: *a backup is a rollback, user data inviolable* — but before
+> you safeguard anything, it must have a **shape** in which change is cheap and predictable.
 
-Schemat to **kontrakt całego systemu**. Scrapery, web, pipeline'y, migracje — wszystko opiera
-się na nim. Źle znormalizowany model mści się na każdej warstwie: duplikaty danych dryfują,
-mapowania po niestabilnym kluczu gubią rekordy, wartości wyliczane rozjeżdżają się ze sobą.
-Normalizuj najpierw; denormalizuj **świadomie** i z nazwanym źródłem prawdy.
+The schema is **the contract of the whole system**. Scrapers, web, pipelines, migrations — everything rests
+on it. A poorly normalized model takes its revenge on every layer: duplicate data drifts,
+mappings on an unstable key lose records, computed values diverge from one another.
+Normalize first; denormalize **deliberately** and with a named source of truth.
 
-## Normalizuj najpierw
-- **Bez powtarzających się grup.** Wartość raz, w jednym miejscu.
-- **Słowniki w tabelach lookup.** W projekcie referencyjnym: `countries` / `regions` / `product_types` /
-  `tag_types` — nie free-text w kolumnie. Dodatkowo **`CHECK` na `products.type`**
-  (`type_a | type_b | type_c | …`) — baza odrzuca śmieć, zanim wejdzie.
-- **Tabele łączące dla M:N.** Produkt ma wiele tagów/atrybutów → **`product_tags`** (junction),
-  nie `primary_tag` + `secondary_tag` jako dwa free-text pola (te skasowano migracją 090 —
-  junction jest jedynym magazynem atrybutów).
+## Normalize first
+- **No repeating groups.** A value once, in one place.
+- **Vocabularies in lookup tables.** In the reference project: `countries` / `regions` / `product_types` /
+  `tag_types` — not free-text in a column. Plus a **`CHECK` on `products.type`**
+  (`type_a | type_b | type_c | …`) — the database rejects garbage before it gets in.
+- **Junction tables for M:N.** A product has many tags/attributes → **`product_tags`** (junction),
+  not `primary_tag` + `secondary_tag` as two free-text fields (those were dropped by migration 090 —
+  the junction is the sole store of attributes).
 
-## Stabilne klucze — slug, nie ID
-**ID dryfują.** Po merge'ach duplikatów `product_id` się zmienia (kanon przejmuje wiersze,
-zduplikowany ginie). Dlatego **stabilnym identyfikatorem jest slug**, nie klucz numeryczny.
-Najtwardsza lekcja z projektu referencyjnego — swap prod-bazy: **dane użytkownika mapujesz po slug → nowe ID**,
-nigdy po starym ID (recenzja trafiłaby na zły produkt). Brakujący slug **pomijasz i logujesz**,
-nie wpychasz na ślepo. → [05](05-git-and-deployments.md)
+## Stable keys — slug, not ID
+**IDs drift.** After duplicate merges `product_id` changes (the canonical row absorbs the rows,
+the duplicate one disappears). That is why **the stable identifier is the slug**, not the numeric key.
+The hardest lesson from the reference project — the prod-database swap: **you map user data by slug → new ID**,
+never by the old ID (a review would land on the wrong product). A missing slug you **skip and log**,
+you don't push it through blindly. → [05](05-git-and-deployments.md)
 
-## Active-row zamiast nadpisywania
-Wzorzec z cen, wart przeniesienia wszędzie, gdzie historia ma wartość:
-- Kolumna **`expired_at`** (NULL = aktywny). Zmiana ceny → wygaszasz stary wiersz, wstawiasz nowy.
-- **Partial unique index** `WHERE expired_at IS NULL` — wymusza „jeden aktywny na klucz"
-  (jedna aktywna cena na (produkt, retailer)).
-- **Tabela historii** (`price_history`) zapisuje każdą cenę, jaką widziano.
-- Efekt: **audyt za darmo** — wiesz, co i kiedy się zmieniło, bez triggerów.
+## Active-row instead of overwriting
+A pattern from prices, worth carrying everywhere history has value:
+- An **`expired_at`** column (NULL = active). A price change → you expire the old row, insert a new one.
+- A **partial unique index** `WHERE expired_at IS NULL` — enforces "one active per key"
+  (one active price per (product, retailer)).
+- A **history table** (`price_history`) records every price ever seen.
+- The effect: **audit for free** — you know what changed and when, without triggers.
 
-## Kiedy denormalizować (świadomie)
-Denormalizacja jest legalna **dla odczytu** — ale zawsze nazwij **źródło prawdy** i pilnuj spójności:
-- **Pola wyświetlane/wyliczane → licz w helperach, nie składuj.** `display_name` (brand + wariant +
-  nazwa edycji) liczony dynamicznie w `web/src/helpers.js`. Składowany dryfowałby po każdej
-  zmianie składnika.
-- **Cache denormalizowany z jasnym źródłem.** `ext_profile_cache` trzyma dane z zewnętrznego źródła; kolumny
-  `ext_*` **usunięto z `products`** (migracja 051) — cache jest jedynym źródłem, brak dwóch prawd.
-- **Snapshot z live-fallback.** `site_stats.json` to zrzut liczb (produkty/ceny/retailerzy);
-  czytany przez home, ale z **fallbackiem na żywą bazę**, gdy snapshot nieaktualny.
+## When to denormalize (deliberately)
+Denormalization is legal **for reads** — but always name the **source of truth** and guard consistency:
+- **Displayed/computed fields → compute in helpers, don't store.** `display_name` (brand + variant +
+  edition name) computed dynamically in `web/src/helpers.js`. Stored, it would drift after every
+  change to a component.
+- **A denormalized cache with a clear source.** `ext_profile_cache` holds data from an external source; the
+  `ext_*` columns **were removed from `products`** (migration 051) — the cache is the sole source, no two truths.
+- **A snapshot with a live fallback.** `site_stats.json` is a dump of numbers (products/prices/retailers);
+  read by the home page, but with a **fallback to the live database** when the snapshot is stale.
 
-## Migracje i integralność
-- **Forward-only + additive** — `ADD COLUMN` jest backward-compatible; **nigdy DROP/RENAME
-  kolumny używanej przez działający stary kod** (→ [04](04-scripts-and-databases.md)).
-- **FK integrity check** po każdej operacji (`PRAGMA foreign_key_check`).
-- **Gating na istnienie kolumny** — skrypt sprawdza, czy kolumna/tabela istnieje, zanim na niej
-  operuje (przeżywa różne stany schematu między środowiskami).
+## Migrations and integrity
+- **Forward-only + additive** — `ADD COLUMN` is backward-compatible; **never DROP/RENAME
+  a column used by working old code** (→ [04](04-scripts-and-databases.md)).
+- **FK integrity check** after every operation (`PRAGMA foreign_key_check`).
+- **Gating on column existence** — the script checks whether a column/table exists before it
+  operates on it (survives different schema states between environments).
 
-## Schemat jako udokumentowany kontrakt
-ERD + controlled vocabulary w docs (np. `db_schema.md` z Mermaid ERD,
-`data_model_reference.md` z dozwolonymi wartościami `type`/`region`/`tag_types`). Schemat,
-którego nikt nie udokumentował, jest schematem, który następna sesja zgaduje. → [01](01-documentation-and-ai-readme.md)
+## The schema as a documented contract
+ERD + controlled vocabulary in docs (e.g. `db_schema.md` with a Mermaid ERD,
+`data_model_reference.md` with the allowed values for `type`/`region`/`tag_types`). A schema
+nobody documented is a schema the next session guesses. → [01](01-documentation-and-ai-readme.md)
 
-## Anty-wzorce
-- 🚫 **Free-text tam, gdzie powinien być słownik** (kraj jako string → 5 pisowni „USA"/„U.S.A."/„Stany Zjednoczone").
-- 🚫 **Duplikat źródła prawdy bez synchronizacji** (dane zewnętrzne w `products` *i* w cache → rozjazd).
-- 🚫 **Mapowanie user-danych po zmiennym ID** zamiast slug → recenzja na złym produkcie.
-- 🚫 **Składowanie wartości wyliczanej, która dryfuje** (`display_name` jako kolumna).
-- 🚫 **Destrukcyjna migracja pod działającym starym kodem** (DROP kolumny, którą web jeszcze czyta).
-- 🚫 Dwa free-text pola zamiast tabeli łączącej dla relacji M:N.
+## Anti-patterns
+- 🚫 **Free-text where there should be a lookup** (country as a string → 5 spellings of "USA"/"U.S.A."/"United States").
+- 🚫 **A duplicated source of truth without synchronization** (external data in `products` *and* in the cache → divergence).
+- 🚫 **Mapping user data by a mutable ID** instead of the slug → a review on the wrong product.
+- 🚫 **Storing a computed value that drifts** (`display_name` as a column).
+- 🚫 **A destructive migration under working old code** (DROP of a column the web still reads).
+- 🚫 Two free-text fields instead of a junction table for an M:N relation.
 
-## W praktyce
-Gdy deklarujesz prywatność, **model danych musi ją egzekwować**. Rozdziel ścieżki: dane
-user-facing i osobny, idempotentny pipeline przetwarzania, operujący **wyłącznie na danych po
-anonimizacji** (PII usunięte *przed* przetwarzaniem). Twierdzenie „nie czytamy danych" musi
-wynikać ze **schematu i kontraktu skryptu**, nie z copy — i mieć **test re-identyfikacji**, który
-dowodzi, że nie da się odtworzyć tożsamości. → [04](04-scripts-and-databases.md), [09](09-law-and-protecting-the-creator.md)
+## In practice
+When you declare privacy, **the data model must enforce it**. Separate the paths: user-facing
+data and a separate, idempotent processing pipeline, operating **exclusively on anonymized
+data** (PII removed *before* processing). The claim "we don't read the data" must
+follow from the **schema and the script's contract**, not from copy — and have a **re-identification test** that
+proves identity cannot be reconstructed. → [04](04-scripts-and-databases.md), [09](09-law-and-protecting-the-creator.md)

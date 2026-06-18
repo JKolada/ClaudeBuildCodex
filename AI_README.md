@@ -35,10 +35,10 @@ Kierunek wersji EN i pakowania per język → [docs/plans/0001-i18n-and-packagin
 
 | Plik | Po co to |
 |------|----------|
-| `index.html` | **Minimalny czytnik lokalny/dev** (podgląd treści dla autora/agenta) — NIE publiczna witryna. Strona główna (dekalog + karty) + widok rozdziału + brief + przełącznik języka treści (PL/EN). |
-| `intro.md` | **Manifest** — „Czym jest The Craft" + artykuł „dlaczego warto". Dokument specjalny (poza numerowaną listą), routowany jako `#intro`; jest też `en/intro.md`. |
-| `00`–`15` (root) | **Treść PL** (kanoniczna, źródło prawdy). Slugi/numery = stabilne kotwice, wspólne dla wszystkich języków. |
-| `en/` | **Treść EN** — równoległy zestaw `00-*.md`…`15-*.md` (te same nazwy plików, treść po angielsku). Tłumaczenie PL. |
+| `index.html` | **Minimalny czytnik lokalny/dev** (podgląd treści dla autora/agenta) — NIE publiczna witryna. Strona główna (dekalog + karty) + widok rozdziału + brief + przełącznik języka EN/PL (domyślnie EN). |
+| `intro.md` | **Manifest** — „Czym jest The Craft" + artykuł „dlaczego warto". Dokument specjalny (poza numerowaną listą), routowany jako `#intro`; jest też `pl/intro.md`. |
+| `00`–`15` (root) | **Treść EN — kanoniczna, baza, źródło prawdy.** Slugi/numery = stabilne kotwice, wspólne dla wszystkich języków. |
+| `pl/` | **Treść PL** — równoległy zestaw `00-*.md`…`15-*.md` (te same nazwy plików, treść po polsku). Tłumaczenie EN. |
 | `docs/` | Plany i decyzje meta repo (nie treść doktryny): `docs/AI_README.md`, `docs/plans/`. |
 | `content.js` | **Generowany** snapshot `.md` osadzony w JS — pozwala renderować treść po `file://`. Nie edytuj ręcznie. |
 | `build.py` | Skrypt buildu: łączy pliki `.md` → `content.js`. Uruchom po edycji treści (`python build.py`). |
@@ -73,7 +73,7 @@ przykazanie/temat, zwarty, zakończony antywzorcami.
 > **Szukasz konkretu? Nie czytaj wszystkiego.** `grep -i <temat>` po tym indeksie (PL+EN keywordy) →
 > nazwa pliku w tej samej linii → przeczytaj **tylko ten rozdział**. Tak oszczędzasz kontekst w
 > docelowym projekcie (reguła: [01](01-documentation-and-ai-readme.md#ai_readme-pod-grep--oszczędność-kontekstu)).
-> Slug pliku jest wspólny dla PL (root) i EN (`en/`).
+> Slug pliku jest wspólny dla EN (root, baza) i PL (`pl/`).
 
 - **`00-commandments.md`** — dekalog, decalogue, 10 przykazań, ten commandments, 7 grzechów, seven deadly sins, złota zasada, golden rule, altytuda, altitude, rdzeń doktryny, core.
 - **`01-documentation-and-ai-readme.md`** — dokumentacja, documentation, AI_README, CLAUDE.md, docs, /docs, plany, plans, grep, keyword index, oszczędność kontekstu, context economy, czytnik, documentation.html, regeneracja, struktura folderów, folder structure.
@@ -101,8 +101,8 @@ Jeden plik, bez zależności build. Mechanika:
   ("core"|"deep"), title, desc`.
 - **Routing przez hash:** `#NN-nazwa` → widok rozdziału; pusty/`#` → strona główna. `route()`
   reaguje na `hashchange`.
-- **Język (treść + cały chrome):** `LANG` (`pl`/`en`, zapis w `localStorage` `rzemioslo-lang`).
-  Treść rozdziału z `file` (PL, root) albo `en/`+`file` (EN). **Chrome jest w pełni dwujęzyczny** —
+- **Język (treść + cały chrome):** `LANG` (`en`/`pl`, domyślnie **`en`**, zapis w `localStorage` `rzemioslo-lang`).
+  Treść rozdziału z `file` (EN, root) albo `pl/`+`file` (PL). **Chrome jest w pełni dwujęzyczny** —
   słownik `UI` (`data-i18n`/`data-i18n-html`) + `CH_EN` (tytuły/opisy rozdziałów) + `BRIEF_FIELDS`
   (pola briefu); `applyChrome()` przerysowuje wszystko przy starcie i przy `#langToggle`. Dodajesz
   string do chrome → dodaj klucz do `UI` (oba języki), inaczej zostanie po polsku.
@@ -127,23 +127,23 @@ Jeden plik, bez zależności build. Mechanika:
 - **`index.html` NIE zawiera treści rozdziałów** — czyta `.md`/`content.js`. Nie wklejaj treści do HTML.
 - **Dodajesz/zmieniasz rozdział → zsynchronizuj 3 miejsca + build:** `CHAPTERS` (index.html), tabela
   w `README.md`, tabela w tym pliku, potem `python build.py`. Rozjazd = martwy wpis (gorszy niż brak).
-- **Parytet PL↔EN:** zmiana reguły w `00`–`15` (PL) wymaga aktualizacji odpowiednika w `en/` (ta sama
-  lista, te same nazwy plików). EN to **tłumaczenie**, nie osobna doktryna. `content.js` trzyma oba języki.
-- **Nazwy plików = stabilne kotwice** (`#NN-nazwa`, cele linków względnych), **wspólne dla PL i EN**.
+- **Parytet EN↔PL:** zmiana reguły w `00`–`15` (EN, kanon) wymaga aktualizacji odpowiednika w `pl/` (ta sama
+  lista, te same nazwy plików). PL to **tłumaczenie**, nie osobna doktryna. `content.js` trzyma oba języki.
+- **Nazwy plików = stabilne kotwice** (`#NN-nazwa`, cele linków względnych), **wspólne dla EN i PL**.
   Nie lokalizujemy nazw plików — tylko treść w środku. Nie zmieniaj bez powodu.
 - **Marka:** zmiany kolorów rób na zmiennych CSS (`--accent`, `--accent-2`, `--grad`), nie na
   wartościach w miejscu użycia. Tryb jasny i ciemny muszą oba wyglądać dobrze.
 - **Treść generyczna, nie „pod jeden projekt".** Konkretne projekty służą
   tylko za ilustrację (`np. …`, „projekt referencyjny"), nigdy za temat rozdziału. Nie czyń żadnego projektu bohaterem doktryny.
-- **Dwa języki: PL (kanon, root) + EN (`en/`).** Pisz reguły przekładalnie. Kierunek i konwencja →
+- **Dwa języki: EN (kanon, root, baza) + PL (`pl/`).** Pisz reguły przekładalnie. Kierunek i konwencja →
   [docs/plans/0001-i18n-and-packaging.md](docs/plans/0001-i18n-and-packaging.md). Paczki per język montuje Web.
 
 ## Liczby
 
-- 16 rozdziałów (`00`–`15`) + `README.md`, w **dwóch językach** (PL root + EN `en/`).
+- 16 rozdziałów (`00`–`15`) + `README.md`, w **dwóch językach** (EN root = baza + PL `pl/`).
   Rdzeń: 9 plików (00–08). Pogłębienie: 7 (09–15).
 - `index.html`: 1 plik; runtime z CDN (`marked` + Google Fonts). Build: `build.py` → `content.js`
-  (PL: 18 dok. ~97 tys. znaków; EN: 17 dok. ~96 tys. znaków — rozdziały + `intro` + README; struktura `{lang:{slug:md}}`).
+  (EN: 18 dok. ~102 tys. znaków; PL: 17 dok. ~94 tys. znaków — rozdziały + `intro` + README; struktura `{lang:{slug:md}}`).
 - **Dokumenty specjalne (poza numerowaną listą):** `intro.md` (manifest, route `#intro`) i widok
   briefu (`#brief`) — routowane osobno, nie ma ich w tablicy `CHAPTERS`.
 - **Smoke test:** `python test.py` (parytet PL↔EN, martwe linki, świeżość `content.js`, spójność

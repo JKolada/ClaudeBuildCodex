@@ -1,86 +1,86 @@
-# 02 — Skille i refaktoring
+# 02 — Skills and refactoring
 
-> Przykazania I i X: zautomatyzuj to, co powtarzalne; refaktoruj tak, by kod czytał się jak sąsiedni.
+> Commandments I and X: automate the repeatable; refactor so the code reads like its neighbor.
 
-## Skille (slash-commands) — kiedy i po co
+## Skills (slash-commands) — when and why
 
-Skill to powtarzalna procedura zamknięta w jednym wywołaniu (`/run-projekt`, `/run-tests`,
-`/update-ai-readme`, `/add-migration`). W projekcie referencyjnym skille okazały się dźwignią, bo
-**kodyfikują „jak my to robimy"** — agent nie zgaduje, tylko wykonuje sprawdzony przepis.
+A skill is a repeatable procedure wrapped in a single invocation (`/run-projekt`, `/run-tests`,
+`/update-ai-readme`, `/add-migration`). In the reference project, skills proved to be a lever, because they
+**codify "how we do it"** — the agent doesn't guess, it follows a proven recipe.
 
-### Zbuduj skill, gdy:
-- procedurę powtarzasz **≥3 razy** (uruchom serwer + 22 smoke-checki, odpal testy, dodaj scraper);
-- kolejność kroków jest **łatwa do pomylenia** (migracja: numer → SQL → `migrate.py` → AI_README → commit);
-- istnieje **„gotcha" specyficzna dla projektu**, którą agent musi za każdym razem pamiętać
-  (np. „na Windows ustaw `PYTHONIOENCODING=utf-8` przed scraperem", „Jest z `--runInBand`,
-  gdy serwer chodzi").
+### Build a skill when:
+- you repeat the procedure **≥3 times** (start server + 22 smoke-checks, run tests, add a scraper);
+- the order of steps is **easy to get wrong** (migration: number → SQL → `migrate.py` → AI_README → commit);
+- there's a **project-specific "gotcha"** the agent must remember every time
+  (e.g. "on Windows set `PYTHONIOENCODING=utf-8` before the scraper," "Jest with `--runInBand`
+  when the server is running").
 
-### Dobry skill ma:
-- **jedną komendę agenta** + jedną dla człowieka (fallback);
-- **jasny kontrakt wyjścia** (exit 0 = zielone; exit 1 = co padło);
-- **listę gotchas** specyficznych dla platformy/projektu;
-- sekcję „kiedy NIE jest potrzebny".
+### A good skill has:
+- **one command for the agent** + one for the human (fallback);
+- a **clear output contract** (exit 0 = green; exit 1 = what failed);
+- a **list of gotchas** specific to the platform/project;
+- a "when it's NOT needed" section.
 
-### Anty-wzorce
-- 🚫 Skill na coś, co robisz raz — to tylko narzut.
-- 🚫 Skill, który ukrywa, co robi — gdy odpala destrukcję, ma to **wypisać** (np. „usunąłem dead code").
-- 🚫 Mylenie skilla (przepis dla agenta) z hookiem (automatyzacja wykonywana przez harness).
-  „Od teraz zawsze rób X po Y" = hook w configu, nie pamięć/skill.
+### Anti-patterns
+- 🚫 A skill for something you do once — that's pure overhead.
+- 🚫 A skill that hides what it does — when it runs something destructive, it must **print it** (e.g. "I removed dead code").
+- 🚫 Confusing a skill (a recipe for the agent) with a hook (automation run by the harness).
+  "From now on always do X after Y" = a hook in the config, not memory/a skill.
 
-## Refaktoring — dyscyplina
+## Refactoring — the discipline
 
-> **Złota zasada:** pisz kod, który czyta się jak kod obok niego. Dopasuj gęstość komentarzy,
-> nazewnictwo i idiom do otoczenia. Spójność > Twoje preferencje.
+> **Golden rule:** write code that reads like the code next to it. Match comment density,
+> naming, and idiom to the surroundings. Consistency > your preferences.
 
-### Zasady
-1. **Szukaj prior-artu przed refaktorem** (przykazanie II). Zanim przepiszesz — `git log -S`,
-   `git blame`. Często „brzydki" kształt ma powód (kompatybilność, edge-case, dawna decyzja).
-2. **Refaktor osobno od zmiany zachowania.** Jeden commit = albo czyszczenie, albo nowa
-   funkcja. Mieszanie utrudnia review i rollback.
-3. **Reuse > rewrite.** Najpierw sprawdź, czy helper już istnieje (matcher, normalizer,
-   `upsert_price`). Duplikacja logiki to dług.
-4. **Backward-compat przy zmianach strukturalnych.** W projekcie referencyjnym przeniesienie skryptów do
-   podpakietów zostawiło shim-y re-eksportujące ze starych ścieżek — stare wywołania dalej
-   działają. Nie psuj cudzych wejść.
-5. **Małe kroki, weryfikowane.** Refaktor → testy zielone → commit. Nie „wielki przepis na
-   raz", po którym nie wiadomo, co pękło.
+### Rules
+1. **Search for prior art before refactoring** (Commandment II). Before you rewrite — `git log -S`,
+   `git blame`. Often an "ugly" shape has a reason (compatibility, an edge-case, an old decision).
+2. **Refactor separately from a behavior change.** One commit = either cleanup or a new
+   feature. Mixing them makes review and rollback harder.
+3. **Reuse > rewrite.** First check whether a helper already exists (a matcher, a normalizer,
+   `upsert_price`). Duplicated logic is debt.
+4. **Backward-compat on structural changes.** In the reference project, moving the scripts into
+   subpackages left shims re-exporting from the old paths — old calls still
+   work. Don't break others' entry points.
+5. **Small steps, verified.** Refactor → tests green → commit. Not "one big rewrite at
+   once," after which you can't tell what broke.
 
-### Jakość bez polowania na bugi
-Rozdziel dwa tryby przeglądu (jak `/simplify` vs `/code-review`):
-- **Uproszczenie/reuse/wydajność** — czyszczenie, bez szukania błędów.
-- **Przegląd poprawności** — adversarialne szukanie bugów.
-Nie mieszaj — każdy ma inny cel i inny próg pewności.
+### Quality without bug-hunting
+Separate the two review modes (like `/simplify` vs `/code-review`):
+- **Simplification/reuse/efficiency** — cleanup, without hunting for bugs.
+- **Correctness review** — adversarial bug-hunting.
+Don't mix them — each has a different goal and a different confidence bar.
 
-## SOLID — projektowanie, które się nie zatyka
+## SOLID — design that doesn't clog up
 
-> Nie dogmat, lecz **pięć testów na to, czy zmiana będzie tania**. Stosuj proporcjonalnie do
-> ryzyka (→ [12](12-flexibility-and-scalability.md): nie over-engineeruj). SOLID to nie pretekst
-> do warstw abstrakcji „na wszelki wypadek".
+> Not a dogma, but **five tests of whether a change will be cheap**. Apply it proportionally to
+> risk (→ [12](12-flexibility-and-scalability.md): don't over-engineer). SOLID is not a pretext
+> for "just in case" layers of abstraction.
 
-- **S — Single responsibility.** Jeden moduł = jeden powód do zmiany. To ta sama dyscyplina, co
-  „jeden commit = jedna rzecz" (refaktor albo zachowanie, nie oba). Funkcja, którą trzeba ruszać
-  z trzech niezwiązanych powodów, to trzy funkcje.
-- **O — Open/closed.** Rozszerzaj bez rozcinania sprawdzonego kodu. Tu wpinają się **feature flags**
-  (→ [12](12-flexibility-and-scalability.md)): nową ścieżkę dokładasz za flagą i shipujesz dark,
-  zamiast przepisywać istniejącą gałąź i ryzykować regresję.
-- **L — Liskov.** Podtyp ma dotrzymać kontraktu nadtypu — bez „wyjątku, który wszystko psuje".
-  Jeśli implementacja łamie założenia wołającego, to nie jest podtyp, tylko pułapka.
-- **I — Interface segregation.** Wąskie, celowe interfejsy zamiast jednego boga-interfejsu.
-  Wołający nie powinien zależeć od metod, których nie używa.
-- **D — Dependency inversion.** Zależ od abstrakcji, nie od konkretu. To kodowy odpowiednik
-  „rozdziel warstwy" (→ [12](12-flexibility-and-scalability.md)): logika nie zna dostawcy bazy
-  czy kolejki z palca — dostaje go przez granicę, więc da się go podmienić (i przetestować, → [03](03-testing-and-verification.md)).
+- **S — Single responsibility.** One module = one reason to change. It's the same discipline as
+  "one commit = one thing" (refactor or behavior, not both). A function you have to touch
+  for three unrelated reasons is three functions.
+- **O — Open/closed.** Extend without cutting into proven code. This is where **feature flags**
+  plug in (→ [12](12-flexibility-and-scalability.md)): you add the new path behind a flag and ship dark,
+  instead of rewriting the existing branch and risking a regression.
+- **L — Liskov.** A subtype must honor the supertype's contract — no "exception that breaks everything."
+  If an implementation breaks the caller's assumptions, it's not a subtype, it's a trap.
+- **I — Interface segregation.** Narrow, purposeful interfaces instead of one god-interface.
+  A caller shouldn't depend on methods it doesn't use.
+- **D — Dependency inversion.** Depend on an abstraction, not a concrete. It's the code-level counterpart of
+  "separate the layers" (→ [12](12-flexibility-and-scalability.md)): the logic doesn't hardcode the database
+  or queue provider — it receives it across a boundary, so it can be swapped (and tested, → [03](03-testing-and-verification.md)).
 
-### Anty-wzorce
-- 🚫 **SOLID jako kult** — pięć warstw i fabryka fabryk dla CRUD-a na trzy pola. Zasada D ma
-  ułatwiać podmianę, nie mnożyć pliki. Mierz potrzebę, nie cytuj liter.
-- 🚫 **Open/closed bez flag** — „rozszerzasz", edytując w miejscu gorącą ścieżkę bez przełącznika
-  i bez rampu (→ [12](12-flexibility-and-scalability.md): brak feature flags).
-- 🚫 **Abstrakcja zanim są dwa przypadki** — interfejs wyssany z jednego użycia zgaduje przyszłość.
-  Najpierw drugi konkret, potem wspólny kontrakt (reuse > rewrite, ale nie reuse > realność).
+### Anti-patterns
+- 🚫 **SOLID as a cult** — five layers and a factory of factories for a three-field CRUD. Rule D is meant to
+  ease swapping, not multiply files. Measure the need, don't quote the letters.
+- 🚫 **Open/closed without flags** — you "extend" by editing a hot path in place with no toggle
+  and no ramp (→ [12](12-flexibility-and-scalability.md): no feature flags).
+- 🚫 **Abstraction before there are two cases** — an interface extrapolated from a single use guesses the future.
+  Get the second concrete case first, then the shared contract (reuse > rewrite, but not reuse > reality).
 
-## W praktyce
-- Skille na start: `/run` (serwer + smoke), `/run-tests` (unit + e2e), `/update-ai-readme`,
-  `/add-migration` (jeśli relacyjna baza). → [08](08-stack-and-technologies.md)
-- Refaktor ścieżki krytycznej (np. logowania) rób **osobnym, otestowanym** krokiem: najpierw
-  test odtwarzający bieżący stan/bug, potem zmiana. → [03](03-testing-and-verification.md)
+## In practice
+- Skills to start: `/run` (server + smoke), `/run-tests` (unit + e2e), `/update-ai-readme`,
+  `/add-migration` (if a relational database). → [08](08-stack-and-technologies.md)
+- Do a refactor of a critical path (e.g. login) as a **separate, tested** step: first a
+  test reproducing the current state/bug, then the change. → [03](03-testing-and-verification.md)

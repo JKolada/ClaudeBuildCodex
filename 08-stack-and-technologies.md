@@ -1,119 +1,119 @@
-# 08 — Stack i technologie
+# 08 — Stack and technologies
 
-> Złota zasada altytudy zastosowana do wyboru narzędzi: *najprostsze, co uniesie wymaganie;*
-> *złożoność dokładasz, gdy metryka ją wymusi (→ [12](12-flexibility-and-scalability.md)).*
+> The golden rule of altitude applied to tool choice: *the simplest thing that meets the requirement;*
+> *complexity is added when a metric forces it (→ [12](12-flexibility-and-scalability.md)).*
 
-Doktryna jest agnostyczna co do języka — ale wybór stacku decyduje, **jak tani jest błąd**
-i **jak łatwo to przetestować**. Ten rozdział to rozsądny *default* dla projektu prowadzonego
-z Claude: uniwersalny, prosty, elastyczny i skalowalny. Nie dogmat — punkt wyjścia, od którego
-odchodzisz świadomie (i zapisujesz dlaczego jako ADR).
+The doctrine is language-agnostic — but the choice of stack decides **how cheap a mistake is**
+and **how easily you can test it**. This chapter is a sensible *default* for a project run
+with Claude: universal, simple, flexible, and scalable. Not dogma — a starting point you
+depart from deliberately (and record why, as an ADR).
 
-## Domyślny stack (sensowny start)
+## Default stack (a reasonable start)
 
-| Warstwa | Default | Kiedy zmienić |
-|---------|---------|---------------|
-| Backend / skrypty | **Python** (+ FastAPI dla API) | Front i back dzielą TypeScript → Node |
-| Baza | **SQLite** | Współbieżny zapis / role / relacje / skala → **PostgreSQL** |
-| Web / front | Server-rendered HTML + trochę JS | Bogaty, interaktywny UI → Next.js |
-| API | REST/JSON z jawnym kontraktem (OpenAPI) | gRPC dopiero przy realnej potrzebie |
-| Cache / kolejka | brak → dołóż Redis, gdy profil ruchu wymusi | nie „na zapas" |
-| Pakowanie | **Docker** (powtarzalność) | trywialny skrypt bez zależności → bez kontenera |
-| Hosting | jeden **VPS (Hetzner)** + nginx | nierówny/globalny ruch → serverless (scale-to-zero) |
+| Layer | Default | When to change |
+|-------|---------|----------------|
+| Backend / scripts | **Python** (+ FastAPI for the API) | Front and back share TypeScript → Node |
+| Database | **SQLite** | Concurrent writes / roles / relations / scale → **PostgreSQL** |
+| Web / front | Server-rendered HTML + a bit of JS | Rich, interactive UI → Next.js |
+| API | REST/JSON with an explicit contract (OpenAPI) | gRPC only at real need |
+| Cache / queue | none → add Redis when the traffic profile forces it | not "just in case" |
+| Packaging | **Docker** (reproducibility) | trivial script with no dependencies → no container |
+| Hosting | one **VPS (Hetzner)** + nginx | uneven/global traffic → serverless (scale-to-zero) |
 
-Reguła nadrzędna: **nudna, dojrzała technologia bije modną.** Liczy się ekosystem, dokumentacja
-i testowalność — nie hype.
+Overriding rule: **boring, mature technology beats trendy.** What counts is the ecosystem, the documentation,
+and testability — not the hype.
 
-## Sprawdzony zestaw (konkretny baseline)
+## Proven toolkit (a concrete baseline)
 
-Zestaw przerobiony w boju na realnym projekcie — bierz z niego to, czego wymaga zadanie, resztę pomiń.
-Wszystko **dojrzałe, dobrze udokumentowane, łatwe do testowania i hostowania na jednym VPS**:
+A toolkit battle-tested on a real project — take what the task requires, skip the rest.
+Everything here is **mature, well-documented, and easy to test and host on a single VPS**:
 
-| Warstwa | Narzędzia |
-|---------|-----------|
-| **Narzędzie główne / proces** | **Anthropic Claude — Claude Desktop / Claude Code** (agent, którym budujesz) · **Git** (historia, → [05](05-git-and-deployments.md)) · **GitHub** (zdalne repo, PR) · **GitHub Issues** (taski, → [07](07-new-project-day-0.md)) |
-| **Format / treść** | HTML5 (server-rendered), Markdown (docs), **JSON** (API, config), XML gdy wymusza integracja |
-| **Dane / zapytania** | **SQL** — SQLite (WAL) na start → PostgreSQL przy skali; migracje forward-only |
-| **Backend / skrypty** | **Python** (dane, scrapery, migracje na stdlib) · **Node.js + Express** (web/API) · EJS (szablony serwerowe) |
-| **Frontend** | minimalny **JS** (vanilla), `marked` do renderu MD; **ikony SVG: wyłącznie Lucide** (jedno źródło geometrii, spójność); fonty self-host |
-| **Sesje / bezpieczeństwo** | trwały store sesji (osobny plik, → [14](14-operational-resilience.md)), `helmet`, rate-limit, `bcrypt`, OAuth (passport) |
-| **Poczta** | SMTP (587 STARTTLS), zweryfikowana domena nadawcy (→ [14](14-operational-resilience.md)) |
-| **Media / obraz** | konwersja do **WebP** (Pillow); porównania obrazów (OpenCV) tylko gdy realnie trzeba |
-| **Ingest / scraping** | `requests` + BeautifulSoup (+lxml), fuzzy-match (rapidfuzz), Playwright gdy trzeba przeglądarki (→ [14](14-operational-resilience.md)) |
-| **LLM** | klient API (Claude / Anthropic SDK), odpowiedzi **streamowane SSE** (→ [13](13-performance-frontend-and-sql.md)) |
-| **Testy** | `pytest` (Python) · Jest + supertest (Node) · Playwright (e2e) (→ [03](03-testing-and-verification.md)) |
-| **Build / dev** | esbuild, nodemon; Docker dla powtarzalności |
-| **Serwer / ops** | jeden **VPS (Hetzner)** + nginx (TLS, reverse proxy) + `pm2`/`systemd`; analityka GA4 |
+| Layer | Tools |
+|-------|-------|
+| **Primary tool / process** | **Anthropic Claude — Claude Desktop / Claude Code** (the agent you build with) · **Git** (history, → [05](05-git-and-deployments.md)) · **GitHub** (remote repo, PR) · **GitHub Issues** (tasks, → [07](07-new-project-day-0.md)) |
+| **Format / content** | HTML5 (server-rendered), Markdown (docs), **JSON** (API, config), XML when an integration forces it |
+| **Data / queries** | **SQL** — SQLite (WAL) to start → PostgreSQL at scale; forward-only migrations |
+| **Backend / scripts** | **Python** (data, scrapers, migrations on stdlib) · **Node.js + Express** (web/API) · EJS (server-side templates) |
+| **Frontend** | minimal **JS** (vanilla), `marked` for MD rendering; **SVG icons: Lucide only** (one source of geometry, consistency); self-hosted fonts |
+| **Sessions / security** | persistent session store (a separate file, → [14](14-operational-resilience.md)), `helmet`, rate-limit, `bcrypt`, OAuth (passport) |
+| **Mail** | SMTP (587 STARTTLS), verified sender domain (→ [14](14-operational-resilience.md)) |
+| **Media / image** | conversion to **WebP** (Pillow); image comparison (OpenCV) only when truly needed |
+| **Ingest / scraping** | `requests` + BeautifulSoup (+lxml), fuzzy-match (rapidfuzz), Playwright when a browser is needed (→ [14](14-operational-resilience.md)) |
+| **LLM** | API client (Claude / Anthropic SDK), responses **streamed over SSE** (→ [13](13-performance-frontend-and-sql.md)) |
+| **Tests** | `pytest` (Python) · Jest + supertest (Node) · Playwright (e2e) (→ [03](03-testing-and-verification.md)) |
+| **Build / dev** | esbuild, nodemon; Docker for reproducibility |
+| **Server / ops** | one **VPS (Hetzner)** + nginx (TLS, reverse proxy) + `pm2`/`systemd`; GA4 analytics |
 
-**Reguła ikon:** dla SVG trzymaj się **jednego zestawu — Lucide** (geometria w `<symbol>`/sprite,
-reszta to styl). Mieszanie bibliotek ikon = niespójny UI i rozjazd wag/stroke'ów.
+**Icon rule:** for SVG, stick to **one set — Lucide** (geometry in a `<symbol>`/sprite,
+the rest is style). Mixing icon libraries = inconsistent UI and mismatched weights/strokes.
 
-## Python jako domyślny język
-- **Dlaczego:** czytelność (kod jak proza — łatwy review przez człowieka *i* agenta), baterie
-  w zestawie, jeden język na API + skrypty + dane/LLM. Mniej kontekstów do trzymania w głowie.
-- **FastAPI** dla API: typy + walidacja (Pydantic) + **auto-OpenAPI = darmowy kontrakt** granicy
-  front↔back (→ [12](12-flexibility-and-scalability.md)). **pytest** dla testów (→ [03](03-testing-and-verification.md)).
-- **Reproducible env:** wirtualne środowisko + **pinned deps** (lock). „Działało wczoraj" znika.
-- **Format i typy jako kontrakt:** `ruff`/`black`, type hints. Spójny styl = tańszy review (→ [02](02-skills-and-refactoring.md)).
+## Python as the default language
+- **Why:** readability (code like prose — easy to review by a human *and* an agent), batteries
+  included, one language for API + scripts + data/LLM. Fewer contexts to hold in your head.
+- **FastAPI** for the API: types + validation (Pydantic) + **auto-OpenAPI = a free contract** at the
+  front↔back boundary (→ [12](12-flexibility-and-scalability.md)). **pytest** for tests (→ [03](03-testing-and-verification.md)).
+- **Reproducible env:** a virtual environment + **pinned deps** (lock). "Worked yesterday" goes away.
+- **Format and types as a contract:** `ruff`/`black`, type hints. Consistent style = cheaper review (→ [02](02-skills-and-refactoring.md)).
 
-## Baza danych — od prostego do skali
-- **Start: SQLite.** Zero-ops, jeden plik, świetne do MVP i always-on VPS. Nie zaczynaj od
-  rozproszonej bazy „bo kiedyś urośnie".
-- **Skala: PostgreSQL** — gdy boli współbieżny zapis, role, złożone relacje, rozszerzenia.
-  Migrację SQLite→PG przewiduj w modelu od początku (→ [11](11-data-model-and-normalization.md)).
-- **Reguły niezależne od silnika:** migracje **forward-only** + backup przed każdą (→ [04](04-scripts-and-databases.md)),
-  **slug zamiast ID** w odniesieniach user-danych, indeksy **po pomiarze**, nie z przeczucia (→ [13](13-performance-frontend-and-sql.md)).
-- NoSQL / rozproszone — dopiero gdy relacyjna realnie nie wystarcza, nie wcześniej.
+## Database — from simple to scale
+- **Start: SQLite.** Zero-ops, one file, great for an MVP and an always-on VPS. Don't start with
+  a distributed database "because it'll grow someday".
+- **Scale: PostgreSQL** — when concurrent writes, roles, complex relations, or extensions start to hurt.
+  Anticipate the SQLite→PG migration in the model from the start (→ [11](11-data-model-and-normalization.md)).
+- **Engine-independent rules:** **forward-only** migrations + a backup before each (→ [04](04-scripts-and-databases.md)),
+  **slug instead of ID** in references to user data, indexes **after measurement**, not on a hunch (→ [13](13-performance-frontend-and-sql.md)).
+- NoSQL / distributed — only when relational genuinely doesn't suffice, not before.
 
-## Web i API — kontrakt jako granica
-- **Im mniej JS, tym lepiej.** Server-rendered HTML domyślnie; SPA/Next.js tylko gdy interakcja
-  tego naprawdę wymaga. Lekki front = szybszy i tańszy w utrzymaniu (→ [13](13-performance-frontend-and-sql.md)).
-- **Kontrakt API (OpenAPI) jest granicą** między front a back — pozwala wymienić jedną stronę
-  bez dotykania drugiej (→ [12](12-flexibility-and-scalability.md)). Wersjonuj go; błędy zwracaj **ustrukturyzowane**.
-- **Streaming / SSE** dla długich odpowiedzi (czat, LLM token-by-token) — user widzi efekt od
-  razu, nie pustkę (→ [13](13-performance-frontend-and-sql.md)).
+## Web and API — the contract as the boundary
+- **The less JS, the better.** Server-rendered HTML by default; SPA/Next.js only when the interaction
+  truly requires it. A light front = faster and cheaper to maintain (→ [13](13-performance-frontend-and-sql.md)).
+- **The API contract (OpenAPI) is the boundary** between front and back — it lets you swap one side
+  without touching the other (→ [12](12-flexibility-and-scalability.md)). Version it; return **structured** errors.
+- **Streaming / SSE** for long responses (chat, LLM token-by-token) — the user sees the effect right
+  away, not emptiness (→ [13](13-performance-frontend-and-sql.md)).
 
-## Docker — powtarzalność, nie kult
-- **Po co:** ten sam obraz lokalnie / w CI / na prodzie. „U mnie działa" przestaje istnieć.
-- **Higiena:** mały obraz (multi-stage, slim base, **pinned** wersje), `.dockerignore`, proces
-  **non-root**. `docker-compose` do lokalnego złożenia (app + baza).
-- **Nie konteneryzuj na siłę** pojedynczego skryptu. Docker tam, gdzie zależności bolą — nie jako rytuał.
+## Docker — reproducibility, not a cult
+- **What for:** the same image locally / in CI / in prod. "Works on my machine" ceases to exist.
+- **Hygiene:** a small image (multi-stage, slim base, **pinned** versions), `.dockerignore`, a
+  **non-root** process. `docker-compose` for local assembly (app + database).
+- **Don't containerize by force** a single script. Docker where dependencies hurt — not as a ritual.
 
-## Serwer i hosting — jeden box, dobre nawyki
+## Server and hosting — one box, good habits
 
-> **Monolit jest domyślną architekturą — promuj go jako najłatwiejszy w utrzymaniu.** Jedna
-> aplikacja (web + API + zadania) i jedna baza na **jednym VPS** to coś, co ogarniasz w głowie:
-> jeden deploy, jeden log, jeden backup, jeden rollback. Debug to czytanie jednego procesu, nie
-> korelowanie śladów po sieci. Rozbicie na usługi/serverless **dokłada** sieć, wersjonowanie
-> kontraktów i klasę nowych awarii (→ [14](14-operational-resilience.md)) — sięgaj po nie dopiero,
-> gdy **metryka** (ruch, zespół, izolacja awarii) realnie tego wymaga, nie „bo tak się robi".
+> **The monolith is the default architecture — favor it as the easiest to maintain.** One
+> application (web + API + jobs) and one database on **one VPS** is something you can hold in your head:
+> one deploy, one log, one backup, one rollback. Debugging means reading a single process, not
+> correlating traces across a network. Splitting into services/serverless **adds** the network, contract
+> versioning, and a whole class of new failures (→ [14](14-operational-resilience.md)) — reach for them only
+> when a **metric** (traffic, team, failure isolation) genuinely requires it, not "because that's how it's done."
 
-- **Default: jeden VPS (Hetzner) + nginx** (reverse proxy, TLS) + `systemd`/`pm2`/Docker do
-  procesów. Tani, przewidywalny, pełna kontrola, **zero cold startu**. Wiele projektów na jednym
-  boxie = osobny vhost + osobny katalog, te same reguły deployu (→ [05](05-git-and-deployments.md)).
-- **Scale-to-zero** (Cloud Run / serverless) gdy ruch nierówny/globalny, a **cold start**
-  akceptowalny; **always-on VPS** gdy ruch przewidywalny. Świadomy tradeoff koszt/latencja,
-  zapisany jako ADR (→ [12](12-flexibility-and-scalability.md)).
-- **Usługi zarządzane** (baza, mail, storage) gdy zdejmują ops **taniej**, niż kosztuje
-  samodzielne utrzymanie.
-- **Sekrety** w env / secret store — **nigdy** w repo (→ [09](09-law-and-protecting-the-creator.md)).
+- **Default: one VPS (Hetzner) + nginx** (reverse proxy, TLS) + `systemd`/`pm2`/Docker for
+  processes. Cheap, predictable, full control, **zero cold start**. Many projects on one
+  box = a separate vhost + a separate directory, the same deploy rules (→ [05](05-git-and-deployments.md)).
+- **Scale-to-zero** (Cloud Run / serverless) when traffic is uneven/global and the **cold start**
+  is acceptable; **always-on VPS** when traffic is predictable. A deliberate cost/latency tradeoff,
+  recorded as an ADR (→ [12](12-flexibility-and-scalability.md)).
+- **Managed services** (database, mail, storage) when they take ops off your plate for **less** than
+  maintaining it yourself would cost.
+- **Secrets** in env / a secret store — **never** in the repo (→ [09](09-law-and-protecting-the-creator.md)).
 
-## TDD i pokrycie zmian — twardy rdzeń
-Najważniejsze kryterium doboru stacku: ma być **testowalny od pierwszej linijki**. Technologia,
-której nie umiesz łatwo objąć testem (test-first, szybki i deterministyczny suite, CI bramkujące),
-jest złym wyborem — nawet jeśli modna. Mechanika TDD i pokrycie zmian = kanon w → [03](03-testing-and-verification.md);
-tu tylko twarda konsekwencja: **wybieraj tech, która to umożliwia, i traktuj „commit bez testu" jako
-niekompletny** (→ [00](00-commandments.md)).
+## TDD and change coverage — the hard core
+The most important criterion for choosing a stack: it must be **testable from the first line**. A technology
+you can't easily wrap in a test (test-first, a fast and deterministic suite, gating CI)
+is a bad choice — even if it's trendy. The mechanics of TDD and change coverage = the canon in → [03](03-testing-and-verification.md);
+here, just the hard consequence: **choose tech that makes it possible, and treat "a commit without a test" as
+incomplete** (→ [00](00-commandments.md)).
 
-## Reguła wyboru technologii
-1. **Najprostsze, co uniesie dzisiejsze wymaganie**, z jawną ścieżką wzrostu (SQLite→PG, VPS→serverless).
-2. **Testowalność i ekosystem** ważniejsze niż nowość.
-3. Każdy nietrywialny wybór = **ADR**: jedno „dlaczego" + odrzucone alternatywy. Następna sesja
-   (człowiek albo agent) ma wiedzieć, czemu tak.
+## The technology-choice rule
+1. **The simplest thing that meets today's requirement**, with an explicit growth path (SQLite→PG, VPS→serverless).
+2. **Testability and ecosystem** matter more than novelty.
+3. Every non-trivial choice = an **ADR**: one "why" + the rejected alternatives. The next session
+   (human or agent) should know why it's done this way.
 
-## Anty-wzorce
-- 🚫 **Mikroserwisy / Kubernetes / rozproszona baza na MVP** — złożoność, której nikt jeszcze nie potrzebuje (→ [12](12-flexibility-and-scalability.md)).
-- 🚫 **Stack pod CV/modę** zamiast pod problem i testowalność.
-- 🚫 **Zmiana zachowania bez testu** („dodam później" — nie dodasz).
-- 🚫 **Sekrety w repo**; brak pinów wersji → „działało wczoraj".
-- 🚫 **SPA / ciężki JS** tam, gdzie wystarczy serwerowy HTML.
-- 🚫 **Docker/Cloud jako kult** zamiast narzędzia dobranego do problemu.
+## Anti-patterns
+- 🚫 **Microservices / Kubernetes / a distributed database on an MVP** — complexity no one needs yet (→ [12](12-flexibility-and-scalability.md)).
+- 🚫 **A stack for the CV/the trend** instead of for the problem and testability.
+- 🚫 **Changing behavior without a test** ("I'll add it later" — you won't).
+- 🚫 **Secrets in the repo**; no version pins → "worked yesterday".
+- 🚫 **SPA / heavy JS** where server-side HTML would do.
+- 🚫 **Docker/Cloud as a cult** instead of a tool fit to the problem.

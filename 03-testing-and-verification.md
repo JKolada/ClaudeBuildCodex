@@ -1,84 +1,84 @@
-# 03 — Testowanie i weryfikacja
+# 03 — Testing and Verification
 
-> Przykazanie III: *Weryfikuj, nie deklaruj.*
+> Commandment III: *Verify, don't declare.*
 
-Dwie różne rzeczy, często mylone:
-- **Testy** — zautomatyzowana siatka bezpieczeństwa, którą uruchamiasz wielokrotnie.
-- **Weryfikacja** — dowód, że *ta konkretna zmiana* robi to, co miała, **zaobserwowany**, nie założony.
+Two different things, often conflated:
+- **Tests** — an automated safety net you run repeatedly.
+- **Verification** — proof that *this specific change* does what it was meant to, **observed**, not assumed.
 
-Obie są obowiązkowe. Test, który przechodzi, nie znaczy, że feature działa w przeglądarce;
-ręczna weryfikacja bez testów nie chroni przed regresją jutro.
+Both are mandatory. A passing test doesn't mean the feature works in the browser;
+manual verification without tests won't protect you from tomorrow's regression.
 
-## Piramida (z projektu referencyjnego)
+## The pyramid (from the reference project)
 
-| Poziom | Narzędzie | Co pokrywa | Kiedy |
-|--------|-----------|------------|-------|
-| **Unit** | pytest / Jest | logika czysta (normalizer, matcher, helpery, walidatory) | co commit |
-| **Integration** | Supertest (HTTP) | trasy, auth-guardy, API JSON | co commit |
-| **E2E / browser** | Playwright | realne ścieżki w przeglądarce, na osobnym porcie | przed deployem / przy UI |
-| **Smoke** | skrypt (`smoke.ps1`) | „czy serwer wstaje i N tras zwraca poprawnie" | po restarcie / przed/po deployu |
+| Level | Tool | What it covers | When |
+|-------|------|----------------|------|
+| **Unit** | pytest / Jest | pure logic (normalizer, matcher, helpers, validators) | every commit |
+| **Integration** | Supertest (HTTP) | routes, auth guards, JSON API | every commit |
+| **E2E / browser** | Playwright | real browser paths, on a separate port | before deploy / when touching UI |
+| **Smoke** | script (`smoke.ps1`) | "does the server come up and do N routes respond correctly" | after restart / before and after deploy |
 
-Reguły, które się sprawdziły:
-- **Uruchamiaj testy przed commitem** ścieżki krytycznej.
-- **Jest z `--runInBand`**, gdy serwer dev/preview chodzi (konflikt portów/DB).
-- **Smoke test ma markery** — sprawdza, że wyrenderowała się *właściwa* strona (np. `price-gate`
-  dla anonima, nie tylko HTTP 200).
-- **Testy auth z obu stron** — anonim odbity do logowania **i** zalogowany widzi treść.
+Rules that have proven themselves:
+- **Run the tests before committing** the critical path.
+- **Jest with `--runInBand`** when a dev/preview server is running (port/DB conflicts).
+- **Smoke tests have markers** — they check that the *right* page rendered (e.g. `price-gate`
+  for an anonymous user, not just HTTP 200).
+- **Test auth from both sides** — anonymous user bounced to login **and** logged-in user sees the content.
 
-## „Weryfikuj, nie deklaruj" — w praktyce
+## "Verify, don't declare" — in practice
 
-Po zmianie obserwowalnej w aplikacji **pokaż dowód**, nie proś usera, żeby sam sprawdził:
-- kod HTTP / `redirect_url` (curl `-o /dev/null -w`),
-- fragment HTML potwierdzający (np. `og:image` wskazuje na właściwy plik),
-- liczby z bazy (ile kont, ile cen, `integrity_check: ok`),
-- screenshot przy zmianach wizualnych.
+After a change observable in the app, **show proof**; don't ask the user to check it themselves:
+- HTTP status / `redirect_url` (curl `-o /dev/null -w`),
+- a confirming HTML fragment (e.g. `og:image` points at the right file),
+- numbers from the database (how many accounts, how many prices, `integrity_check: ok`),
+- a screenshot for visual changes.
 
-Po **deployu** — smoke test na żywym serwerze (przez `localhost` za flagą maintenance), a
-gdy znajdziesz błąd w oknie — napraw go w oknie, jeśli to trywialne i bezpieczne (w
-projekcie referencyjnym tak złapaliśmy i naprawiliśmy zastane `ERR_HTTP_HEADERS_SENT` na `/mapa`).
+After a **deploy** — a smoke test against the live server (via `localhost`, behind the maintenance
+flag); and when you find a bug inside the window, fix it in the window if it's trivial and safe (in the
+reference project this is how we caught and fixed a pre-existing `ERR_HTTP_HEADERS_SENT` on `/mapa`).
 
-## Raport ma być uczciwy
-- Testy padają → powiedz to **z outputem**, nie chowaj.
-- Coś pominięto → powiedz, że pominięto.
-- Gdy 2 testy padają z **dryfu danych** (np. cohort-fixture `85% vs 85%`), a nie z regresji
-  — **odróżnij** to jawnie i nie blokuj nimi deployu, ale zaproponuj follow-up (regeneracja fixture'ów).
-- „Zrobione i zweryfikowane" mów dopiero, gdy naprawdę zweryfikowane — bez hedgingu, ale i bez ściemy.
+## The report must be honest
+- Tests fail → say so **with the output**; don't hide it.
+- Something was skipped → say it was skipped.
+- When 2 tests fail from **data drift** (e.g. cohort fixture `85% vs 85%`) rather than a regression
+  — **flag it explicitly**, don't let it block the deploy, but propose a follow-up (regenerate the fixtures).
+- Say "done and verified" only when it's actually verified — no hedging, but no bluffing either.
 
-## Liczby weryfikuj u źródła
-Nie ufaj liczbie z pamięci ani z dokumentacji — odpytaj bazę/test. Dokumentacja się starzeje;
-`SELECT COUNT(*)` nie kłamie. (Przykazanie X: „liczby weryfikuj".)
+## Verify numbers at the source
+Don't trust a number from memory or from the docs — query the database/test. Docs go stale;
+`SELECT COUNT(*)` doesn't lie. (Commandment X: "verify the numbers".)
 
-## Web — sprawdzony zestaw kontroli
-Dla stron/projektów webowych ten zestaw testów już się w praktyce sprawdził (typowy zestaw
-to kilkadziesiąt metod i kilkaset subtestów) — przenoś go domyślnie:
-- **SEO meta** (title/description per strona), **canonical + hreflang**, **JSON-LD**.
-- **Dostępność**: kontrast tokenów kolorów, nawigacja klawiaturą, sensowne `alt`/aria.
-- **Parytet EN↔PL** (i każdej pary językowej): brakujący klucz/strona w jednym języku = **test, który pada**.
-- **Martwe linki wewnętrzne** — żaden link w buildzie nie prowadzi w pustkę.
-- **Spójność motywu** (theme cookie / dark-light) i poprawność builda (każda strona się wyrenderowała).
+## Web — a proven set of checks
+For web sites/projects this set of tests has already proven itself in practice (a typical set runs
+to a few dozen methods and a few hundred subtests) — carry it over by default:
+- **SEO meta** (title/description per page), **canonical + hreflang**, **JSON-LD**.
+- **Accessibility**: color-token contrast, keyboard navigation, sensible `alt`/aria.
+- **EN↔PL parity** (and every language pair): a missing key/page in one language = **a test that fails**.
+- **Dead internal links** — no link in the build leads into the void.
+- **Theme consistency** (theme cookie / dark-light) and build correctness (every page rendered).
 
-## Anty-wzorce
-- 🚫 „Powinno działać" jako konkluzja.
-- 🚫 Uruchomienie tylko jednego testu i ogłoszenie „suite zielony".
-- 🚫 Pominięcie smoke testu po deployu, bo „przecież testy przeszły".
-- 🚫 Mylenie „kod się kompiluje" z „feature działa dla użytkownika".
+## Anti-patterns
+- 🚫 "Should work" as a conclusion.
+- 🚫 Running a single test and declaring "suite green".
+- 🚫 Skipping the smoke test after deploy because "the tests passed anyway".
+- 🚫 Confusing "the code compiles" with "the feature works for the user".
 
-## TDD — domyślny tryb pracy
+## TDD — the default working mode
 
-Test **najpierw**, nie po fakcie. Cykl:
-1. **Czerwony** — napisz test, który opisuje oczekiwane zachowanie i **pada**.
-2. **Zielony** — najmniejsza zmiana w kodzie, aż test przechodzi.
-3. **Refactor** — posprzątaj przy zielonym suite (→ [02](02-skills-and-refactoring.md)).
+Test **first**, not after the fact. The cycle:
+1. **Red** — write a test that describes the expected behavior and **fails**.
+2. **Green** — the smallest code change until the test passes.
+3. **Refactor** — clean up against a green suite (→ [02](02-skills-and-refactoring.md)).
 
-Bug naprawiasz tak samo: **najpierw test odtwarzający** błąd, potem fix — test zostaje jako
-regresja, żeby błąd nie wrócił.
+You fix a bug the same way: **first a test that reproduces** the bug, then the fix — the test stays
+as a regression guard so the bug doesn't come back.
 
-> **Każda zmiana w commicie niesie test.** Twarda reguła: commit, który zmienia zachowanie, a
-> nie dodaje/zmienia testu, jest **niekompletny**. Nowy endpoint → test trasy; nowy próg/fallback
-> → test progu; naprawiony bug → test regresji. „Dodam testy później" = grzech (koniec nie
-> nadchodzi). → [00](00-commandments.md), [08](08-stack-and-technologies.md)
+> **Every change in a commit carries a test.** Hard rule: a commit that changes behavior but
+> doesn't add/change a test is **incomplete**. New endpoint → route test; new threshold/fallback
+> → threshold test; fixed bug → regression test. "I'll add tests later" = a sin (later never
+> comes). → [00](00-commandments.md), [08](08-stack-and-technologies.md)
 
-- **Testuj kontrakt, nie implementację** — inaczej refactor kruszy testy bez realnej regresji.
-- **Suite szybki i deterministyczny** — wolny lub migający suite przestaje być uruchamiany;
-  izoluj I/O, ustaw seedy, `--runInBand` przy współdzielonym porcie/DB.
-- **CI bramkuje** — czerwone testy blokują merge i deploy; testy ścieżki krytycznej odpalasz przed commitem.
+- **Test the contract, not the implementation** — otherwise a refactor crumbles tests with no real regression.
+- **Keep the suite fast and deterministic** — a slow or flaky suite stops getting run;
+  isolate I/O, set seeds, `--runInBand` on a shared port/DB.
+- **CI gates** — red tests block merge and deploy; you run critical-path tests before committing.

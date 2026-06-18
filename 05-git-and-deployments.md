@@ -1,137 +1,137 @@
-# 05 — Git i wdrożenia
+# 05 — Git and Deployments
 
-> Przykazania II, VI, VII, VIII, IX. Najgęstszy rozdział, bo tu błąd jest najdroższy.
+> Commandments II, VI, VII, VIII, IX. The densest chapter, because a mistake here is the most expensive.
 
-## Git — dwa nawyki na większości zadań
+## Git — two habits for most tasks
 
-### A. Szukaj w historii ZANIM zaimplementujesz
+### A. Search the history BEFORE you implement
 ```bash
-git log --oneline -- <ścieżka>      # historia pliku/katalogu
-git log -S"symbol" --oneline        # pickaxe: gdzie narodził się symbol/flaga/kolumna
-git log -G"regex" --oneline         # commity, których DIFF pasuje do regex
-git log --grep="słowo" --oneline    # przeszukaj treści commitów (tam opisane są featury)
-git blame <plik> -L a,b             # kto/kiedy/dlaczego
-git show <commit>                   # pełna zmiana + kontekst
+git log --oneline -- <path>           # history of a file/directory
+git log -S"symbol" --oneline          # pickaxe: where a symbol/flag/column was born
+git log -G"regex" --oneline           # commits whose DIFF matches the regex
+git log --grep="word" --oneline       # search commit messages (that's where features are described)
+git blame <file> -L a,b               # who/when/why
+git show <commit>                     # the full change + context
 ```
-Łącz to z grep po drzewie + `AI_README.md` katalogu. Historia + kod + docs = pełny obraz w
-minutę. Robi to różnicę przy: nieznanym kodzie, hunchu „czy my już tego nie robiliśmy",
-kolumnie/fladze nieznanego pochodzenia, datowaniu regresji, przed każdym refaktorem.
+Combine this with a grep over the tree + the directory's `AI_README.md`. History + code + docs = the full
+picture in a minute. It pays off with: unfamiliar code, a hunch of "haven't we done this
+already?", a column/flag of unknown origin, dating a regression, and before every refactor.
 
-### B. Czysty, spójny `git status`
-- **Rozdzielaj niezwiązane zmiany** na osobne commity (jeden temat = jeden commit).
-- **Wykrywaj śmieci wcześnie:** `.bak`, pliki tymczasowe, przypadkowe bazy (`web/_Proj…db`),
-  plik o nazwie `-w` z błędnego `curl`. Dodaj wzorce do `.gitignore` (uwaga: gitignore
-  **nie ma komentarzy w tej samej linii** — `#` w osobnej linii).
-- **Odróżniaj realny diff od szumu CRLF:** `git status` pokazuje plik jako zmieniony, a
-  `git diff HEAD` jest pusty → to tylko EOL, nie praca. Nie commituj szumu.
-- **Sieroty (niezacommitowana praca w tle)** — w projekcie prowadzonym wielosesyjnie
-  („użytkownik + Claude") inne sesje zostawiają zmiany w drzewie. Przed deployem: czy to realna,
-  kompletna praca (commituj/potwierdź), czy WIP/eksperyment (zostaw)? **Nie wmiataj cudzej
-  niezacommitowanej pracy do deployu bez potwierdzenia.**
+### B. A clean, coherent `git status`
+- **Separate unrelated changes** into distinct commits (one topic = one commit).
+- **Catch junk early:** `.bak`, temp files, accidental databases (`web/_Proj…db`),
+  a file named `-w` from a botched `curl`. Add the patterns to `.gitignore` (note: gitignore
+  **has no inline comments** — put the `#` on its own line).
+- **Tell a real diff from CRLF noise:** `git status` shows a file as changed but
+  `git diff HEAD` is empty → it's only EOL, not work. Don't commit the noise.
+- **Orphans (uncommitted work in the background)** — in a project run across multiple sessions
+  ("user + Claude"), other sessions leave changes in the tree. Before a deploy: is this real, complete
+  work (commit/confirm it), or a WIP/experiment (leave it)? **Don't sweep someone else's uncommitted work
+  into a deploy without confirmation.**
 
-### Co kończy commit
-- Wiadomości po angielsku, opisowe (co + dlaczego), `fixes #N`/`refs #N` do issue.
-- Linkuj PR/issue pełnym URL-em, nie „PR #123".
+### What finishes a commit
+- Messages in English, descriptive (what + why), `fixes #N`/`refs #N` to the issue.
+- Link the PR/issue with the full URL, not "PR #123".
 
-## Wdrożenia — POLITYKA NADRZĘDNA
+## Deployments — THE OVERRIDING POLICY
 
-> ⛔ **Nigdy nie deployuj na prod automatycznie.** `git pull` na serwerze, `pm2 reload`,
-> swap bazy, `migrate.py` na prodzie, flaga maintenance — **tylko gdy user powie wprost**
-> („wdrażaj", „deploy"). Możesz **proaktywnie zaproponować** deploy, gdy gotowe — ale czekasz
-> na jawne „tak". Commit + push na życzenie to **nie** deploy. Ta reguła bije „auto mode".
+> ⛔ **Never deploy to prod automatically.** `git pull` on the server, `pm2 reload`,
+> a database swap, `migrate.py` on prod, the maintenance flag — **only when the user says so
+> explicitly** ("ship it", "deploy"). You may **proactively propose** a deploy when it's ready — but
+> you wait for an explicit "yes". Commit + push on request is **not** a deploy. This rule beats "auto mode".
 
-### Dwa typy deployu
-- **Code-only (bez migracji/zależności)** → zero-downtime: `git pull` + `pm2 reload`.
-- **Z migracją/zmianą zależności/swapem bazy** → **okno maintenance** (flaga nginx → 503 +
-  branded strona), kilka sekund downtime, gwarancja że app nie biegnie na pół-zmigrowanym schemacie.
+### Two deploy types
+- **Code-only (no migrations/dependencies)** → zero-downtime: `git pull` + `pm2 reload`.
+- **With a migration/dependency change/database swap** → a **maintenance window** (nginx flag → 503 +
+  branded page), a few seconds of downtime, a guarantee the app isn't running on a half-migrated schema.
 
-### Taguj KAŻDY deploy
+### Tag EVERY deploy
 ```bash
-git tag -a deploy-$(date +%F) -m "Co idzie na prod: <jedno zdanie>"   # -2/-3 dla kolejnego tego dnia
+git tag -a deploy-$(date +%F) -m "What goes to prod: <one sentence>"   # -2/-3 for the next one that day
 git push --tags
 ```
-- Co jest live: `git describe --tags --abbrev=0 --match 'deploy-*'`.
-- Rollback kodu: `git checkout <deploy-tag> && pm2 reload`.
-- Rollback schematu: przywróć backup (forward-only!).
+- What's live: `git describe --tags --abbrev=0 --match 'deploy-*'`.
+- Rollback of code: `git checkout <deploy-tag> && pm2 reload`.
+- Rollback of schema: restore the backup (forward-only!).
 
-### Changelog przy każdym deployu
-Publiczny „Co nowego" — **prostym językiem, bez żargonu** (żadnego scraper/migracja/commit).
-Pisz, **co użytkownik zyskuje**. Bump daty `updated:`. To część checklisty deployu, nie opcja.
+### A changelog with every deploy
+A public "What's new" — **in plain language, no jargon** (no scraper/migration/commit). Write
+**what the user gains**. Bump the `updated:` date. It's part of the deploy checklist, not optional.
 
 ---
 
-## Swap bazy z zachowaniem kont — runbook (najtrudniejsza operacja)
+## Database swap preserving accounts — the runbook (the hardest operation)
 
-Pełna podmianka prod-bazy (np. lokalny katalog z całą pracą) **z zachowaniem żywych kont**.
-To tu jest najwięcej pułapek. Lekcje z projektu referencyjnego:
+A full swap of the prod database (e.g. a local catalog with all the work) **while preserving live
+accounts**. This is where most of the traps lie. Lessons from the reference project:
 
-### Zasady, które ratują dane userów (Przykazanie VII)
-1. **„Użytkownicy" to wiele tabel, nie jedna `users`.** Wylicz **każdą** tabelę z FK do
-   użytkownika: konta, koszyki, recenzje, polubienia, odznaki, gry, czat (sesje +
-   wiadomości + limity), feedback, sesje. Tabelę bez `user_id` (np. `chat_messages`) mapuj
-   po jej rodzicu (`session_id`). Gateuj każdą na istnienie kolumny/tabeli.
-2. **Mapuj po STABILNYM kluczu (slug), nie po ID.** `product_id` dryfuje między
-   bazami po merge'ach — recenzja użytkownika musi trafić po `slug → nowe_id`, a brakujący
-   slug jest **pomijany i logowany**, nie wpychany na ślepo.
-3. **Źródłem prawdy dla kont jest ŻYWY prod**, nie stary snapshot — żeby nie zgubić
-   rejestracji z ostatniej godziny. Migrację uruchom **w oknie maintenance, po `pm2 stop`**,
-   czytając zatrzymaną, spójną prod-bazę.
-4. **Kolejność FK-safe**: WIPE dzieci przed rodzicami, INSERT rodziców przed dziećmi
-   (np. `reviews` przed `review_likes`; `chat_sessions` przed `chat_messages`).
-5. **Backup żywego proda PRZED swapem** (`.backup replaced-prod-<ts>.db`) — to Twój rollback.
-6. **Zweryfikuj scaloną bazę**: liczba kont = prod, 0 wiszących recenzji (slug-remap OK),
-   `integrity_check: ok`, naruszenia FK ≤ stan zastany (nie więcej).
-7. **Sesje to osobny, ulotny stan — nie mieszaj ich z podmienianą bazą.** Trzymaj store sesji w
-   **osobnym pliku** (np. `sessions.db`) niż baza katalogowa, którą czasem podmieniasz w całości —
-   inaczej swap wyzeruje zalogowanych. Store w pamięci procesu wylogowuje wszystkich przy **każdym**
-   restarcie/deployu i przecieka pamięć (→ [14](14-operational-resilience.md)).
+### Rules that save user data (Commandment VII)
+1. **"Users" is many tables, not one `users`.** Enumerate **every** table with an FK to the
+   user: accounts, carts, reviews, likes, badges, games, chat (sessions +
+   messages + limits), feedback, sessions. Map a table without `user_id` (e.g. `chat_messages`)
+   through its parent (`session_id`). Gate each one on the existence of the column/table.
+2. **Map by a STABLE key (slug), not by ID.** `product_id` drifts between
+   databases after merges — a user's review must land via `slug → new_id`, and a missing
+   slug is **skipped and logged**, not pushed in blindly.
+3. **The source of truth for accounts is LIVE prod**, not an old snapshot — so you don't lose
+   registrations from the last hour. Run the migration **in the maintenance window, after `pm2 stop`**,
+   reading the stopped, consistent prod database.
+4. **FK-safe order**: WIPE children before parents, INSERT parents before children
+   (e.g. `reviews` before `review_likes`; `chat_sessions` before `chat_messages`).
+5. **Back up live prod BEFORE the swap** (`.backup replaced-prod-<ts>.db`) — that's your rollback.
+6. **Verify the merged database**: account count = prod, 0 dangling reviews (slug-remap OK),
+   `integrity_check: ok`, FK violations ≤ the pre-existing state (no more).
+7. **Sessions are separate, ephemeral state — don't mix them into the swapped database.** Keep the session
+   store in a **separate file** (e.g. `sessions.db`) from the catalog database you sometimes swap wholesale —
+   otherwise the swap zeroes out logged-in users. An in-process memory store logs everyone out on **every**
+   restart/deploy and leaks memory (→ [14](14-operational-resilience.md)).
 
-### Sekwencja (faza nieinwazyjna → okno → finalizacja)
-**Faza 1 (serwis żyje):**
-- push kodu na GitHub;
-- **obrazki/assety gitignorowane kopiuj osobno** (rsync albo tar-over-ssh, **nie** przez git),
-  PRZED oknem — są nieaktywne, dopóki nie podmienisz bazy. Wysyłaj tylko deltę (policz brakujące).
-- pre-upload czystego snapshotu katalogu na serwer (`/tmp`).
+### The sequence (non-invasive phase → window → finalization)
+**Phase 1 (the service is live):**
+- push code to GitHub;
+- **copy gitignored images/assets separately** (rsync or tar-over-ssh, **not** through git),
+  BEFORE the window — they're inert until you swap the database. Send only the delta (count what's missing).
+- pre-upload a clean catalog snapshot to the server (`/tmp`).
 
-**Faza 2 (okno maintenance, kilkanaście sekund), atomowo (`set -e`):**
-`flaga ON → git pull → pm2 stop → backup żywego proda → migrate-users (źródło = prod) →
-swap pliku (rm wal/shm, mv, PRAGMA journal_mode=WAL) → pm2 start → SMOKE TEST → flaga OFF`.
+**Phase 2 (maintenance window, a dozen-odd seconds), atomically (`set -e`):**
+`flag ON → git pull → pm2 stop → back up live prod → migrate-users (source = prod) →
+swap the file (rm wal/shm, mv, PRAGMA journal_mode=WAL) → pm2 start → SMOKE TEST → flag OFF`.
 
-**Faza 3:** tag `deploy-…-2` + push, FB/SEO re-scrape jeśli dotyczy, sprzątanie `/tmp` i lokalnych temp.
+**Phase 3:** tag `deploy-…-2` + push, FB/SEO re-scrape if applicable, clean up `/tmp` and local temp.
 
-### Smoke test po swapie (zanim zdejmiesz flagę)
-Przez `localhost` (omija nginx maintenance): home/katalog/detal → 200, og:image →
-właściwy plik, redirecty (np. scalone → 301 do survivora), liczby w bazie (konta/rekordy),
-**`pm2 logs` na błędy**. Znaleziony, trywialny i bezpieczny bug — napraw w oknie i dociągnij
-(commit → pull → reload), zamiast wypuszczać znane 500.
+### Smoke test after the swap (before you drop the flag)
+Via `localhost` (bypasses the nginx maintenance): home/catalog/detail → 200, og:image →
+the right file, redirects (e.g. merged → 301 to the survivor), numbers in the database (accounts/records),
+**`pm2 logs` for errors**. If you find a trivial, safe bug — fix it in the window and ship it
+(commit → pull → reload) instead of releasing a known 500.
 
-### Asety gitignorowane a deploy
-Obrazki/pliki, które są w `.gitignore`, **nie jadą przez `git pull`**. Albo je zsynchronizuj
-(rsync/tar), albo wygeneruj na serwerze (jeśli ma narzędzia). W projekcie referencyjnym decyzja:
-**kopiujemy z lokalnej**, bo serwer nie ma Pillow, a swap zmienia katalog.
+### Gitignored assets and the deploy
+Images/files that are in `.gitignore` **don't ride along with `git pull`**. Either sync them
+(rsync/tar) or generate them on the server (if it has the tooling). In the reference project the call was
+**to copy from local**, because the server has no Pillow and the swap changes the catalog.
 
-## Anty-wzorce
-- 🚫 Auto-deploy / „skoro gotowe to wrzucam".
-- 🚫 Swap „prócz kont" = tylko `users` → utrata recenzji/odznak/czatu.
-- 🚫 Mapowanie user-danych po ID zamiast slug → recenzje lądują na złym produkcie.
-- 🚫 Migracja na starym snapshocie → utrata świeżych rejestracji.
-- 🚫 Brak tagu deployu → „co jest live?" staje się zgadywanką.
-- 🚫 Transfer 1.5 GB assetów **w** oknie maintenance → długi downtime (rób przed oknem).
-- 🚫 Sesje w bazie podmienianej swapem (albo w pamięci procesu) → deploy wylogowuje wszystkich.
-- 🚫 Niezmiennik skryptu deployu nietknięty testem — np. `$(date)` rozwinięty raz przy tworzeniu
-  pliku (każdy backup nadpisuje ten sam plik). Zabetonuj niezmienniki deploy-skryptu testem.
+## Anti-patterns
+- 🚫 Auto-deploy / "it's ready, so I'm shipping it".
+- 🚫 A swap "except accounts" = only `users` → loss of reviews/badges/chat.
+- 🚫 Mapping user data by ID instead of slug → reviews land on the wrong product.
+- 🚫 A migration on an old snapshot → loss of fresh registrations.
+- 🚫 No deploy tag → "what's live?" becomes a guessing game.
+- 🚫 Transferring 1.5 GB of assets **inside** the maintenance window → long downtime (do it before the window).
+- 🚫 Sessions in a swapped database (or in process memory) → the deploy logs everyone out.
+- 🚫 A deploy-script invariant left untested — e.g. `$(date)` expanded once at file-creation time
+  (so every backup overwrites the same file). Lock the deploy script's invariants down with a test.
 
-> **Runbook to pamięć incydentów, nie głowa.** Każda awaria na prodzie → wpis w runbooku z datą
-> i ponumerowaną lekcją (np. „nigdy nie SCP żywej `.db` — użyj `.backup`; WAL trzyma świeże strony").
-> Następny swap czyta runbook, nie powtarza błędu (→ [06](06-collaboration-and-memory.md), [14](14-operational-resilience.md)).
+> **The runbook is the memory of incidents, not your head.** Every prod failure → an entry in the runbook
+> with a date and a numbered lesson (e.g. "never SCP a live `.db` — use `.backup`; WAL holds fresh pages").
+> The next swap reads the runbook, doesn't repeat the mistake (→ [06](06-collaboration-and-memory.md), [14](14-operational-resilience.md)).
 
-## Wspólna infrastruktura
-Projekty mogą dzielić jeden **Hetzner VPS**: statyczne (build `dist/`) idą przez
-`scp`/`rsync` + nginx vhost; aplikacje Node przez `git pull` + `pm2 reload` za
-nginx. Jeden serwer = wspólny katalog `backups/`, te same nawyki (tag deployu, maintenance
-flag). Nowy projekt na tym samym boxie: osobny vhost + osobny katalog, te same reguły.
+## Shared infrastructure
+Projects can share a single **Hetzner VPS**: static sites (a `dist/` build) go via
+`scp`/`rsync` + an nginx vhost; Node apps via `git pull` + `pm2 reload` behind
+nginx. One server = a shared `backups/` directory and the same habits (deploy tag, maintenance
+flag). A new project on the same box: a separate vhost + a separate directory, the same rules.
 
-## W praktyce
-Ścieżkę krytyczną (np. logowanie) wdrażaj z testem i pełnym smoke (rejestracja, login,
-wylogowanie, trwałość sesji). Przy pierwszym realnym ruchu userów ustaw od razu: nightly backup
-bazy, tagowanie deployów, branded maintenance page. → [03](03-testing-and-verification.md)
+## In practice
+Deploy the critical path (e.g. login) with a test and a full smoke (registration, login,
+logout, session persistence). At the first real user traffic, set up immediately: a nightly database
+backup, deploy tagging, a branded maintenance page. → [03](03-testing-and-verification.md)

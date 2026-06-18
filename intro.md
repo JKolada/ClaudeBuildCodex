@@ -1,62 +1,61 @@
-# Czym jest Rzemiosło — The Craft
+# What The Craft is
 
-> **Rzemiosło (The Craft) to sztuka stawiania aplikacji end-to-end z Claude — takich, które
-> są skalowalne, utrzymywalne i łatwe do dalszego rozwoju, migracji i zmiany przez całe życie
-> projektu.** Nie framework, nie biblioteka — **doktryna współpracy człowiek + agent**: zwarty
-> zestaw reguł, przykazań i antywzorców, dzięki którym kod zostaje zrozumiały dla następnej sesji,
-> testowalny, bezpieczny w zmianie i godny zaufania — od pierwszego commita po prod z żywymi
-> użytkownikami.
+> **The Craft is the art of building end-to-end applications with Claude — apps that are scalable,
+> maintainable, and easy to keep evolving, migrating, and changing across the whole life of the
+> project.** Not a framework, not a library — a **human + agent doctrine**: a tight set of rules,
+> commandments, and anti-patterns that keep the code understandable to the next session, testable,
+> safe to change, and trustworthy — from the first commit to production with real users.
 
-## W jednym akapicie
+## In one paragraph
 
-Większość projektów budowanych z AI nie rozsypuje się dlatego, że agent nie umie pisać kodu —
-rozsypuje się dlatego, że **nikt nie ustalił zasad**. The Craft to właśnie te zasady: dołączasz je
-do projektu jako `docs/rules/`, a Claude od **Dnia 0** wie „jak my to robimy". Efekt to aplikacja
-o **ekstremalnie elastycznej strukturze plików i technologii** — zaczynasz prosto (jeden serwer,
-jedna baza), a struktura jest z góry gotowa na wzrost: rozdzielone warstwy, feature flags, migracje
-forward-only, slug zamiast ID. Rozwijasz, migrujesz i skalujesz **bez przepisywania od zera**. Wszystko
-z **poszanowaniem prywatności osobistej i prawa** (RODO/GDPR, zgody, ochrona twórcy) wpisanym od
-początku, nie doklejonym na końcu.
+Most AI-built projects don't fall apart because the agent can't write code — they fall apart because
+**nobody set the rules**. The Craft is those rules: you attach them to a project as `docs/rules/`, and
+from **Day 0** Claude knows "how we do things here." The result is an app with an **extremely flexible
+structure of files and technologies** — you start simple (one server, one database), and the structure
+is ready for growth from the outset: separated layers, feature flags, forward-only migrations, slug
+instead of ID. You evolve, migrate, and scale **without rewriting from scratch** — all with **respect
+for personal privacy and the law** (GDPR, consents, protecting the creator) built in from the start,
+not bolted on at the end.
 
-## Co dostajesz
+## What you get
 
-- **Kod, który czyta się jak proza** — dopasowany do otoczenia, łatwy w review przez człowieka *i* agenta.
-- **Historia git jako pamięć projektu** — szukasz, zanim napiszesz; nic nie wymyślasz od nowa.
-- **Weryfikację zamiast deklaracji** — „działa" znaczy dowód: smoke test, kod HTTP, liczby, screenshot.
-- **Bezpieczeństwo zmian** — dry-run domyślnie, backup przed każdą migracją, prod święty, dane userów nienaruszalne.
-- **Elastyczność i skalowalność** — monolit na jednym VPS jako prosty default, z jawną ścieżką wzrostu (SQLite → PostgreSQL, VPS → serverless), gdy metryka tego wymusi.
-- **Spokój prawny** — regulamin, polityka prywatności i disclaimery jako zbroja twórcy, nie refleksja po fakcie.
+- **Code that reads like prose** — matched to its surroundings, easy to review for a human *and* an agent.
+- **Git history as the project's memory** — search before you write; never reinvent what already exists.
+- **Verification instead of declaration** — "it works" means proof: a smoke test, an HTTP code, numbers, a screenshot.
+- **Safe changes** — dry-run by default, a backup before every migration, production is sacred, user data is untouchable.
+- **Flexibility and scalability** — a monolith on a single VPS as the simple default, with an explicit growth path (SQLite → PostgreSQL, VPS → serverless) when a metric forces it.
+- **Legal peace of mind** — terms of service, a privacy policy, and disclaimers as the creator's armor, not an afterthought.
 
 ---
 
-# Dlaczego warto spróbować napisać aplikację z The Craft
+# Why you should try building an app with The Craft
 
-**Bo różnica nie jest w tym, *czy* agent napisze kod — tylko w tym, *jak* będzie wyglądał Twój
-projekt za trzy miesiące.** Bez zasad każda sesja z agentem dokłada trochę chaosu: niespójny styl,
-dokumentacja, która kłamie, migracja bez backupu, deploy „bo gotowe". Po kwartale masz aplikację,
-której boisz się dotknąć. The Craft odwraca tę trajektorię: **każda zmiana zostawia projekt
-czytelniejszym, nie gorszym.**
+**Because the difference isn't *whether* the agent writes the code — it's what your project looks like
+three months from now.** Without rules, every agent session adds a little chaos: inconsistent style,
+documentation that lies, a migration with no backup, a deploy "because it's done." A quarter later you
+have an app you're afraid to touch. The Craft reverses that trajectory: **every change leaves the
+project cleaner, not worse.**
 
-**Zaczynasz szybko, a nie tanim kosztem.** Jeden serwer, prosty stack, monolit — coś, co ogarniasz
-w głowie: jeden deploy, jeden log, jeden backup, jeden rollback. To nie jest „prymitywne" — to jest
-**tanie w utrzymaniu**. A gdy naprawdę przyjdzie skala, struktura już na nią czeka: warstwy są
-rozdzielone, klucze stabilne, migracje jednokierunkowe. Rozwój i migracja przestają być
-przepisywaniem — stają się dokładaniem.
+**You start fast, not cheap.** One server, a simple stack, a monolith — something you can hold in your
+head: one deploy, one log, one backup, one rollback. That isn't "primitive" — it's **cheap to
+maintain**. And when real scale finally arrives, the structure is already waiting for it: layers are
+separated, keys are stable, migrations are one-way. Growth and migration stop being a rewrite and
+become an addition.
 
-**Człowiek i agent grają do jednej bramki.** Plan → iteruj → review. Agent nie zgaduje — wykonuje
-sprawdzony przepis, szuka w historii, raportuje uczciwie (z błędami, nie tylko z sukcesami). Ty
-zostajesz architektem decyzji, nie korektorem chaosu. To współpraca, w której **zaufanie buduje się
-na dowodzie**, a nie na optymizmie.
+**Human and agent play toward the same goal.** Plan → iterate → review. The agent doesn't guess — it
+follows a proven recipe, searches the history, reports honestly (failures included, not just wins). You
+stay the architect of decisions, not the proofreader of chaos. It's a collaboration where **trust is
+built on proof**, not optimism.
 
-**Prywatność i prawo masz z głowy od Dnia 0.** RODO/GDPR, zgody, retencja, ochrona twórcy — wpisane
-jako polityki w konstytucję projektu, zanim pojawi się pierwszy realny użytkownik. Żadnych nocnych
-poprawek „bo ktoś poprosił o usunięcie konta".
+**Privacy and the law are handled from Day 0.** GDPR, consents, retention, protecting the creator —
+written as policies into the project's constitution before the first real user shows up. No late-night
+scrambles "because someone asked to delete their account."
 
-**Najlepsze: to jest reużywalne.** The Craft nie jest „pod jeden projekt". Dołączasz go jako
-`docs/rules/` do **każdej** nowej aplikacji, wypełniasz [brief](index.html#brief) i ruszasz — a każdy
-kolejny projekt korzysta z lekcji poprzedniego.
+**Best of all: it's reusable.** The Craft isn't built "for one project." You attach it as `docs/rules/`
+to **every** new app, fill in the [brief](index.html#brief), and go — and each new project benefits
+from the lessons of the last.
 
-> **Spróbuj raz.** Weź następny pomysł, dołącz The Craft, zacznij od [Dnia 0](07-new-project-day-0.md)
-> i zbuduj go jak rzemieślnik — wolno tam, gdzie błąd jest drogi; szybko tam, gdzie jest tani.
-> Zobaczysz różnicę nie pierwszego dnia, ale **trzeciego miesiąca** — gdy aplikacja wciąż jest
-> przyjemna do rozwijania. Zacznij od [Dekalogu](00-commandments.md): cała doktryna na jednym ekranie.
+> **Try it once.** Take your next idea, attach The Craft, start from [Day 0](07-new-project-day-0.md),
+> and build it like a craftsman — slow where a mistake is expensive, fast where it's cheap. You'll see
+> the difference not on day one, but in **month three** — when the app is still a pleasure to work on.
+> Start with the [Decalogue](00-commandments.md): the whole doctrine on a single screen.

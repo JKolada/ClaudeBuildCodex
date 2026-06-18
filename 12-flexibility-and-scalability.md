@@ -1,66 +1,66 @@
-# 12 — Elastyczność i skalowalność
+# 12 — Flexibility and scalability
 
-> Złota zasada altytudy zastosowana do architektury: *wolno tam, gdzie błąd jest drogi; szybko
-> tam, gdzie tani.* Skaluj, gdy metryka tego wymaga — nie wcześniej, nie „na zapas".
+> The golden rule of altitude applied to architecture: *slow where a mistake is expensive; fast
+> where it's cheap.* Scale when a metric demands it — not sooner, not "just in case."
 
-Elastyczność to zdolność zmiany **bez przepisywania**; skalowalność to zdolność wzrostu **bez
-przebudowy**. Oba bierze się z tych samych nawyków: rozdziel warstwy, zmieniaj additive, schowaj
-ryzyko za flagą, nie sprzęgaj stanu tam, gdzie nie musisz. I — równie ważne — **nie
-over-engineeruj**: prosta architektura, którą umiesz rozwinąć, bije rozproszoną, której nie
-potrzebujesz.
+Flexibility is the ability to change **without a rewrite**; scalability is the ability to grow
+**without a rebuild**. Both come from the same habits: separate the layers, make changes additive,
+hide risk behind a flag, don't couple state where you don't have to. And — just as important —
+**don't over-engineer**: a simple architecture you can grow into beats a distributed one you don't
+need.
 
-## Rozdziel warstwy
-- **DB ↔ ingest ↔ web** to trzy oddzielne światy. W projekcie referencyjnym: SQLite (dane) ↔ scrapery Python
-  (ingest) ↔ Node/Express (web) — łączy je **kontrakt** (schemat, → [11](11-data-model-and-normalization.md)),
-  nie wspólny kod. Wymienisz scraper bez dotykania weba.
-- **Kontrakt API jako granica** — np. front Next.js ↔ backend Python przez jawny kontrakt
-  (OpenAPI). Granica, której się trzymasz, pozwala wymienić każdą stronę osobno. → [08](08-stack-and-technologies.md)
-- **Wspólny backend pod web + przyszły mobile.** ADR z wyprzedzeniem: SQLite vs Postgres, sesja
-  vs JWT (np. sesja dla weba; mobile w przyszłości → rozważ JWT na wspólnym backendzie).
-  Decyzję **zapisz**, nie trzymaj w głowie. → [01](01-documentation-and-ai-readme.md)
+## Separate the layers
+- **DB ↔ ingest ↔ web** are three separate worlds. In the reference project: SQLite (data) ↔ Python scrapers
+  (ingest) ↔ Node/Express (web) — bound by a **contract** (the schema, → [11](11-data-model-and-normalization.md)),
+  not by shared code. You can swap the scraper without touching the web layer.
+- **The API contract is the boundary** — e.g. a Next.js frontend ↔ a Python backend via an explicit
+  contract (OpenAPI). A boundary you hold to lets you replace either side independently. → [08](08-stack-and-technologies.md)
+- **A shared backend for web + a future mobile app.** An ADR ahead of time: SQLite vs Postgres, session
+  vs JWT (e.g. sessions for web; mobile later → consider JWT on the shared backend).
+  **Write the decision down**, don't keep it in your head. → [01](01-documentation-and-ai-readme.md)
 
-## Zmieniaj tak, by się dało cofnąć i rampować
-- **Additive / backward-compatible** — nowa kolumna, nowy endpoint, nowy język; nie łam tego,
-  co działa (→ [11](11-data-model-and-normalization.md)).
-- **Feature flags** — `feature_flags` w bazie + przełączniki typu `BETA_ALL_PREMIUM`. **Ship dark,
-  potem ramp**: kod jedzie wyłączony, włączasz dla części, potem dla wszystkich. Bez flag każda
-  zmiana jest all-or-nothing.
-- **Stateless, gdzie się da** — im mniej stanu w procesie, tym łatwiej skalować poziomo.
+## Make changes reversible and rampable
+- **Additive / backward-compatible** — a new column, a new endpoint, a new language; don't break
+  what works (→ [11](11-data-model-and-normalization.md)).
+- **Feature flags** — `feature_flags` in the database + toggles like `BETA_ALL_PREMIUM`. **Ship dark,
+  then ramp**: the code ships off, you turn it on for a slice, then for everyone. Without flags every
+  change is all-or-nothing.
+- **Stateless where you can** — the less state in the process, the easier it is to scale horizontally.
 
-## Platforma: scale-to-zero vs always-on
-Realna decyzja z dwóch projektów, **świadomy tradeoff koszt/latencja**:
-- **Cloud Run (scale-to-zero)** — płacisz za użycie, zero ruchu = zero kosztu, ale **cold start**
-  dodaje latencję pierwszego żądania. Dobre przy nierównym, globalnym ruchu.
-- **VPS always-on (Hetzner + pm2)** — np. stały koszt, **zero cold startu**, pełna
-  kontrola. Dobre przy przewidywalnym ruchu i SQLite na dysku.
-Wybór = profil ruchu i budżet, nie moda. Zapisz jako ADR.
+## Platform: scale-to-zero vs always-on
+A real decision from two projects, a **deliberate cost/latency tradeoff**:
+- **Cloud Run (scale-to-zero)** — you pay for usage, zero traffic = zero cost, but **cold start**
+  adds latency to the first request. Good for uneven, global traffic.
+- **VPS always-on (Hetzner + pm2)** — e.g. a fixed cost, **zero cold start**, full
+  control. Good for predictable traffic and SQLite on disk.
+The choice comes down to traffic profile and budget, not fashion. Record it as an ADR.
 
-## Cache i pipeline'y
-- **Warstwy cache** z jawną inwalidacją: np. inwalidacja cache w pipeline `full`,
-  rankingi cache'owane **10 min**, statyki z `max-age` (godzina dev / 7 dni immutable prod).
-- **Composable, idempotentne pipeline'y** — `normalize → metadata → enrich → validate → stats`;
-  każdy etap odpalalny osobno, ponowne uruchomienie bezpieczne (→ [04](04-scripts-and-databases.md)).
-- **i18n / multi-market od początku, jeśli globalnie** (np. 16 języków od startu, nie doklejone
-  później — → [10](10-seo-and-translations.md)).
+## Cache and pipelines
+- **Cache layers** with explicit invalidation: e.g. cache invalidation in the `full` pipeline,
+  rankings cached for **10 min**, statics with `max-age` (an hour in dev / 7 days immutable in prod).
+- **Composable, idempotent pipelines** — `normalize → metadata → enrich → validate → stats`;
+  each stage runnable on its own, a re-run is safe (→ [04](04-scripts-and-databases.md)).
+- **i18n / multi-market from the start, if global** (e.g. 16 languages from day one, not bolted on
+  later — → [10](10-seo-and-translations.md)).
 
-## Nie over-engineeruj
-- **Zacznij prosto.** SQLite + statyczny build (np. build statyczny w Pythonie)
-  obsługują zadziwiająco duży ruch. Projekt referencyjny na SQLite/WAL serwuje ~kilka tysięcy pozycji bez Postgresa.
-- **Skaluj, gdy metryka tego wymaga** — nie „bo kiedyś urośnie". Right-size do realnego ruchu.
-- Migracja SQLite→Postgres, monolit→serwisy: **gdy liczby tego żądają**, z ADR, nie prewencyjnie.
+## Don't over-engineer
+- **Start simple.** SQLite + a static build (e.g. a static build in Python)
+  handle a surprising amount of traffic. The reference project on SQLite/WAL serves a few thousand items without Postgres.
+- **Scale when a metric demands it** — not "because it'll grow someday." Right-size to real traffic.
+- A SQLite→Postgres migration, monolith→services: **when the numbers demand it**, with an ADR, not preemptively.
 
-## Anty-wzorce
-- 🚫 **Przedwczesna złożoność rozproszona** (mikroserwisy/Kafka/k8s na 100 userów).
-- 🚫 **Stanowe sprzężenie blokujące skalowanie** (stan sesji w pamięci procesu bez storu).
-- 🚫 **Big-bang rewrite** zamiast zmian additive (→ [04](04-scripts-and-databases.md)).
-- 🚫 **Brak feature flags** → każda zmiana wymuszona all-or-nothing, brak rampu/dark-shipu.
-- 🚫 **Ignorowanie kosztu always-on** (płacisz za idle, gdy scale-to-zero by pasował) — i odwrotnie.
-- 🚫 Przepisanie na Postgres „na zapas", gdy SQLite jeszcze się nie zadyszał.
+## Anti-patterns
+- 🚫 **Premature distributed complexity** (microservices/Kafka/k8s for 100 users).
+- 🚫 **Stateful coupling that blocks scaling** (session state in process memory with no store).
+- 🚫 **Big-bang rewrite** instead of additive changes (→ [04](04-scripts-and-databases.md)).
+- 🚫 **No feature flags** → every change forced into all-or-nothing, no ramp/dark-ship.
+- 🚫 **Ignoring the cost of always-on** (paying for idle when scale-to-zero would fit) — and vice versa.
+- 🚫 Rewriting to Postgres "just in case" while SQLite hasn't even broken a sweat.
 
-## Dla nowych projektów
-Na Dzień 0 (→ [07](07-new-project-day-0.md)) ustal **trzy granice** (DB / ingest / web) i
-zapisz **trzy ADR**: baza (SQLite vs Postgres), sesja vs JWT, platforma (VPS vs Cloud Run).
-Wprowadź `feature_flags` od początku — to najtańsza polisa na elastyczność. Zacznij od
-najprostszego stacku, który dowozi (statyk/SQLite), a skalowanie odłóż do chwili, gdy konkretna
-metryka (latencja, koszt, rozmiar bazy) tego zażąda — i wtedy decyduj liczbami, nie przeczuciem
+## For new projects
+On Day 0 (→ [07](07-new-project-day-0.md)) set **three boundaries** (DB / ingest / web) and
+write **three ADRs**: database (SQLite vs Postgres), session vs JWT, platform (VPS vs Cloud Run).
+Introduce `feature_flags` from the start — it's the cheapest insurance policy on flexibility. Start
+with the simplest stack that delivers (statics/SQLite), and defer scaling to the moment a concrete
+metric (latency, cost, database size) demands it — and then decide by the numbers, not by hunch
 (→ [13](13-performance-frontend-and-sql.md)).

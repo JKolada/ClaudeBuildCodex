@@ -1,138 +1,137 @@
-# 01 — Dokumentacja i AI_README
+# 01 — Documentation and AI_README
 
-> Przykazanie I: *Dokumentuj dla agenta, nie dla archiwum.*
+> Commandment I: *Document for the agent, not for the archive.*
 
-Dokumentacja w projekcie z agentem AI ma jeden nadrzędny cel: **żeby następna sesja (albo
-inny agent) zrozumiała katalog bez czytania całego kodu.** To nie jest archiwum dla potomnych
-— to interfejs onboardingu, czytany co sesję.
+Documentation in a project with an AI agent has one overriding goal: **to let the next session (or
+another agent) understand a directory without reading all of its code.** This is not an archive for
+posterity — it's an onboarding interface, read every session.
 
-## Trzy warstwy dokumentacji
+## The three layers of documentation
 
-| Warstwa | Plik | Rola |
+| Layer | File | Role |
 |---------|------|------|
-| **Konstytucja** | `CLAUDE.md` (root) | Źródło prawdy o projekcie: stack, jak uruchomić, polityki (np. „nigdy nie deployuj automatycznie"), aktualny stan. Ładowane co sesję. |
-| **Mapa katalogu** | `AI_README.md` (w każdym istotnym katalogu) | Co tu jest, API modułów, gotchas, liczby. Czytasz **przed** dotknięciem kodu w tym katalogu. |
-| **Encyklopedia / plany** | `docs/` | Stabilna referencja (architektura, schemat DB), plany na przyszłość, standardy. |
+| **Constitution** | `CLAUDE.md` (root) | Source of truth about the project: stack, how to run it, policies (e.g. "never deploy automatically"), current state. Loaded every session. |
+| **Directory map** | `AI_README.md` (in every significant directory) | What's here, the module APIs, gotchas, numbers. You read it **before** touching code in this directory. |
+| **Encyclopedia / plans** | `docs/` | Stable reference (architecture, DB schema), future plans, standards. |
 
-### `CLAUDE.md` — konstytucja
-- Krótkie „Quick orientation" (tabela: warstwa → tech → lokalizacja).
-- **Jak uruchomić** każdy element (dokładne komendy z interpreterem/portem).
-- **Polityki, które nadpisują domyślne zachowanie** — najważniejsze: deployment policy
-  („nigdy automatycznie na prod"), git workflow, zasady scraperów/walidacji.
-- Sekcja **„Current state"** z datą i liczbami (ile rekordów, jakie migracje zastosowane).
-  To jest pierwsze, co czyta agent — musi być aktualne.
-- **Reguła:** instrukcje w `CLAUDE.md` mają pierwszeństwo przed domyślnym zachowaniem agenta.
-  Pisz je jak prawo: konkretnie, z „dlaczego".
+### `CLAUDE.md` — the constitution
+- A short "Quick orientation" (a table: layer → tech → location).
+- **How to run** each piece (exact commands with interpreter/port).
+- **Policies that override default behavior** — most important: the deployment policy
+  ("never automatically to prod"), the git workflow, scraper/validation rules.
+- A **"Current state"** section with a date and numbers (how many records, which migrations applied).
+  This is the first thing the agent reads — it must be current.
+- **Rule:** instructions in `CLAUDE.md` take precedence over the agent's default behavior.
+  Write them like law: concrete, with the "why."
 
-### `AI_README.md` — w każdym katalogu
-Reguła z projektu referencyjnego, którą warto przenieść: **każdy katalog ma `AI_README.md`**, a jego
-aktualizacja jest częścią workflow commita:
+### `AI_README.md` — in every directory
+A rule from the reference project worth carrying over: **every directory has an `AI_README.md`**, and
+updating it is part of the commit workflow:
 
 ```
-kod  →  /update-ai-readme  →  git commit
+code  →  /update-ai-readme  →  git commit
 ```
 
-Co powinno być w `AI_README.md`:
-- **Indeks plików/modułów** z jednozdaniowym „po co to".
-- **API** kluczowych funkcji (sygnatura + kontrakt), żeby nie czytać implementacji.
-- **Gotchas** — pułapki, których nie widać z kodu (np. „FB nie renderuje WebP jako og:image",
-  „ten CDN zwraca 200 z HTML przy błędzie").
-- **Liczby** — ile rekordów, ile testów, jakie pokrycie. Liczby się starzeją → aktualizuj.
-- **Martwe wpisy usuwaj** — odniesienie do skasowanego kodu jest gorsze niż brak wpisu.
+What belongs in `AI_README.md`:
+- A **file/module index** with a one-sentence "what it's for."
+- The **API** of the key functions (signature + contract), so you don't read the implementation.
+- **Gotchas** — traps invisible from the code (e.g. "FB won't render WebP as og:image,"
+  "this CDN returns 200 with HTML on error").
+- **Numbers** — how many records, how many tests, what coverage. Numbers go stale → update them.
+- **Delete dead entries** — a reference to deleted code is worse than no entry.
 
-> **Test jakości AI_README:** czy agent po jego przeczytaniu może bezpiecznie zmienić kod w
-> tym katalogu, nie skanując wszystkich plików? Jeśli nie — czegoś brakuje.
+> **The AI_README quality test:** after reading it, can the agent safely change code in this
+> directory without scanning every file? If not — something's missing.
 
-**Reguła wiążąca warstwy:** `CLAUDE.md` (root) **wskazuje na `AI_README.md` w każdym folderze**
-jako obowiązkowe uzupełnienie — to konstytucja deleguje szczegóły katalogu do jego mapy. Konstytucja
-mówi „gdzie i czym jest projekt"; `AI_README` mówi „co dokładnie jest w tym katalogu". Bez tego
-wskazania nowa sesja nie wie, że mapy istnieją.
+**The rule that binds the layers:** `CLAUDE.md` (root) **points to the `AI_README.md` in every folder**
+as a mandatory complement — the constitution delegates directory detail to its map. The constitution
+says "where and what the project is"; the `AI_README` says "what exactly is in this directory." Without that
+pointer, a new session doesn't know the maps exist.
 
-## AI_README pod grep — oszczędność kontekstu
+## AI_README for grep — saving context
 
-W docelowym projekcie agent **nie czyta wszystkiego** — przy konkretnym zadaniu **grepuje po słowach
-kluczowych** i czyta tylko trafiony plik. Dlatego `AI_README.md` projektuj jako **indeks pod grep**,
-nie jako prozę:
+In the target project the agent **doesn't read everything** — for a specific task it **greps by
+keywords** and reads only the file it hits. So design `AI_README.md` as an **index built for grep**,
+not as prose:
 
-- **Opis każdego pliku gęsty w keywordy.** Nie „różne reguły", lecz konkretne terminy, których ktoś
-  poszuka: nazwy funkcji, pojęcia, technologie, **synonimy** i **oba języki**, jeśli projekt jest
-  dwujęzyczny (`RODO`/`GDPR`, `migracja`/`migration`, `kolejka`/`queue`). `grep -i <temat>` ma trafić
-  w **jedną linię** i wskazać właściwy plik.
-- **Jeden plik = jeden temat.** Dziel treść tak, by trafienie było precyzyjne. Temat rozlany na pięć
-  plików = pięć trafień i przepalony kontekst; temat zwarty w jednym = jedno trafienie, jedno czytanie
-  (→ [12](12-flexibility-and-scalability.md): rozdziel warstwy).
-- **Mapa „temat → plik".** Trzymaj w `AI_README` zwięzły indeks (keywordy + nazwa pliku w jednej linii),
-  utrzymywany aktualnie. To nawigacja: grep po nim zwraca *gdzie iść*, nie całą treść.
-- **Po co:** kontekst to budżet. Im celniej `AI_README` kieruje, tym mniej tokenów schodzi na szukanie,
-  a więcej zostaje na robotę. To Przykazanie II (szukaj, zanim napiszesz) zastosowane do **czytania**.
+- **Make each file's description keyword-dense.** Not "various rules" but the concrete terms someone
+  will search for: function names, concepts, technologies, **synonyms**, and **both languages** if the
+  project is bilingual (`RODO`/`GDPR`, `migracja`/`migration`, `kolejka`/`queue`). `grep -i <topic>`
+  should hit **one line** and point to the right file.
+- **One file = one topic.** Split content so the hit is precise. A topic spread across five files = five
+  hits and burned context; a topic kept whole in one = one hit, one read (→ [12](12-flexibility-and-scalability.md): separate the layers).
+- **A "topic → file" map.** Keep a concise index in `AI_README` (keywords + filename on one line), kept
+  current. It's navigation: grepping it returns *where to go*, not the whole content.
+- **Why:** context is a budget. The more precisely `AI_README` directs, the fewer tokens go to searching
+  and the more remain for the work. This is Commandment II (search before you write) applied to **reading**.
 
-## Struktura `/docs` i foldery
+## The `/docs` structure and folders
 
-Dokumentacja „cięższa niż mapa katalogu" mieszka w **`/docs`** — jedno miejsce na stabilną
-referencję i plany, żeby nie puchły `AI_README` ani `CLAUDE.md`:
+Documentation "heavier than a directory map" lives in **`/docs`** — one place for stable
+reference and plans, so the `AI_README`s and `CLAUDE.md` don't balloon:
 
 ```
 docs/
-  AI_README.md          # spis treści docs: „gdzie zacząć dla zadania X"
-  architecture.md       # warstwy, granice, przepływy
-  data_model.md         # schemat DB, ERD, controlled vocabulary (→ [11])
-  deployment_runbook.md # procedura + ponumerowane lekcje z incydentów (→ [05], [14])
-  plans/                # plany na przyszłość, RFC, decyzje (jeden plik = jeden temat)
+  AI_README.md          # table of contents for docs: "where to start for task X"
+  architecture.md       # layers, boundaries, flows
+  data_model.md         # DB schema, ERD, controlled vocabulary (→ [11])
+  deployment_runbook.md # procedure + numbered lessons from incidents (→ [05], [14])
+  plans/                # future plans, RFCs, decisions (one file = one topic)
     NNNN-tytul.md
 ```
 
-- **`/docs/plans/`** — żywy backlog decyzji i projektów. Plan to dokument, nie myśl w głowie:
-  problem → opcje → wybór → „dlaczego". Zrealizowany plan zostaje jako zapis decyzji.
-- **Folder bez `AI_README.md` to folder-zagadka.** Tworząc nowy istotny katalog — twórz go **razem**
-  z `AI_README.md` (choćby szkielet). To samo przy refaktorze: rozbijasz moduł na podkatalogi →
-  każdy nowy katalog dostaje mapę w tym samym kroku, nie „później".
-- **Im konkretniej, tym lepiej.** Lepsza struktura folderów (jasne granice: dane / ingest / web /
-  skrypty, → [12](12-flexibility-and-scalability.md)) + gęstszy, konkretny `AI_README` w każdym z
-  nich bije jeden ogólnikowy plik w rootcie. Ważne informacje (gotchas, kontrakty, liczby) trzymaj
-  **blisko kodu, którego dotyczą**.
+- **`/docs/plans/`** — a living backlog of decisions and designs. A plan is a document, not a thought
+  in your head: problem → options → choice → "why." A finished plan stays as a record of the decision.
+- **A folder without an `AI_README.md` is a mystery folder.** When you create a new significant directory, create it
+  **together** with an `AI_README.md` (even a skeleton). Same when refactoring: you break a module into subdirectories →
+  each new directory gets its map in the same step, not "later."
+- **The more concrete, the better.** A better folder structure (clear boundaries: data / ingest / web /
+  scripts, → [12](12-flexibility-and-scalability.md)) + a denser, concrete `AI_README` in each of
+  them beats one vague file in the root. Keep important information (gotchas, contracts, numbers)
+  **close to the code it concerns**.
 
-## Kiedy aktualizować (a kiedy nie)
+## When to update (and when not)
 
-| Zmiana | Aktualizować dokumentację? |
+| Change | Update the documentation? |
 |--------|----------------------------|
-| Nowy moduł / funkcja / skrypt / flaga CLI | ✅ |
-| Nowa migracja / kolumna / tabela | ✅ (doc DB + doc skryptów) |
-| Zmiana liczby testów / rekordów | ✅ |
-| Zmiana zachowania (nowy próg, nowy fallback) | ✅ |
-| Czysty bugfix bez zmiany API/struktury | ❌ (odnotuj, że sprawdziłeś) |
-| Literówka, formatowanie | ❌ |
+| New module / function / script / CLI flag | ✅ |
+| New migration / column / table | ✅ (DB doc + scripts doc) |
+| Change in the number of tests / records | ✅ |
+| Change in behavior (new threshold, new fallback) | ✅ |
+| Pure bugfix with no API/structure change | ❌ (note that you checked) |
+| Typo, formatting | ❌ |
 
-## Dokumentacja jako kod
-- **Źródło prawdy to `.md`** — ręcznie pisany, wersjonowany w git jak reszta kodu. Historia docsów
-  (`git log` po `.md`) mówi *kiedy i czemu* reguła się zmieniła. Nie trzymaj prawdy w wygenerowanym HTML.
-- **Linki względne** między plikami `.md` — żeby dało się klikać i walidować.
-- **Jeden „spis treści"** (np. `docs/AI_README.md`) z tabelą „gdzie zacząć dla zadania X".
+## Documentation as code
+- **The source of truth is `.md`** — hand-written, versioned in git like the rest of the code. The history of the docs
+  (`git log` over the `.md`) tells you *when and why* a rule changed. Don't keep the truth in generated HTML.
+- **Relative links** between `.md` files — so they can be clicked and validated.
+- **One "table of contents"** (e.g. `docs/AI_README.md`) with a "where to start for task X" table.
 
-## Czytnik dokumentacji i regeneracja
+## The documentation reader and regeneration
 
-`.md` jest źródłem prawdy, ale człowiek czyta wygodniej w przeglądarce. Dodaj **prosty czytnik
-`documentation.html` w rootcie repo** — renderuje `.md` (np. `marked`), wersjonowany w git jak
-każdy plik. Jeden plik, bez bundlera; działa z dwukliku i z serwera (ten codex sam tak działa).
+`.md` is the source of truth, but a human reads more comfortably in a browser. Add a **simple reader
+`documentation.html` in the repo root** — it renders the `.md` (e.g. `marked`), versioned in git like
+every file. One file, no bundler; works from a double-click and from a server (this codex itself works that way).
 
-- **Wygenerowany artefakt (snapshot/HTML) jest pochodną, nie źródłem.** Commituj go, ale **nigdy
-  nie edytuj ręcznie** — nadpisze go build.
-- **Regeneracja NIE odpala się sama.** Żadnego auto-buildu przy każdym commicie (szum, zwłoka,
-  konflikty). Odpalasz ją **na polecenie** — najlepiej skillem (→ [02](02-skills-and-refactoring.md)),
-  nie hookiem.
-- **Skill regeneracji patrzy w git od ostatniej aktualizacji docsów.** Zamiast ślepo przebudowywać
-  wszystko: czyta `git log <ostatni-commit-docs>..HEAD` (albo od taga `docs-*`), widzi **co realnie
-  się zmieniło** (Przykazanie II → [05](05-git-and-deployments.md)), aktualizuje dotknięte sekcje i
-  **wypisuje, co zmienił**. Tani, świadomy, sprawdzalny — zamiast „przebuduj i ufaj".
+- **The generated artifact (snapshot/HTML) is a derivative, not the source.** Commit it, but **never
+  edit it by hand** — the build will overwrite it.
+- **Regeneration does NOT fire by itself.** No auto-build on every commit (noise, lag,
+  conflicts). You run it **on command** — best via a skill (→ [02](02-skills-and-refactoring.md)),
+  not a hook.
+- **The regeneration skill looks at git since the last docs update.** Instead of blindly rebuilding
+  everything: it reads `git log <last-docs-commit>..HEAD` (or from a `docs-*` tag), sees **what actually
+  changed** (Commandment II → [05](05-git-and-deployments.md)), updates the touched sections, and
+  **prints what it changed**. Cheap, deliberate, checkable — instead of "rebuild and trust."
 
-## Anty-wzorce
-- 🚫 „Zaktualizuję docs na końcu" → koniec nie nadchodzi, dokumentacja kłamie.
-- 🚫 AI_README opisujący *intencję* zamiast *stanu* — agent działa na tym, co napisane, nie na marzeniach.
-- 🚫 Duplikowanie stanu z `CLAUDE.md` do pięciu miejsc — jedno źródło prawdy, reszta linkuje.
-- 🚫 **Opis pliku zbyt ogólny** („różne reguły", „helpery") — grep nie trafia, agent skanuje wszystko
-  i przepala kontekst. Opisuj keywordami, nie etykietami.
+## Anti-patterns
+- 🚫 "I'll update the docs at the end" → the end never comes, the documentation lies.
+- 🚫 An AI_README describing *intent* instead of *state* — the agent acts on what's written, not on wishes.
+- 🚫 Duplicating state from `CLAUDE.md` into five places — one source of truth, the rest link.
+- 🚫 **A file description too generic** ("various rules", "helpers") — grep misses, the agent scans
+  everything and burns context. Describe with keywords, not labels.
 
-## W praktyce
-Start nowego projektu: najpierw `CLAUDE.md` (stack, jak uruchomić, polityki i **twarde reguły
-domeny** — np. prywatność, ograniczenia prawne), potem `AI_README.md` w katalogach o największej
-wadze (auth, i18n, pipeline'y danych). Reguły nadrzędne (np. privacy-by-design) zapisuj jako
-**politykę w konstytucji**, nie jako luźną notatkę. → [07](07-new-project-day-0.md)
+## In practice
+Starting a new project: first `CLAUDE.md` (stack, how to run it, policies and **hard domain
+rules** — e.g. privacy, legal constraints), then `AI_README.md` in the directories that carry the most
+weight (auth, i18n, data pipelines). Record overriding rules (e.g. privacy-by-design) as a
+**policy in the constitution**, not as a loose note. → [07](07-new-project-day-0.md)

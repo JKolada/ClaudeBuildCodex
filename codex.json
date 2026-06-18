@@ -6,9 +6,9 @@
   "released": "2026-06-18",
   "url": "https://codex.jakub.solutions",
   "chapters": 16,
-  "languages": ["pl", "en"],
-  "default_language": "pl",
-  "lang_paths": { "pl": ".", "en": "en" },
+  "languages": ["en", "pl"],
+  "default_language": "en",
+  "lang_paths": { "en": ".", "pl": "pl" },
   "edition": "techniczna",
   "editions": {
     "techniczna": "available",
