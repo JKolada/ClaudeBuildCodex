@@ -101,9 +101,11 @@ Jeden plik, bez zależności build. Mechanika:
   ("core"|"deep"), title, desc`.
 - **Routing przez hash:** `#NN-nazwa` → widok rozdziału; pusty/`#` → strona główna. `route()`
   reaguje na `hashchange`.
-- **Język treści:** `LANG` (`pl`/`en`, zapis w `localStorage` `rzemioslo-lang`). Ścieżka rozdziału =
-  `file` (PL, root) albo `en/`+`file` (EN). Przełącznik `#langToggle` w topbarze. Chrome strony
-  (dekalog, karty, brief) zostaje po polsku — pełna prezentacja wielojęzyczna to The Craft Web.
+- **Język (treść + cały chrome):** `LANG` (`pl`/`en`, zapis w `localStorage` `rzemioslo-lang`).
+  Treść rozdziału z `file` (PL, root) albo `en/`+`file` (EN). **Chrome jest w pełni dwujęzyczny** —
+  słownik `UI` (`data-i18n`/`data-i18n-html`) + `CH_EN` (tytuły/opisy rozdziałów) + `BRIEF_FIELDS`
+  (pola briefu); `applyChrome()` przerysowuje wszystko przy starcie i przy `#langToggle`. Dodajesz
+  string do chrome → dodaj klucz do `UI` (oba języki), inaczej zostanie po polsku.
 - **Render (dwutorowo):** najpierw `fetch(langPath(file))` (świeże `.md`, gdy serwowane); na błędzie
   fetcha (`file://`) — snapshot `window.RZEMIOSLO_DOCS[LANG][slug]` z `content.js`. Wynik →
   `marked.parse()` → `.prose`, cache w pamięci (`cache[LANG+":"+file]`).

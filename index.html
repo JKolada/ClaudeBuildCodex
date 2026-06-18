@@ -272,8 +272,8 @@
     </a>
     <span class="spacer"></span>
     <nav>
-      <a href="#intro">Manifest</a>
-      <a href="#brief">Brief</a>
+      <a href="#intro" data-i18n="navManifest">Manifest</a>
+      <a href="#brief" data-i18n="navBrief">Brief</a>
       <a href="https://github.com/JKolada/ClaudeBuildCodex" target="_blank" rel="noopener" class="gh" aria-label="Kod źródłowy na GitHubie" title="GitHub — kod źródłowy">
         <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#ic-github"></use></svg>
         <span>GitHub</span>
@@ -316,70 +316,56 @@
 
   <header class="hero">
     <div class="barline"></div>
-    <div class="kicker">Doktryna budowania z Claude</div>
+    <div class="kicker" data-i18n="kicker">Doktryna budowania z Claude</div>
     <h1>Rzemiosło <span class="en">· The Craft</span></h1>
-    <p style="margin-top:20px"><a class="cta" href="#brief">Wypełnij brief projektu →</a></p>
-    <p class="tagline">Zwarta doktryna budowania i prowadzenia aplikacji <b>end-to-end</b> z Claude —
+    <p style="margin-top:20px"><a class="cta" href="#brief" data-i18n="ctaBrief">Wypełnij brief projektu →</a></p>
+    <p class="tagline" data-i18n-html="tagline_html">Zwarta doktryna budowania i prowadzenia aplikacji <b>end-to-end</b> z Claude —
     zestaw konkretnych <b>reguł, przykazań i antywzorców</b>. Pomyślana jak <code>/docs/rules/</code>
     dołączane do każdego nowego projektu.</p>
     <p class="brandline">Warsztat <a href="https://jakub.solutions">jakub.solutions</a> · Jakub Kolada — Insurance Systems Architect &amp; IT Consultant</p>
   </header>
 
   <section class="manifesto-cta">
-    <p>Rzemiosło to <b>sztuka stawiania aplikacji end-to-end z Claude</b> — skalowalnych, utrzymywalnych
+    <p data-i18n-html="manifBlurb_html">Rzemiosło to <b>sztuka stawiania aplikacji end-to-end z Claude</b> — skalowalnych, utrzymywalnych
     i łatwych w rozwoju, migracji i zmianie, o ekstremalnie elastycznej strukturze plików i technologii,
     z poszanowaniem prywatności osobistej i prawa (RODO/GDPR) od Dnia 0.</p>
-    <p><a class="cta-ghost" href="#intro">Czym jest The Craft i dlaczego warto spróbować? → Przeczytaj manifest</a></p>
+    <p><a class="cta-ghost" href="#intro" data-i18n="manifCta">Czym jest The Craft i dlaczego warto spróbować? → Przeczytaj manifest</a></p>
   </section>
 
   <hr class="rule" />
 
-  <h2 class="section">Dekalog — rdzeń doktryny</h2>
-  <ol class="commandments">
+  <h2 class="section" data-i18n="secDecalog">Dekalog — rdzeń doktryny</h2>
+  <ol class="commandments" data-i18n-html="decalog_html">
     <li><div class="num">I</div><div><div class="t">Dokumentuj dla agenta, nie dla archiwum.</div><div class="d">Każdy katalog ma AI_README; aktualizuj go przed commitem, nie po.</div></div></li>
-    <li><div class="num">II</div><div><div class="t">Szukaj w historii, zanim napiszesz linijkę.</div><div class="d">git log -S / --grep / blame + AI_README. Ktoś już to rozwiązał w tym repo.</div></div></li>
-    <li><div class="num">III</div><div><div class="t">Weryfikuj, nie deklaruj.</div><div class="d">Nie „działa" — dowód: smoke test, kod HTTP, liczby, screenshot.</div></div></li>
-    <li><div class="num">IV</div><div><div class="t">Dry-run jest domyślny; --execute świadomy.</div><div class="d">Skrypt mutujący najpierw pokazuje plan. Mutacja po przeczytaniu.</div></div></li>
-    <li><div class="num">V</div><div><div class="t">Backup to mechanizm rollbacku, nie ostrożność.</div><div class="d">Migracje forward-only; snapshot przed każdą zmianą na prodzie.</div></div></li>
-    <li><div class="num">VI</div><div><div class="t">Prod jest święty — nie dotykasz bez „wdrażaj".</div><div class="d">Commit i push to nie deploy. Nieodwracalne potwierdzaj zawsze.</div></div></li>
-    <li><div class="num">VII</div><div><div class="t">Dane użytkownika są nienaruszalne.</div><div class="d">Wylicz każdą tabelę FK; mapuj po slug, nie ID; źródło = żywy prod; zweryfikuj integralność.</div></div></li>
-    <li><div class="num">VIII</div><div><div class="t">Taguj każdy deploy i pisz, co user zyskał.</div><div class="d">Annotated tag = „co jest live". Changelog prostym językiem, bez żargonu.</div></div></li>
-    <li><div class="num">IX</div><div><div class="t">Mały, spójny commit; jeden temat.</div><div class="d">Rozdzielaj niezwiązane zmiany. Czysty git status; wykrywaj śmieci i sieroty wcześnie.</div></div></li>
-    <li><div class="num">X</div><div><div class="t">Plan → iteruj → review.</div><div class="d">Najpierw szkic (3, nie 100). Liczby weryfikuj. UX dowieź z ciepłem.</div></div></li>
   </ol>
 
   <hr class="rule" />
 
-  <h2 class="section">Rozdziały — fundament</h2>
+  <h2 class="section" data-i18n="secCore">Rozdziały — fundament</h2>
   <div class="grid" id="cards-core"></div>
 
-  <h2 class="section" style="margin-top:34px">Rozdziały — pogłębienie</h2>
+  <h2 class="section" style="margin-top:34px" data-i18n="secDeep">Rozdziały — pogłębienie</h2>
   <div class="grid" id="cards-deep"></div>
 
   <hr class="rule" />
 
-  <h2 class="section">Złota zasada altytudy</h2>
-  <div class="golden">
+  <h2 class="section" data-i18n="secGolden">Złota zasada altytudy</h2>
+  <div class="golden" data-i18n-html="golden_html">
     <b>Wolno tam, gdzie błąd jest drogi</b> (prod, dane userów, schemat).
     <b>Szybko tam, gdzie jest tani</b> (lokalny eksperyment, szkic UI, dry-run).
     Tempo dobieraj do kosztu pomyłki, nie do niecierpliwości.
   </div>
 
-  <h2 class="section" style="margin-top:34px">Siedem grzechów głównych</h2>
-  <div class="sins">
+  <h2 class="section" style="margin-top:34px" data-i18n="secSins">Siedem grzechów głównych</h2>
+  <div class="sins" data-i18n-html="sins_html">
     1. Nadęty optymizm w raporcie („wszystko działa" bez dowodu).<br/>
-    2. Mutacja bez planu (od razu --execute).<br/>
-    3. Auto-deploy („skoro gotowe, to wrzucam").<br/>
-    4. Swap „prócz kont" jako jedna tabela users.<br/>
-    5. Commit-śmietnik (niezwiązane zmiany + artefakty).<br/>
-    6. Skalowanie przed review (500 sztuk, nim user zobaczył 3).<br/>
     7. Dokumentacja „później".
   </div>
 
   <footer>
     <span class="pill">Rzemiosło — The Craft</span><br/><br/>
-    Wersja żywa — aktualizuj po każdym projekcie, który czegoś nauczył.<br/>
-    Doktryna, która się nie zmienia, jest martwa. · Warsztat <a href="https://jakub.solutions">jakub.solutions</a> · Start: <a href="#07-new-project-day-0">Dzień 0</a>
+    <span data-i18n-html="footer_html">Wersja żywa — aktualizuj po każdym projekcie, który czegoś nauczył.<br/>
+    Doktryna, która się nie zmienia, jest martwa. · Warsztat <a href="https://jakub.solutions">jakub.solutions</a> · Start: <a href="#07-new-project-day-0">Dzień 0</a></span>
   </footer>
 
 </main>
@@ -387,7 +373,7 @@
 <!-- ========================= CZYTNIK ROZDZIAŁU ========================= -->
 <section id="reader" class="wrap">
   <div class="readbar">
-    <a class="back" href="#">← Wszystkie rozdziały</a>
+    <a class="back" href="#" data-i18n="backAll">← Wszystkie rozdziały</a>
     <span class="spacer"></span>
     <select class="chapsel" id="chapsel" aria-label="Wybierz rozdział"></select>
   </div>
@@ -398,20 +384,19 @@
 <!-- ========================= BRIEF (interaktywny) ========================= -->
 <section id="brief" class="wrap">
   <div class="readbar">
-    <a class="back" href="#">← Strona główna</a>
+    <a class="back" href="#" data-i18n="briefBackHome">← Strona główna</a>
     <span class="spacer"></span>
-    <a class="back" href="#07-new-project-day-0">Rozdział 07 — Dzień 0 →</a>
+    <a class="back" href="#07-new-project-day-0" data-i18n="briefBackCh">Rozdział 07 — Dzień 0 →</a>
   </div>
 
   <div class="brief-head">
-    <h1>Brief projektu</h1>
-    <p>Odpowiedz na pytania (każde z podpowiedzią), a złożymy z nich gotowy <b>brief</b> w Markdown.
+    <h1 data-i18n="briefHeading">Brief projektu</h1>
+    <p data-i18n-html="briefIntro_html">Odpowiedz na pytania (każde z podpowiedzią), a złożymy z nich gotowy <b>brief</b> w Markdown.
     To krok 0 z <a href="#07-new-project-day-0">rozdziału 07</a>. Gdy zaczynasz nowy projekt:</p>
-    <ul class="brief-how">
+    <ul class="brief-how" data-i18n-html="briefHow_html">
       <li><b>Zapisz</b> wynik jako <code>brief-projektu.md</code> w <b>głównym folderze projektu</b> (Craft siedzi w <code>docs/rules/</code>), <b>albo</b></li>
-      <li><b>wklej</b> całość wprost do <b>Claude Code / Claude Desktop</b> otwartego w tym folderze — jako pierwszą wiadomość.</li>
     </ul>
-    <p class="brief-note" style="margin-left:0">Odpowiedzi <b>zapisują się roboczo w przeglądarce</b> (przeżyją odświeżenie). Nic nie wychodzi na zewnątrz — wszystko liczy się lokalnie.</p>
+    <p class="brief-note" style="margin-left:0" data-i18n-html="briefSaveNote_html">Odpowiedzi <b>zapisują się roboczo w przeglądarce</b> (przeżyją odświeżenie). Nic nie wychodzi na zewnątrz — wszystko liczy się lokalnie.</p>
   </div>
 
   <form class="briefform" id="briefform" autocomplete="off">
@@ -506,20 +491,20 @@
     </div>
 
     <div class="brief-actions">
-      <button type="submit" class="btn btn-primary">Generuj brief ↓</button>
-      <button type="reset" class="btn">Wyczyść</button>
-      <span class="brief-saved" id="bf-saved" hidden>Zapisano roboczo ✓</span>
+      <button type="submit" class="btn btn-primary" data-i18n="briefBtnGen">Generuj brief ↓</button>
+      <button type="reset" class="btn" data-i18n="briefBtnReset">Wyczyść</button>
+      <span class="brief-saved" id="bf-saved" data-i18n="briefSaved" hidden>Zapisano roboczo ✓</span>
     </div>
   </form>
 
   <div class="brief-out" id="brief-out" hidden>
     <div class="brief-actions" style="margin-bottom:10px">
-      <button type="button" class="btn btn-primary" id="bf-copy">Kopiuj</button>
-      <button type="button" class="btn" id="bf-download">Pobierz .md</button>
-      <span class="copied" id="bf-copied" hidden>Skopiowano ✓</span>
+      <button type="button" class="btn btn-primary" id="bf-copy" data-i18n="briefCopy">Kopiuj</button>
+      <button type="button" class="btn" id="bf-download" data-i18n="briefDownload">Pobierz .md</button>
+      <span class="copied" id="bf-copied" data-i18n="briefCopied" hidden>Skopiowano ✓</span>
     </div>
     <textarea id="bf-result" readonly spellcheck="false"></textarea>
-    <p class="brief-note"><b>Zapisz</b> jako <code>brief-projektu.md</code> w głównym folderze projektu, albo <b>wklej</b> wprost do Claude Code / Claude Desktop otwartego w tym folderze. Puste pola pominęliśmy.</p>
+    <p class="brief-note" data-i18n-html="briefOutNote_html"><b>Zapisz</b> jako <code>brief-projektu.md</code> w głównym folderze projektu, albo <b>wklej</b> wprost do Claude Code / Claude Desktop otwartego w tym folderze. Puste pola pominęliśmy.</p>
   </div>
 </section>
 
@@ -560,28 +545,118 @@
   function langPath(file){ return LANG === "pl" ? file : (LANG + "/" + file); }
 
   // Dokument specjalny (poza numerowaną listą rozdziałów): manifest „Czym jest The Craft".
-  var INTRO = { file: "intro.md", no: "", title: "Czym jest The Craft" };
+  var INTRO = { file: "intro.md", no: "", title: "Czym jest The Craft", title_en: "What The Craft is" };
 
-  // ---- Karty na stronie głównej ----
-  function card(c){
-    var badge = c.group === "deep" ? c.no : c.no;
-    return '<a class="card" href="#'+slug(c.file)+'">'
-         +    '<div class="no">'+badge+'</div>'
-         +    '<h3>'+c.title+'</h3>'
-         +    '<p>'+c.desc+'</p>'
-         +  '</a>';
+  // Angielskie tytuły/opisy rozdziałów (PL żyje w CHAPTERS). Slug → {t, d}.
+  var CH_EN = {
+    "00-commandments":{t:"Decalogue",d:"The doctrine's core + the seven deadly sins."},
+    "01-documentation-and-ai-readme":{t:"Documentation and AI_README",d:"AI_README in every directory, CLAUDE.md as source of truth."},
+    "02-skills-and-refactoring":{t:"Skills and refactoring",d:"When to build a skill; refactoring discipline; SOLID."},
+    "03-testing-and-verification":{t:"Testing and verification",d:"Test pyramid, „verify, don't declare”, smoke."},
+    "04-scripts-and-databases":{t:"Scripts and databases",d:"Dry-run/--execute, idempotency, migrations, backups."},
+    "05-git-and-deployments":{t:"Git and deployments",d:"Search git, tag deploys, swap the DB while preserving accounts."},
+    "06-collaboration-and-memory":{t:"Collaboration and memory",d:"Plan→iterate→review, confirm the irreversible, report honestly."},
+    "07-new-project-day-0":{t:"New project: Day 0",d:"Product brief + a concrete startup checklist."},
+    "08-stack-and-technologies":{t:"Stack and technologies",d:"Python, DB, web/API, Docker, server (Hetzner), TDD."},
+    "09-law-and-protecting-the-creator":{t:"Law and protecting the creator",d:"Terms, privacy policy, disclaimers as the creator's armor."},
+    "10-seo-and-translations":{t:"SEO and translations",d:"hreflang, JSON-LD, E-E-A-T/YMYL, language parity as a test."},
+    "11-data-model-and-normalization":{t:"Data model and normalization",d:"Lookups, slug instead of ID, active-row, deliberate denormalization."},
+    "12-flexibility-and-scalability":{t:"Flexibility and scalability",d:"Separate the layers, feature flags, scale-to-zero vs always-on."},
+    "13-performance-frontend-and-sql":{t:"Performance: frontend and SQL",d:"Measure first, indexes & partial index, no N+1, streaming."},
+    "14-operational-resilience":{t:"Operational resilience",d:"Crash-proof runtime, resumable jobs, unreliable APIs, provider limits, cost quotas."},
+    "15-scraping-ai-and-chatbots":{t:"Scraping, AI APIs, and chatbots",d:"Effective scraping, AI for specific tasks, configurable & grounded assistants."}
+  };
+  function cTitle(c){ var e=CH_EN[slug(c.file)]; if(LANG==="en"){ if(c===INTRO) return c.title_en; if(e) return e.t; } return c.title; }
+  function cDesc(c){ var e=CH_EN[slug(c.file)]; return (LANG==="en" && e) ? e.d : c.desc; }
+
+  // Słownik UI chrome (wszystko poza treścią rozdziałów). data-i18n = textContent, *_html = innerHTML.
+  var UI = {
+    kicker:{pl:"Doktryna budowania z Claude",en:"A doctrine for building with Claude"},
+    ctaBrief:{pl:"Wypełnij brief projektu →",en:"Fill in the project brief →"},
+    tagline_html:{pl:"Zwarta doktryna budowania i prowadzenia aplikacji <b>end-to-end</b> z Claude — zestaw konkretnych <b>reguł, przykazań i antywzorców</b>. Pomyślana jak <code>/docs/rules/</code> dołączane do każdego nowego projektu.",en:"A compact doctrine for building and running <b>end-to-end</b> applications with Claude — a concrete set of <b>rules, commandments, and anti-patterns</b>. Designed to be dropped into every new project as <code>/docs/rules/</code>."},
+    manifBlurb_html:{pl:"Rzemiosło to <b>sztuka stawiania aplikacji end-to-end z Claude</b> — skalowalnych, utrzymywalnych i łatwych w rozwoju, migracji i zmianie, o ekstremalnie elastycznej strukturze plików i technologii, z poszanowaniem prywatności osobistej i prawa (RODO/GDPR) od Dnia 0.",en:"The Craft is <b>the art of building end-to-end applications with Claude</b> — scalable, maintainable, and easy to evolve, migrate, and change, with an extremely flexible structure of files and technologies, and respect for personal privacy and the law (GDPR) from Day 0."},
+    manifCta:{pl:"Czym jest The Craft i dlaczego warto spróbować? → Przeczytaj manifest",en:"What is The Craft and why try it? → Read the manifesto"},
+    secDecalog:{pl:"Dekalog — rdzeń doktryny",en:"The Decalogue — the doctrine's core"},
+    decalog_html:{pl:
+      '<li><div class="num">I</div><div><div class="t">Dokumentuj dla agenta, nie dla archiwum.</div><div class="d">Każdy katalog ma AI_README; aktualizuj go przed commitem, nie po.</div></div></li>'+
+      '<li><div class="num">II</div><div><div class="t">Szukaj w historii, zanim napiszesz linijkę.</div><div class="d">git log -S / --grep / blame + AI_README. Ktoś już to rozwiązał w tym repo.</div></div></li>'+
+      '<li><div class="num">III</div><div><div class="t">Weryfikuj, nie deklaruj.</div><div class="d">Nie „działa" — dowód: smoke test, kod HTTP, liczby, screenshot.</div></div></li>'+
+      '<li><div class="num">IV</div><div><div class="t">Dry-run jest domyślny; --execute świadomy.</div><div class="d">Skrypt mutujący najpierw pokazuje plan. Mutacja po przeczytaniu.</div></div></li>'+
+      '<li><div class="num">V</div><div><div class="t">Backup to mechanizm rollbacku, nie ostrożność.</div><div class="d">Migracje forward-only; snapshot przed każdą zmianą na prodzie.</div></div></li>'+
+      '<li><div class="num">VI</div><div><div class="t">Prod jest święty — nie dotykasz bez „wdrażaj".</div><div class="d">Commit i push to nie deploy. Nieodwracalne potwierdzaj zawsze.</div></div></li>'+
+      '<li><div class="num">VII</div><div><div class="t">Dane użytkownika są nienaruszalne.</div><div class="d">Wylicz każdą tabelę FK; mapuj po slug, nie ID; źródło = żywy prod; zweryfikuj integralność.</div></div></li>'+
+      '<li><div class="num">VIII</div><div><div class="t">Taguj każdy deploy i pisz, co user zyskał.</div><div class="d">Annotated tag = „co jest live". Changelog prostym językiem, bez żargonu.</div></div></li>'+
+      '<li><div class="num">IX</div><div><div class="t">Mały, spójny commit; jeden temat.</div><div class="d">Rozdzielaj niezwiązane zmiany. Czysty git status; wykrywaj śmieci i sieroty wcześnie.</div></div></li>'+
+      '<li><div class="num">X</div><div><div class="t">Plan → iteruj → review.</div><div class="d">Najpierw szkic (3, nie 100). Liczby weryfikuj. UX dowieź z ciepłem.</div></div></li>',
+     en:
+      '<li><div class="num">I</div><div><div class="t">Document for the agent, not for the archive.</div><div class="d">Every directory has an AI_README; update it before the commit, not after.</div></div></li>'+
+      '<li><div class="num">II</div><div><div class="t">Search the history before you write a line.</div><div class="d">git log -S / --grep / blame + AI_README. Someone already solved it in this repo.</div></div></li>'+
+      '<li><div class="num">III</div><div><div class="t">Verify, don\'t declare.</div><div class="d">Not "it works" — proof: a smoke test, an HTTP code, numbers, a screenshot.</div></div></li>'+
+      '<li><div class="num">IV</div><div><div class="t">Dry-run is the default; --execute is deliberate.</div><div class="d">A mutating script shows its plan first. Mutate after reading it.</div></div></li>'+
+      '<li><div class="num">V</div><div><div class="t">A backup is a rollback mechanism, not caution.</div><div class="d">Forward-only migrations; a snapshot before every change in prod.</div></div></li>'+
+      '<li><div class="num">VI</div><div><div class="t">Prod is sacred — you don\'t touch it without "deploy".</div><div class="d">Commit and push aren\'t a deploy. Always confirm the irreversible.</div></div></li>'+
+      '<li><div class="num">VII</div><div><div class="t">User data is inviolable.</div><div class="d">Enumerate every FK table; map by slug, not ID; source = live prod; verify integrity.</div></div></li>'+
+      '<li><div class="num">VIII</div><div><div class="t">Tag every deploy and write what the user gained.</div><div class="d">An annotated tag = "what\'s live". A changelog in plain language, no jargon.</div></div></li>'+
+      '<li><div class="num">IX</div><div><div class="t">A small, coherent commit; one topic.</div><div class="d">Separate unrelated changes. A clean git status; catch junk and orphans early.</div></div></li>'+
+      '<li><div class="num">X</div><div><div class="t">Plan → iterate → review.</div><div class="d">A sketch first (3, not 100). Verify the numbers. Deliver UX with warmth.</div></div></li>'},
+    secCore:{pl:"Rozdziały — fundament",en:"Chapters — the foundation"},
+    secDeep:{pl:"Rozdziały — pogłębienie",en:"Chapters — deep dive"},
+    secGolden:{pl:"Złota zasada altytudy",en:"The golden rule of altitude"},
+    golden_html:{pl:"<b>Wolno tam, gdzie błąd jest drogi</b> (prod, dane userów, schemat). <b>Szybko tam, gdzie jest tani</b> (lokalny eksperyment, szkic UI, dry-run). Tempo dobieraj do kosztu pomyłki, nie do niecierpliwości.",en:"<b>Slow where a mistake is expensive</b> (prod, user data, the schema). <b>Fast where it's cheap</b> (a local experiment, a UI sketch, a dry-run). Match your pace to the cost of a mistake, not to impatience."},
+    secSins:{pl:"Siedem grzechów głównych",en:"The seven deadly sins"},
+    sins_html:{pl:"1. Nadęty optymizm w raporcie („wszystko działa” bez dowodu).<br/>2. Mutacja bez planu (od razu --execute).<br/>3. Auto-deploy („skoro gotowe, to wrzucam”).<br/>4. Swap „prócz kont” jako jedna tabela users.<br/>5. Commit-śmietnik (niezwiązane zmiany + artefakty).<br/>6. Skalowanie przed review (500 sztuk, nim user zobaczył 3).<br/>7. Dokumentacja „później”.",en:"1. Inflated optimism in the report (“everything works” with no proof).<br/>2. Mutation with no plan (straight to --execute).<br/>3. Auto-deploy (“it's done, so I'll ship it”).<br/>4. A swap “except accounts” as one users table.<br/>5. A junk-drawer commit (unrelated changes + artifacts).<br/>6. Scaling before review (500 items before the user saw 3).<br/>7. Documentation “later”."},
+    footer_html:{pl:"Wersja żywa — aktualizuj po każdym projekcie, który czegoś nauczył.<br/>Doktryna, która się nie zmienia, jest martwa. · Warsztat <a href=\"https://jakub.solutions\">jakub.solutions</a> · Start: <a href=\"#07-new-project-day-0\">Dzień 0</a>",en:"A living document — update it after every project that taught you something.<br/>A doctrine that doesn't change is dead. · By <a href=\"https://jakub.solutions\">jakub.solutions</a> · Start: <a href=\"#07-new-project-day-0\">Day 0</a>"},
+    cardReadmeTitle:{pl:"README",en:"README"},
+    cardReadmeDesc:{pl:"Spis i jak czytać ten zestaw (plik źródłowy).",en:"Index and how to read this set (source file)."},
+    backAll:{pl:"← Wszystkie rozdziały",en:"← All chapters"},
+    selAria:{pl:"Wybierz rozdział",en:"Choose a chapter"},
+    prevLabel:{pl:"← Poprzedni",en:"← Previous"},
+    nextLabel:{pl:"Następny →",en:"Next →"},
+    loading:{pl:"Wczytywanie…",en:"Loading…"},
+    navManifest:{pl:"Manifest",en:"Manifesto"},
+    navBrief:{pl:"Brief",en:"Brief"},
+    briefBackHome:{pl:"← Strona główna",en:"← Home"},
+    briefBackCh:{pl:"Rozdział 07 — Dzień 0 →",en:"Chapter 07 — Day 0 →"},
+    briefHeading:{pl:"Brief projektu",en:"Project brief"},
+    briefIntro_html:{pl:"Odpowiedz na pytania (każde z podpowiedzią), a złożymy z nich gotowy <b>brief</b> w Markdown. To krok 0 z <a href=\"#07-new-project-day-0\">rozdziału 07</a>. Gdy zaczynasz nowy projekt:",en:"Answer the questions (each with a hint) and we'll assemble a ready <b>brief</b> in Markdown. It's step 0 from <a href=\"#07-new-project-day-0\">chapter 07</a>. When you start a new project:"},
+    briefHow_html:{pl:"<li><b>Zapisz</b> wynik jako <code>brief-projektu.md</code> w <b>głównym folderze projektu</b> (Craft siedzi w <code>docs/rules/</code>), <b>albo</b></li><li><b>wklej</b> całość wprost do <b>Claude Code / Claude Desktop</b> otwartego w tym folderze — jako pierwszą wiadomość.</li>",en:"<li><b>Save</b> the result as <code>brief-projektu.md</code> in your <b>project's main folder</b> (The Craft sits in <code>docs/rules/</code>), <b>or</b></li><li><b>paste</b> the whole thing straight into <b>Claude Code / Claude Desktop</b> opened in that folder — as your first message.</li>"},
+    briefSaveNote_html:{pl:"Odpowiedzi <b>zapisują się roboczo w przeglądarce</b> (przeżyją odświeżenie). Nic nie wychodzi na zewnątrz — wszystko liczy się lokalnie.",en:"Your answers are <b>saved as a draft in the browser</b> (they survive a refresh). Nothing leaves your machine — it's all computed locally."},
+    briefBtnGen:{pl:"Generuj brief ↓",en:"Generate brief ↓"},
+    briefBtnReset:{pl:"Wyczyść",en:"Clear"},
+    briefSaved:{pl:"Zapisano roboczo ✓",en:"Draft saved ✓"},
+    briefCopy:{pl:"Kopiuj",en:"Copy"},
+    briefDownload:{pl:"Pobierz .md",en:"Download .md"},
+    briefCopied:{pl:"Skopiowano ✓",en:"Copied ✓"},
+    briefOutNote_html:{pl:"<b>Zapisz</b> jako <code>brief-projektu.md</code> w głównym folderze projektu, albo <b>wklej</b> wprost do Claude Code / Claude Desktop otwartego w tym folderze. Puste pola pominęliśmy.",en:"<b>Save</b> as <code>brief-projektu.md</code> in your project's main folder, or <b>paste</b> straight into Claude Code / Claude Desktop opened in that folder. Empty fields were skipped."}
+  };
+  function t(key){ var e=UI[key]; return e ? (e[LANG]||e.pl) : key; }
+  function applyI18n(){
+    document.querySelectorAll("[data-i18n]").forEach(function(el){ el.textContent = t(el.getAttribute("data-i18n")); });
+    document.querySelectorAll("[data-i18n-html]").forEach(function(el){ el.innerHTML = t(el.getAttribute("data-i18n-html")); });
   }
-  document.getElementById("cards-core").innerHTML =
-    CHAPTERS.filter(function(c){return c.group==="core";}).map(card).join("") +
-    '<a class="card" href="README.md"><div class="no"><svg class="icon" aria-hidden="true"><use href="#ic-book"></use></svg></div><h3>README</h3><p>Spis i jak czytać ten zestaw (plik źródłowy).</p></a>';
-  document.getElementById("cards-deep").innerHTML =
-    CHAPTERS.filter(function(c){return c.group==="deep";}).map(card).join("");
 
-  // ---- Select rozdziałów w czytniku ----
+  // ---- Karty na stronie głównej (dwujęzyczne) ----
+  function card(c){
+    return '<a class="card" href="#'+slug(c.file)+'"><div class="no">'+c.no+'</div><h3>'+cTitle(c)+'</h3><p>'+cDesc(c)+'</p></a>';
+  }
+  function renderCards(){
+    document.getElementById("cards-core").innerHTML =
+      CHAPTERS.filter(function(c){return c.group==="core";}).map(card).join("") +
+      '<a class="card" href="README.md"><div class="no"><svg class="icon" aria-hidden="true"><use href="#ic-book"></use></svg></div><h3>'+t("cardReadmeTitle")+'</h3><p>'+t("cardReadmeDesc")+'</p></a>';
+    document.getElementById("cards-deep").innerHTML =
+      CHAPTERS.filter(function(c){return c.group==="deep";}).map(card).join("");
+  }
+
+  // ---- Select rozdziałów w czytniku (dwujęzyczny) ----
   var sel = document.getElementById("chapsel");
-  sel.innerHTML = CHAPTERS.map(function(c){
-    return '<option value="'+slug(c.file)+'">'+c.no+' — '+c.title+'</option>';
-  }).join("");
+  function renderSelect(){
+    var cur = sel.value;
+    sel.innerHTML = CHAPTERS.map(function(c){
+      return '<option value="'+slug(c.file)+'">'+c.no+' — '+cTitle(c)+'</option>';
+    }).join("");
+    if(cur) sel.value = cur;
+    sel.setAttribute("aria-label", t("selAria"));
+  }
   sel.addEventListener("change", function(){ location.hash = "#"+sel.value; });
 
   // marked: render bezpieczny dla naszego zaufanego markdown.
@@ -629,10 +704,10 @@
     var prev = CHAPTERS[i-1], next = CHAPTERS[i+1];
     function block(ch, dir){
       if(!ch) return '<a class="empty"></a>';
-      var lbl = dir === "prev" ? "← Poprzedni" : "Następny →";
+      var lbl = dir === "prev" ? t("prevLabel") : t("nextLabel");
       return '<a class="'+dir+' '+(dir==="next"?"next":"")+'" href="#'+slug(ch.file)+'">'
            +   '<div class="lbl">'+lbl+'</div>'
-           +   '<div class="ttl">'+ch.no+' — '+ch.title+'</div>'
+           +   '<div class="ttl">'+ch.no+' — '+cTitle(ch)+'</div>'
            + '</a>';
     }
     prevnextEl.innerHTML = block(prev,"prev") + block(next,"next");
@@ -648,8 +723,87 @@
   function showBrief(){
     document.body.classList.remove("reading");
     document.body.classList.add("briefing");
-    document.title = "Brief projektu · Rzemiosło";
+    document.title = (LANG === "en" ? "Project brief" : "Brief projektu") + " · Rzemiosło";
     window.scrollTo(0,0);
+  }
+
+  // ---- Brief: konfiguracja dwujęzyczna (etykiety/podpowiedzi/opcje) ----
+  var BRIEF_GROUPS = [
+    {pl:"Komunikacja",en:"Communication"},
+    {pl:"Produkt i problem",en:"Product & problem"},
+    {pl:"Funkcje i dane",en:"Features & data"},
+    {pl:"Marka i odczucie",en:"Brand & feel"},
+    {pl:"Prawo i ograniczenia",en:"Law & constraints"}
+  ];
+  var BRIEF_GEN = {
+    pl:{lead:"> Brief startowy (Dzień 0) złożony w Rzemiośle (The Craft — Kolada Build). Zasady doktryny: `docs/rules/`.\n> **Co z tym zrobić:** zapisz ten plik jako `brief-projektu.md` w głównym folderze projektu, albo wklej całość do Claude Code / Claude Desktop otwartego w tym folderze jako pierwszą wiadomość.\n\n",
+        title:"# Brief projektu", howTalk:"## Jak ze mną rozmawiać", secProduct:"## Produkt i problem", secFeat:"## Funkcje i dane", secBrand:"## Marka i odczucie", secLaw:"## Prawo i ograniczenia",
+        foot:"Zacznij od kroku 0 z rozdziału 07: dopytaj o luki w tym briefie, oznacz przyjęte założenia, potem złóż `CLAUDE.md` i zapisz cel w `memory/`.\n"},
+    en:{lead:"> Starter brief (Day 0) put together in The Craft — Kolada Build. Doctrine rules: `docs/rules/`.\n> **What to do with it:** save this file as `brief-projektu.md` in your project's main folder, or paste the whole thing into Claude Code / Claude Desktop opened in that folder as your first message.\n\n",
+        title:"# Project brief", howTalk:"## How to talk to me", secProduct:"## Product & problem", secFeat:"## Features & data", secBrand:"## Brand & feel", secLaw:"## Law & constraints",
+        foot:"Start from step 0 of chapter 07: ask about gaps in this brief, flag the assumptions you made, then assemble `CLAUDE.md` and record the goal in `memory/`.\n"}
+  };
+  // Każde pole: id → {grpLabel?, pl/en {label,hint,ph}, opts?[{key, pl/en {text,phrase}}]}
+  var BRIEF_FIELDS = [
+    {id:"bf-level", pl:{label:"Twój poziom techniczny",hint:"— ustawia rejestr, w jakim Claude ma z Tobą rozmawiać. Wybierz najbliższe."}, en:{label:"Your technical level",hint:"— sets the register Claude talks to you in. Pick the closest."}, opts:[
+      {key:"", pl:{text:"— wybierz —",phrase:""}, en:{text:"— choose —",phrase:""}},
+      {key:"tech", pl:{text:"Programuję — mów wprost, żargon OK",phrase:"Techniczny: programuję, znam git/deploy/bazy. Mów wprost, żargon OK."}, en:{text:"I program — be direct, jargon OK",phrase:"Technical: I program; I know git/deploy/databases. Be direct, jargon is fine."}},
+      {key:"mid", pl:{text:"Trochę ogarniam — tłumacz terminy w skrócie",phrase:"Średni (BIZ-TECH): ogarniam pojęcia, ale nie koduję. Tłumacz terminy w skrócie."}, en:{text:"I get some of it — explain terms briefly",phrase:"Middle (BIZ-TECH): I get the concepts but don't code. Explain terms briefly."}},
+      {key:"non", pl:{text:"Nietechniczny — bez żargonu, prowadź mnie",phrase:"Nietechniczny: nie programuję. Bez żargonu, analogie, decyzje domyślne + prośba o zgodę."}, en:{text:"Non-technical — no jargon, guide me",phrase:"Non-technical: I don't program. No jargon, use analogies, default decisions + ask for approval."}}
+    ]},
+    {id:"bf-name", pl:{label:"Nazwa / pomysł w jednym zdaniu",hint:"— elevator pitch: dokończ „To jest aplikacja, która…”",ph:"np. PriceComp — porównywarka cen, która pokazuje, gdzie kupić X najtaniej"}, en:{label:"Name / idea in one sentence",hint:"— elevator pitch: finish “This is an app that…”",ph:"e.g. PriceComp — a price comparison that shows where to buy X cheapest"}},
+    {id:"bf-problem", pl:{label:"Problem i grupa docelowa",hint:"— jaki ból rozwiązujesz i dla KOGO? im konkretniej, tym trafniejszy MVP. Podpowiedź: „kto + kiedy + czego dziś nie może”.",ph:"np. kupujący traci czas na sprawdzanie 10 sklepów; chce jednej listy cen z linkiem do zakupu"}, en:{label:"Problem & target audience",hint:"— what pain do you solve and for WHOM? the more concrete, the better the MVP. Hint: “who + when + what they can't do today”.",ph:"e.g. buyers waste time checking 10 shops; they want one price list with a buy link"}},
+    {id:"bf-similar", pl:{label:"Podobne produkty / inspiracje",hint:"— co już istnieje? co robią dobrze, a co chcesz zrobić inaczej/lepiej? (jeśli nie znasz — wpisz „nie wiem”)",ph:"np. Ceneo — szerokie, ale słabe na niszę X; chcę głębiej + lepsze filtry"}, en:{label:"Similar products / inspiration",hint:"— what already exists? what do they do well, and what do you want to do differently/better? (if you don't know — write “don't know”)",ph:"e.g. Ceneo — broad but weak on niche X; I want deeper + better filters"}},
+    {id:"bf-langs", pl:{label:"Języki i rynki",hint:"— jeden język czy wiele? który główny (źródło prawdy)? waluty / strefy / format dat? RTL?",ph:"np. PL teraz, EN później; PLN; parytet treści wymagany"}, en:{label:"Languages & markets",hint:"— one language or many? which is primary (source of truth)? currencies / time zones / date format? RTL?",ph:"e.g. PL now, EN later; PLN; content parity required"}},
+    {id:"bf-money", pl:{label:"Monetyzacja",hint:"— jak zarabia i KIEDY pojawia się płatność (Dzień 1 czy po trakcji)? dostawca, faktury/VAT?",ph:"np. freemium + subskrypcja od Dnia 1, Stripe, faktury VAT; albo: na razie za darmo"}, en:{label:"Monetization",hint:"— how does it earn and WHEN does payment appear (Day 1 or after traction)? provider, invoices/VAT?",ph:"e.g. freemium + subscription from Day 1, Stripe, VAT invoices; or: free for now"}},
+    {id:"bf-mvp", pl:{label:"Funkcjonalności — rdzeń (MVP)",hint:"— bez czego produkt NIE istnieje? konta i role? treść statyczna czy user-generated? Podpowiedź: wypisz 3–5 rzeczy, nie 30.",ph:"np. lista produktów + wyszukiwarka + filtry + konta; logowanie Google"}, en:{label:"Features — core (MVP)",hint:"— what does the product NOT exist without? accounts and roles? static or user-generated content? Hint: list 3–5 things, not 30.",ph:"e.g. product list + search + filters + accounts; Google login"}},
+    {id:"bf-data", pl:{label:"Dane i integracje",hint:"— skąd biorą się dane (ręcznie / import / scraping / API)? integracje zewnętrzne: płatności, mapy, e-mail, LLM?",ph:"np. dane ze scrapingu sklepów + ręczne korekty; integracja Stripe i wysyłka e-mail"}, en:{label:"Data & integrations",hint:"— where does the data come from (manual / import / scraping / API)? external integrations: payments, maps, e-mail, LLM?",ph:"e.g. data scraped from shops + manual fixes; Stripe integration and e-mail sending"}},
+    {id:"bf-later", pl:{label:"Funkcjonalności — „później”",hint:"— miłe-do-mienia, świadomie POZA MVP (żeby nie rozdąć startu)",ph:"np. aplikacja mobilna, rekomendacje, panel partnera, powiadomienia o cenie"}, en:{label:"Features — “later”",hint:"— nice-to-haves, deliberately OUTSIDE the MVP (so the start doesn't balloon)",ph:"e.g. mobile app, recommendations, partner panel, price alerts"}},
+    {id:"bf-scale", pl:{label:"Skala i oczekiwany ruch",hint:"— ilu użytkowników na start i docelowo? lokalnie czy globalnie? to wpływa na bazę i hosting (→ rozdz. 08/12)",ph:"np. start: setki userów, PL; docelowo kilkadziesiąt tys.; ruch przewidywalny"}, en:{label:"Scale & expected traffic",hint:"— how many users at the start and at the target? local or global? this affects the database and hosting (→ ch. 08/12)",ph:"e.g. start: hundreds of users, PL; target: tens of thousands; predictable traffic"}},
+    {id:"bf-ux", pl:{label:"Styl UX i kierunek wizualny",hint:"— grupa docelowa i ton (poważny B2B ↔ zabawowy konsumencki)? jest marka (paleta, logo) czy od zera? tryb jasny/ciemny? WCAG?",ph:"np. konsumencki, przewiewny landing; jest paleta i logo; tryb jasny+ciemny; WCAG AA"}, en:{label:"UX style & visual direction",hint:"— audience and tone (serious B2B ↔ playful consumer)? is there a brand (palette, logo) or from scratch? light/dark mode? WCAG?",ph:"e.g. consumer, airy landing; palette and logo exist; light+dark mode; WCAG AA"}},
+    {id:"bf-anim", pl:{label:"Animacje i „odczucie” interfejsu",hint:"— szybkość vs wow-efekt; wpływa na wydajność (Core Web Vitals)"}, en:{label:"Animations & interface “feel”",hint:"— speed vs wow-effect; affects performance (Core Web Vitals)"}, opts:[
+      {key:"", pl:{text:"— wybierz —",phrase:""}, en:{text:"— choose —",phrase:""}},
+      {key:"static", pl:{text:"Statyczny i szybki — minimum animacji",phrase:"Statyczny i szybki — minimum animacji, priorytet wydajności."}, en:{text:"Static and fast — minimal animation",phrase:"Static and fast — minimal animation, performance first."}},
+      {key:"moderate", pl:{text:"Umiarkowane mikrointerakcje",phrase:"Umiarkowane mikrointerakcje — subtelne przejścia, z poszanowaniem prefers-reduced-motion."}, en:{text:"Moderate micro-interactions",phrase:"Moderate micro-interactions — subtle transitions, respecting prefers-reduced-motion."}},
+      {key:"rich", pl:{text:"Bogaty, animowany — wow-efekt",phrase:"Bogaty, animowany interfejs — wow-efekt, ale pilnuj Core Web Vitals i prefers-reduced-motion."}, en:{text:"Rich, animated — wow-effect",phrase:"A rich, animated interface — wow-effect, but watch Core Web Vitals and prefers-reduced-motion."}}
+    ]},
+    {id:"bf-mkt", pl:{label:"Wydźwięk marketingowy",hint:"— value prop w jednym zdaniu, kto jest klientem, jaki ton, czego UNIKAĆ",ph:"np. „najszybciej porównasz ceny X”; klient: świadomy kupujący; ton: rzeczowy, bez nachalności"}, en:{label:"Marketing tone",hint:"— value prop in one sentence, who the customer is, what tone, what to AVOID",ph:"e.g. “the fastest way to compare X prices”; customer: a savvy buyer; tone: matter-of-fact, not pushy"}},
+    {id:"bf-privacy", pl:{label:"Dane osobowe i compliance",hint:"— zbierasz dane ludzi (konta, e-maile, lokalizacja)? RODO, zgody, wiek 18+? branża wrażliwa (zdrowie/finanse)? (→ rozdz. 09)",ph:"np. konta z e-mailem → RODO + zgody; brak danych wrażliwych; albo: bez kont, zero danych osobowych"}, en:{label:"Personal data & compliance",hint:"— do you collect people's data (accounts, e-mails, location)? GDPR, consents, age 18+? a sensitive industry (health/finance)? (→ ch. 09)",ph:"e.g. accounts with e-mail → GDPR + consents; no sensitive data; or: no accounts, zero personal data"}},
+    {id:"bf-constraints", pl:{label:"Termin, budżet, zespół",hint:"— co jest sztywne? deadline, budżet, kto pracuje (solo + Claude czy zespół)?",ph:"np. MVP w 4 tygodnie, solo + Claude, budżet minimalny (jeden VPS)"}, en:{label:"Deadline, budget, team",hint:"— what's fixed? deadline, budget, who works on it (solo + Claude or a team)?",ph:"e.g. MVP in 4 weeks, solo + Claude, minimal budget (one VPS)"}}
+  ];
+  var BRIEF_BY_ID = {}; BRIEF_FIELDS.forEach(function(f){ BRIEF_BY_ID[f.id]=f; });
+
+  function applyBrief(){
+    // nagłówki grup (kolejność w DOM == BRIEF_GROUPS)
+    var grps = document.querySelectorAll("#briefform .brief-group");
+    grps.forEach(function(el,i){ if(BRIEF_GROUPS[i]) el.textContent = BRIEF_GROUPS[i][LANG]; });
+    BRIEF_FIELDS.forEach(function(f){
+      var loc = f[LANG];
+      var lab = document.querySelector('label[for="'+f.id+'"]');
+      if(lab){ lab.innerHTML = '<span>'+loc.label+'</span> <span class="hint">'+loc.hint+'</span>'; }
+      var inp = document.getElementById(f.id);
+      if(!inp) return;
+      if(f.opts){
+        var curKey = inp.value;
+        inp.innerHTML = f.opts.map(function(o){ return '<option value="'+o.key+'">'+o[LANG].text+'</option>'; }).join("");
+        inp.value = curKey;  // klucze są językowo-niezależne → wybór przeżywa zmianę języka
+      } else if(loc.ph !== undefined){
+        inp.setAttribute("placeholder", loc.ph);
+      }
+    });
+  }
+
+  // ---- Jedno wywołanie: zastosuj język do CAŁEGO chrome ----
+  function applyChrome(){
+    document.documentElement.setAttribute("lang", LANG);
+    applyI18n();
+    renderCards();
+    renderSelect();
+    applyBrief();
+    // odśwież widok rozdziału (tytuł/prev-next) jeśli czytasz
+    var h = location.hash.replace(/^#/,"").split("?")[0];
+    if(h === "intro"){ document.title = cTitle(INTRO) + " · Rzemiosło"; }
+    else if(bySlug[h]){ var c=bySlug[h]; document.title=(c.no?c.no+" — ":"")+cTitle(c)+" · Rzemiosło"; prevNext(c); }
   }
 
   // ---- Brief: złóż Markdown z odpowiedzi (z autozapisem roboczym) ----
@@ -666,7 +820,15 @@
                   "bf-mvp","bf-data","bf-later","bf-scale","bf-ux","bf-anim","bf-mkt",
                   "bf-privacy","bf-constraints"];
     function val(id){ var el = document.getElementById(id); return el ? el.value.trim() : ""; }
-    function line(label, v){ return v ? ("- **"+label+":** "+v+"\n") : ""; }
+    // Wartość do briefu: select → fraza dla bieżącego języka (po kluczu); reszta → tekst.
+    function fieldVal(id){
+      var f = BRIEF_BY_ID[id], el = document.getElementById(id);
+      if(!el) return "";
+      if(f && f.opts){ var o = f.opts.filter(function(x){return x.key===el.value;})[0]; return o ? o[LANG].phrase : ""; }
+      return el.value.trim();
+    }
+    function lbl(id){ var f=BRIEF_BY_ID[id]; return f ? f[LANG].label : id; }
+    function line(id){ var v=fieldVal(id); return v ? ("- **"+lbl(id)+":** "+v+"\n") : ""; }
 
     // Autozapis roboczy do localStorage — odpowiedzi przeżywają odświeżenie/zamknięcie karty.
     function save(){
@@ -683,38 +845,25 @@
         if(saved && Object.keys(data).some(function(k){return data[k];})) saved.hidden = false;
       }catch(e){}
     }
+    applyBrief();   // zbuduj opcje z kluczami ZANIM restore() przywróci wybór
     restore();
     form.addEventListener("input", save);
     form.addEventListener("change", save);
 
     function build(){
-      var md = "# Brief projektu\n\n";
-      md += "> Brief startowy (Dzień 0) złożony w Rzemiośle (The Craft — Kolada Build). Zasady doktryny: `docs/rules/`.\n";
-      md += "> **Co z tym zrobić:** zapisz ten plik jako `brief-projektu.md` w głównym folderze projektu, "
-          + "albo wklej całość do Claude Code / Claude Desktop otwartego w tym folderze jako pierwszą wiadomość.\n\n";
-      var lvl = val("bf-level");
-      if(lvl){ md += "## Jak ze mną rozmawiać\n" + lvl + "\n\n"; }
-      md += "## Produkt i problem\n";
-      md += line("Pomysł", val("bf-name"));
-      md += line("Problem i grupa docelowa", val("bf-problem"));
-      md += line("Podobne produkty / inspiracje", val("bf-similar"));
-      md += line("Języki i rynki", val("bf-langs"));
-      md += line("Monetyzacja", val("bf-money"));
-      md += "\n## Funkcje i dane\n";
-      md += line("Rdzeń (MVP)", val("bf-mvp"));
-      md += line("Dane i integracje", val("bf-data"));
-      md += line("Później", val("bf-later"));
-      md += line("Skala i ruch", val("bf-scale"));
-      md += "\n## Marka i odczucie\n";
-      md += line("Styl UX / wizualny", val("bf-ux"));
-      md += line("Animacje", val("bf-anim"));
-      md += line("Wydźwięk marketingowy", val("bf-mkt"));
-      md += "\n## Prawo i ograniczenia\n";
-      md += line("Dane osobowe / compliance", val("bf-privacy"));
-      md += line("Termin / budżet / zespół", val("bf-constraints"));
-      md += "\n---\n";
-      md += "Zacznij od kroku 0 z rozdziału 07: dopytaj o luki w tym briefie, oznacz przyjęte założenia, "
-          + "potem złóż `CLAUDE.md` i zapisz cel w `memory/`.\n";
+      var g = BRIEF_GEN[LANG];
+      var md = g.title + "\n\n" + g.lead;
+      var lvl = fieldVal("bf-level");
+      if(lvl){ md += g.howTalk + "\n" + lvl + "\n\n"; }
+      md += g.secProduct + "\n";
+      md += line("bf-name") + line("bf-problem") + line("bf-similar") + line("bf-langs") + line("bf-money");
+      md += "\n" + g.secFeat + "\n";
+      md += line("bf-mvp") + line("bf-data") + line("bf-later") + line("bf-scale");
+      md += "\n" + g.secBrand + "\n";
+      md += line("bf-ux") + line("bf-anim") + line("bf-mkt");
+      md += "\n" + g.secLaw + "\n";
+      md += line("bf-privacy") + line("bf-constraints");
+      md += "\n---\n" + g.foot;
       return md;
     }
 
@@ -756,7 +905,7 @@
   function showChapter(c){
     document.body.classList.add("reading");
     if(sel.querySelector('option[value="'+slug(c.file)+'"]')) sel.value = slug(c.file);
-    document.title = (c.no ? c.no + " — " : "") + c.title + " · Rzemiosło";
+    document.title = (c.no ? c.no + " — " : "") + cTitle(c) + " · Rzemiosło";
     prevNext(c);
 
     var keepScroll = preserveScroll; preserveScroll = false;
@@ -781,7 +930,7 @@
     var painted = false;
     if(cache[ckey]){ contentEl.innerHTML = cache[ckey]; rewriteLinks(contentEl); painted = true; }
     else { var snap = embedded(); if(typeof snap === "string"){ render(snap); painted = true; } }
-    if(!painted){ contentEl.innerHTML = '<div class="loading">Wczytywanie…</div>'; }
+    if(!painted){ contentEl.innerHTML = '<div class="loading">'+t("loading")+'</div>'; }
 
     // 2) W tle: świeży .md (gdy serwowane). Aktualizuj TYLKO gdy realnie inny niż pokazany — bez zbędnego re-renderu.
     fetch(langPath(c.file), {cache:"no-cache"}).then(function(r){
@@ -824,12 +973,14 @@
       LANG = (LANG === "pl") ? "en" : "pl";
       try { localStorage.setItem("rzemioslo-lang", LANG); } catch(e){}
       sync();
+      applyChrome();           // relokalizuj cały interfejs (karty, select, dekalog, brief, footer…)
       preserveScroll = true;   // przełączasz język tej samej strony — nie skacz na górę
       route();
       preserveScroll = false;
     });
   })();
 
+  applyChrome();   // pierwsze zastosowanie języka do chrome (przed routingiem)
   window.addEventListener("hashchange", route);
   route();
 })();
