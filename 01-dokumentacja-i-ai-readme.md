@@ -65,8 +65,8 @@ Co powinno być w `AI_README.md`:
 - 🚫 AI_README opisujący *intencję* zamiast *stanu* — agent działa na tym, co napisane, nie na marzeniach.
 - 🚫 Duplikowanie stanu z `CLAUDE.md` do pięciu miejsc — jedno źródło prawdy, reszta linkuje.
 
-## Dla EchoInsight
-Zacznij od `CLAUDE.md` (stack, „nie świadczymy usług terapeutycznych", „nie czytamy rozmów",
-polityka prywatności/anonimizacji jako twarda reguła) + `AI_README.md` w katalogach
-auth / i18n / pipeline-anonimizacji. Privacy-by-design zapisz jako **politykę w konstytucji**,
-nie jako luźną notatkę. → [08](08-echoinsight.md)
+## W praktyce
+Start nowego projektu: najpierw `CLAUDE.md` (stack, jak uruchomić, polityki i **twarde reguły
+domeny** — np. prywatność, ograniczenia prawne), potem `AI_README.md` w katalogach o największej
+wadze (auth, i18n, pipeline'y danych). Reguły nadrzędne (np. privacy-by-design) zapisuj jako
+**politykę w konstytucji**, nie jako luźną notatkę. → [07](07-nowy-projekt-checklist.md)

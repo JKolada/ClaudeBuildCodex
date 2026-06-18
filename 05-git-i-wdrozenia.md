@@ -120,7 +120,7 @@ Projekty dzielą jeden **Hetzner VPS** (`46.62.203.14`): statyczne (jakub.soluti
 nginx. Jeden serwer = wspólny katalog `backups/`, te same nawyki (tag deployu, maintenance
 flag). Nowy projekt na tym samym boxie: osobny vhost + osobny katalog, te same reguły.
 
-## Dla EchoInsight
-Logowanie to ścieżka krytyczna — fix wdrażaj z testem i pełnym smoke (rejestracja, login,
-wylogowanie, sesja). Przy pierwszym prawdziwym ruchu userów ustaw od razu: nightly backup
-bazy, tagowanie deployów, branded maintenance page. → [08](08-echoinsight.md)
+## W praktyce
+Ścieżkę krytyczną (np. logowanie) wdrażaj z testem i pełnym smoke (rejestracja, login,
+wylogowanie, trwałość sesji). Przy pierwszym realnym ruchu userów ustaw od razu: nightly backup
+bazy, tagowanie deployów, branded maintenance page. → [03](03-testowanie-i-weryfikacja.md)

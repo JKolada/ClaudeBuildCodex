@@ -63,10 +63,22 @@ subtestów na jakub.solutions) — przenoś go domyślnie:
 - 🚫 Pominięcie smoke testu po deployu, bo „przecież testy przeszły".
 - 🚫 Mylenie „kod się kompiluje" z „feature działa dla użytkownika".
 
-## Dla EchoInsight
-Twój explicite cel: **unit + Playwright + testy różnymi technikami**. Plan:
-- **Auth** — najpierw test odtwarzający dzisiejszy bug logowania, potem fix (TDD na ścieżce krytycznej).
-- **Playwright** — happy-path rozmowy, gating darmowego zakresu, zmiana języka (i18n), zgody/disclaimery.
-- **Pipeline anonimizacji** — testy jednostkowe, że z destylatu **nie da się** odtworzyć
-  tożsamości (to test prywatności, nie tylko funkcji — patrz [08](08-echoinsight.md)).
-- **Wydajność** — zmierz przed/po (czas odpowiedzi, TTFB), nie „wydaje się szybciej".
+## TDD — domyślny tryb pracy
+
+Test **najpierw**, nie po fakcie. Cykl:
+1. **Czerwony** — napisz test, który opisuje oczekiwane zachowanie i **pada**.
+2. **Zielony** — najmniejsza zmiana w kodzie, aż test przechodzi.
+3. **Refactor** — posprzątaj przy zielonym suite (→ [02](02-skille-i-refaktoring.md)).
+
+Bug naprawiasz tak samo: **najpierw test odtwarzający** błąd, potem fix — test zostaje jako
+regresja, żeby błąd nie wrócił.
+
+> **Każda zmiana w commicie niesie test.** Twarda reguła: commit, który zmienia zachowanie, a
+> nie dodaje/zmienia testu, jest **niekompletny**. Nowy endpoint → test trasy; nowy próg/fallback
+> → test progu; naprawiony bug → test regresji. „Dodam testy później" = grzech (koniec nie
+> nadchodzi). → [00](00-przykazania.md), [08](08-stack-i-technologie.md)
+
+- **Testuj kontrakt, nie implementację** — inaczej refactor kruszy testy bez realnej regresji.
+- **Suite szybki i deterministyczny** — wolny lub migający suite przestaje być uruchamiany;
+  izoluj I/O, ustaw seedy, `--runInBand` przy współdzielonym porcie/DB.
+- **CI bramkuje** — czerwone testy blokują merge i deploy; testy ścieżki krytycznej odpalasz przed commitem.

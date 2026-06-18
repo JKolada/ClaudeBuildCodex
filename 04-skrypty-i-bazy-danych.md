@@ -74,9 +74,9 @@ darmowy. Rozważ taki model wszędzie, gdzie historia ma wartość.
 - 🚫 `cp whisky.db` przy włączonym serwerze → niespójny snapshot.
 - 🚫 Wpięcie operacji mutującej katalog w automatyczny pipeline.
 
-## Dla EchoInsight
-- Jeśli relacyjna baza → migracje forward-only + backup przed każdą.
-- **Pipeline anonimizacji** (Gemini destyluje wnioski) = osobny, idempotentny skrypt z
-  dry-run; jego kontrakt: na wejściu surowe rozmowy, na wyjściu **wnioski bez danych
-  osobowych**, z testem, że re-identyfikacja jest niemożliwa. Trzymaj go POZA ścieżką
-  user-facing. → [08](08-echoinsight.md)
+## W praktyce
+- Relacyjna baza → migracje forward-only + backup przed każdą.
+- **Pipeline przetwarzający dane wrażliwe** (np. anonimizacja / destylacja wniosków) = osobny,
+  idempotentny skrypt z dry-run; kontrakt: na wejściu dane surowe, na wyjściu **dane bez PII**,
+  z testem, że re-identyfikacja jest niemożliwa. Trzymaj go POZA ścieżką user-facing. →
+  [09](09-prawo-i-ochrona-tworcy.md), [11](11-model-danych-normalizacja.md)

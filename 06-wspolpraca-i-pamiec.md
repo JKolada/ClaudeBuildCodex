@@ -12,7 +12,7 @@
   odpowiedź realnie zmienia, co robisz dalej (i gdy nie wynika z kodu/sensownego defaultu).
 - **Liczby weryfikuj u źródła** — nie z pamięci, nie z docsów.
 - **UX z ciepłem.** Poprawność to minimum; produkt ma być przyjemny. Estetyka i ton się liczą
-  (dla EchoInsight: minimalistycznie, ale ciepło).
+  (w produktach wrażliwych szczególnie: minimalistycznie, ale ciepło).
 - **Język:** PL w rozmowie i changelogu, EN w kodzie/commitach/technicznych docsach — tak jak
   naturalnie pracujemy. Terminy techniczne po angielsku w polskim tekście są OK.
 - **Rozdzielaj niezwiązane rzeczy** — w commitach i w myśleniu. Jeden temat naraz.

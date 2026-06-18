@@ -13,8 +13,8 @@ potrzebujesz.
 - **DB ↔ ingest ↔ web** to trzy oddzielne światy. WhiskyPolska: SQLite (dane) ↔ scrapery Python
   (ingest) ↔ Node/Express (web) — łączy je **kontrakt** (schemat, → [11](11-model-danych-normalizacja.md)),
   nie wspólny kod. Wymienisz scraper bez dotykania weba.
-- **Kontrakt API jako granica** — EchoInsight: front Next.js ↔ backend Python (Cloud Run) przez
-  jawny kontrakt (OpenAPI). Granica, której się trzymasz, pozwala wymienić każdą stronę osobno.
+- **Kontrakt API jako granica** — np. front Next.js ↔ backend Python przez jawny kontrakt
+  (OpenAPI). Granica, której się trzymasz, pozwala wymienić każdą stronę osobno. → [08](08-stack-i-technologie.md)
 - **Wspólny backend pod web + przyszły mobile.** ADR z wyprzedzeniem: SQLite vs Postgres, sesja
   vs JWT (WhiskyPolska: sesja dla weba; mobile w przyszłości → rozważ JWT na wspólnym backendzie).
   Decyzję **zapisz**, nie trzymaj w głowie. → [01](01-dokumentacja-i-ai-readme.md)
@@ -29,8 +29,8 @@ potrzebujesz.
 
 ## Platforma: scale-to-zero vs always-on
 Realna decyzja z dwóch projektów, **świadomy tradeoff koszt/latencja**:
-- **Cloud Run (scale-to-zero)** — EchoInsight: płacisz za użycie, zero ruchu = zero kosztu, ale
-  **cold start** dodaje latencję pierwszego żądania. Dobre przy nierównym, globalnym ruchu.
+- **Cloud Run (scale-to-zero)** — płacisz za użycie, zero ruchu = zero kosztu, ale **cold start**
+  dodaje latencję pierwszego żądania. Dobre przy nierównym, globalnym ruchu.
 - **VPS always-on (Hetzner + pm2)** — WhiskyPolska: stały koszt, **zero cold startu**, pełna
   kontrola. Dobre przy przewidywalnym ruchu i SQLite na dysku.
 Wybór = profil ruchu i budżet, nie moda. Zapisz jako ADR.
@@ -40,8 +40,8 @@ Wybór = profil ruchu i budżet, nie moda. Zapisz jako ADR.
   rankingi cache'owane **10 min**, statyki z `max-age` (godzina dev / 7 dni immutable prod).
 - **Composable, idempotentne pipeline'y** — `normalize → metadata → enrich → validate → stats`;
   każdy etap odpalalny osobno, ponowne uruchomienie bezpieczne (→ [04](04-skrypty-i-bazy-danych.md)).
-- **i18n / multi-market od początku, jeśli globalnie** (EchoInsight: 16 języków od startu, nie
-  doklejone później — → [10](10-seo-i-tlumaczenia.md)).
+- **i18n / multi-market od początku, jeśli globalnie** (np. 16 języków od startu, nie doklejone
+  później — → [10](10-seo-i-tlumaczenia.md)).
 
 ## Nie over-engineeruj
 - **Zacznij prosto.** SQLite + statyczny build (jakub.solutions: build statyczny w Pythonie)

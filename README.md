@@ -1,7 +1,7 @@
 # Rzemiosło — The Build Codex
 
 > Przykazania budowania i prowadzenia aplikacji **end-to-end** z Claude.
-> Destylat doświadczeń z [WhiskyPolska](../WhiskyPolska), pisany pod kolejne projekty — najbliższy to [EchoInsight](../EchoInsight).
+> Destylat doświadczeń z realnych projektów (m.in. WhiskyPolska), pisany pod **każdy kolejny projekt z Claude**.
 >
 > Warsztat **[jakub.solutions](https://jakub.solutions)** · Jakub Kolada — Insurance Systems Architect & IT Consultant.
 > Marka, paleta (fiolet→cyan) i typografia (Playfair Display + Outfit) spójne z [Jakub.Solutions](../Jakub.Solutions).
@@ -13,8 +13,12 @@ dla agenta, testowalna, bezpieczna w zmianie i godna zaufania.
 
 ## Jak czytać
 
-- **[index.html](index.html)** — przeglądarka dla człowieka (otwórz w przeglądarce). Spis
-  przykazań + linki do rozdziałów.
+- **[index.html](index.html)** — czytnik dla człowieka: spis przykazań + rozdziały renderowane
+  z `.md` w przeglądarce, wygodne na telefonie i desktopie, z przełącznikiem jasny/ciemny.
+  **Otwórz z dwukliku** (działa dzięki snapshotowi `content.js`) lub przez serwer
+  (`python -m http.server 8080`) / hosting — serwowane zawsze pokazuje świeże `.md`.
+- **Edytujesz treść?** Po zmianie `.md` uruchom `python build.py`, żeby odświeżyć snapshot dla `file://`.
+- **Na GitHubie** pliki `.md` renderują się natywnie — wystarczy klikać linki w tabeli niżej.
 - **Spieszysz się?** Przeczytaj [00 — Dekalog](00-przykazania.md). To cała doktryna w jednym ekranie.
 - **Zaczynasz nowy projekt?** Idź do [07 — Nowy projekt: Dzień 0](07-nowy-projekt-checklist.md).
 
@@ -30,7 +34,7 @@ dla agenta, testowalna, bezpieczna w zmianie i godna zaufania.
 | 05 | [Git i wdrożenia](05-git-i-wdrozenia.md) | Szukaj w git przed kodowaniem, taguj każdy deploy, swap bazy z zachowaniem kont |
 | 06 | [Współpraca i pamięć](06-wspolpraca-i-pamiec.md) | Plan→iteruj→review, pamięć, potwierdzaj nieodwracalne, raportuj uczciwie |
 | 07 | [Nowy projekt: Dzień 0](07-nowy-projekt-checklist.md) | Konkretna checklista startu nowego projektu |
-| 08 | [Zastosowanie: EchoInsight](08-echoinsight.md) | Doktryna przełożona na konkretny backlog EchoInsight.Me |
+| 08 | [Stack i technologie](08-stack-i-technologie.md) | Python, bazy, web/API, Docker, serwery (Hetzner), TDD — uniwersalny, prosty, skalowalny default |
 | 09 | [Prawo i ochrona twórcy](09-prawo-i-ochrona-tworcy.md) | Regulamin, polityka prywatności, disclaimery jako zbroja osoby prywatnej / JDG |
 | 10 | [SEO i tłumaczenia](10-seo-i-tlumaczenia.md) | hreflang, JSON-LD, programmatic SEO, E-E-A-T/YMYL, parytet językowy jako test |
 | 11 | [Model danych i normalizacja](11-model-danych-normalizacja.md) | Słowniki lookup, slug zamiast ID, active-row, świadoma denormalizacja |

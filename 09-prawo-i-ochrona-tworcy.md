@@ -18,7 +18,8 @@ ostrożnie jak migrację na prodzie — bo błąd jest równie drogi, tylko pła
   adres …". **Ten sam podmiot** w regulaminie, polityce, stopce, fakturach i UI. Rozbieżność
   to pierwsza rzecz, którą widzi niezadowolony użytkownik.
 - **Charakter usługi.** WhiskyPolska: *porównywarka cen, nie sprzedawca* — nie prowadzimy
-  sprzedaży, nie pośredniczymy, linkujemy do sklepów. EchoInsight: *wsparcie duchowe, nie terapia*.
+  sprzedaży, nie pośredniczymy, linkujemy do sklepów. Analogicznie aplikacja doradcza musi jasno
+  mówić, czym **nie** jest: *informacja/wsparcie, nie usługa regulowana* (medyczna, prawna, finansowa, terapeutyczna).
 - **Obowiązki użytkownika** (zgodne korzystanie, zakaz nadużyć/scrapowania, 18+).
 - **Ograniczenie odpowiedzialności** — usługa „as is", brak gwarancji dostępności/poprawności
   danych, **brak odpowiedzialności za decyzje** podjęte na ich podstawie (cena u retailera może
@@ -34,7 +35,7 @@ ostrożnie jak migrację na prodzie — bo błąd jest równie drogi, tylko pła
 - **Zakres** zbieranych danych, **cel + podstawa prawna** każdego (zgoda / umowa / uzasadniony
   interes), **retencja** (jak długo trzymasz).
 - **Anonimizacja** — jeśli deklarujesz, że anonimizujesz, to **musi być prawdą w kodzie**
-  (EchoInsight: pipeline destylacji wniosków na zanonimizowanych danych, → [11](11-model-danych-normalizacja.md)).
+  (np. pipeline przetwarzania działający wyłącznie na danych zanonimizowanych, → [11](11-model-danych-normalizacja.md)).
 - **Podmioty trzecie** (Google Cloud / GA4, Resend, Hetzner) — wymienione, z celem.
 - **Prawa**: dostęp, sprostowanie, **usunięcie** (WhiskyPolska: 14-dniowa karencja → purge,
   recenzje publiczne anonimizowane do „Konto usunięte"), eksport, sprzeciw.
@@ -55,8 +56,8 @@ ostrożnie jak migrację na prodzie — bo błąd jest równie drogi, tylko pła
   jest w PL ściśle regulowana — stąd też **brak ceny na publicznej karcie OG**, ostrożność
   wobec przepisów o promocji alkoholu).
 - **„To nie jest porada”** — medyczna / prawna / finansowa / terapeutyczna, zależnie od domeny.
-- **Zasoby kryzysowe per region** (EchoInsight: linki do infolinii w języku użytkownika, →
-  [10](10-seo-i-tlumaczenia.md)) — bez udawania terapeuty.
+- **Zasoby kryzysowe per region** (np. linki do infolinii w języku użytkownika, →
+  [10](10-seo-i-tlumaczenia.md)) — bez udawania specjalisty.
 
 ## Spójność: regulamin ↔ polityka ↔ UI ↔ kod
 Trzy dokumenty i produkt muszą mówić **jedno**. Jeśli polityka mówi „nie czytamy rozmów", to

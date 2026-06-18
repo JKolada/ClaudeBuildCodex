@@ -62,9 +62,9 @@ którego nikt nie udokumentował, jest schematem, który następna sesja zgaduje
 - 🚫 **Destrukcyjna migracja pod działającym starym kodem** (DROP kolumny, którą web jeszcze czyta).
 - 🚫 Dwa free-text pola zamiast tabeli łączącej dla relacji M:N.
 
-## Dla EchoInsight
-Privacy = model danych. **Rozdziel dwie ścieżki**: rozmowy user-facing i osobny, idempotentny
-pipeline destylacji wniosków, operujący **wyłącznie na danych po anonimizacji** (PII usunięte
-*przed* destylacją). Twierdzenie „nie czytamy rozmów" musi wynikać ze **schematu i kontraktu
-skryptu**, nie z copy — i mieć **test re-identyfikacji**, który dowodzi, że z destylatu nie da
-się odtworzyć tożsamości. → [04](04-skrypty-i-bazy-danych.md), [09](09-prawo-i-ochrona-tworcy.md)
+## W praktyce
+Gdy deklarujesz prywatność, **model danych musi ją egzekwować**. Rozdziel ścieżki: dane
+user-facing i osobny, idempotentny pipeline przetwarzania, operujący **wyłącznie na danych po
+anonimizacji** (PII usunięte *przed* przetwarzaniem). Twierdzenie „nie czytamy danych" musi
+wynikać ze **schematu i kontraktu skryptu**, nie z copy — i mieć **test re-identyfikacji**, który
+dowodzi, że nie da się odtworzyć tożsamości. → [04](04-skrypty-i-bazy-danych.md), [09](09-prawo-i-ochrona-tworcy.md)

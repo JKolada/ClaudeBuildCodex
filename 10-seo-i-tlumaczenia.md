@@ -12,7 +12,7 @@ i tłumaczenia są interfejsem dla świata.
 - **`<title>` + `meta description`** unikalne per strona (nie jeden globalny).
 - **Canonical** — jeden URL prawdy dla każdej treści (chroni przed duplikatami z parametrów).
 - **hreflang** — przy wielojęzyczności obowiązkowe: każda wersja językowa wskazuje pozostałe
-  (EchoInsight: 16 języków → 16 wzajemnych `hreflang` + `x-default`).
+  (np. 16 języków → 16 wzajemnych `hreflang` + `x-default`).
 - **JSON-LD** — `Organization` (home), `Article` (blog/wpisy), `ItemList` (rankingi).
 - **`sitemap.xml`** (z priorytetami) + **`robots.txt`** (co indeksować, gdzie sitemap).
 - **Semantyczne nagłówki** (jedno `h1`, hierarchia `h2/h3`), **OG/Twitter cards** (WhiskyPolska:
@@ -26,16 +26,16 @@ i tłumaczenia są interfejsem dla świata.
   — każda to **ręcznie pisany wstęp** PL/EN + ponumerowana **TOP-N** + pełna filtrowalna tabela +
   `ItemList` JSON-LD. **Guardy jakości** są częścią SEO: tylko 700 ml, `requireRating`,
   `minShops` — żeby strona nie była cienką wydmuszką.
-- **Editorial** — huby treści/blog pod **zapytania informacyjne** (artykuły EchoInsight o rozwoju,
-  poradniki WhiskyPolska). Treść, która **realnie odpowiada** na pytanie, nie keyword-stuffing.
+- **Editorial** — huby treści/blog pod **zapytania informacyjne** (np. poradniki WhiskyPolska
+  o whisky). Treść, która **realnie odpowiada** na pytanie, nie keyword-stuffing.
 
 ## E-E-A-T i YMYL
 Google ocenia rygorystycznie strony **YMYL** (Your Money or Your Life) — zdrowie, finanse,
-religia, bezpieczeństwo. EchoInsight (wsparcie duchowe) i WhiskyPolska (alkohol, wydatki) oba w
-to wpadają. Liczy się **E-E-A-T**: Experience, Expertise, Authoritativeness, Trust.
+religia, bezpieczeństwo. Wpada w to np. WhiskyPolska (alkohol, wydatki), ale też każda aplikacja
+zdrowia, finansów czy wsparcia. Liczy się **E-E-A-T**: Experience, Expertise, Authoritativeness, Trust.
 - Rzetelność i **źródła** (skąd cena, skąd ocena — WhiskyPolska linkuje WhiskyBase/sklep).
 - **Autorstwo** i operator jasno nazwany (→ [09](09-prawo-i-ochrona-tworcy.md)) budują Trust.
-- **Zero porad medycznych** w EchoInsight — disclaimer + ścieżka kryzysowa, nie diagnoza.
+- **Zero porad medycznych** w produktach zdrowia/wsparcia — disclaimer + ścieżka kryzysowa, nie diagnoza.
 
 ## Core Web Vitals jako czynnik rankingowy
 Szybkość to nie tylko UX — to sygnał rankingowy. LCP/CLS/INP wpadają do oceny strony. Mierz i
@@ -46,8 +46,8 @@ popraw (→ [13](13-wydajnosc-frontend-i-sql.md)); nie „wydaje się szybko", t
   failuje (jak na jakub.solutions: **parytet EN↔PL** + martwe linki). Żaden język „w połowie".
 - **hreflang** spina wersje (patrz wyżej).
 - **Ciepły rejestr w KAŻDYM języku** — to nie dosłowność, to ton. Tłumaczenie poprawne
-  gramatycznie, ale zimne, jest błędem (EchoInsight: „jesteśmy tu, żeby pomóc" musi brzmieć
-  ciepło po arabsku tak samo jak po polsku).
+  gramatycznie, ale zimne, jest błędem (np. „jesteśmy tu, żeby pomóc" musi brzmieć ciepło po
+  arabsku tak samo jak po polsku).
 - **MT + review człowieka dla treści wrażliwych** — Gemini tłumaczy szkielet, człowiek
   przegląda disclaimery, komunikaty kryzysowe, prawne (→ [09](09-prawo-i-ochrona-tworcy.md)).
 - **RTL** (arabski) — layout musi się odbić, nie tylko tekst.
@@ -62,9 +62,9 @@ popraw (→ [13](13-wydajnosc-frontend-i-sql.md)); nie „wydaje się szybko", t
 - 🚫 **Angielskie UI lub strony prawne** w aplikacji 16-językowej (→ [09](09-prawo-i-ochrona-tworcy.md)).
 - 🚫 **Ignorowanie Core Web Vitals** — wolna strona traci ranking i użytkownika (→ [13](13-wydajnosc-frontend-i-sql.md)).
 
-## Dla EchoInsight
-i18n od pierwszego dnia (16 języków, next-intl): hreflang dla każdej pary, **test parytetu**
-jako bramka CI, RTL dla arabskiego, ciepły rejestr w każdym języku. Treści YMYL (wsparcie
-duchowe) — zero porad medycznych, jasne autorstwo (operator Jakub.Solutions), zasoby kryzysowe
-per region. Search Console od startu, żeby wiedzieć, **które języki i tematy** ciągną ruch. →
-[08](08-echoinsight.md)
+## W praktyce
+i18n od pierwszego dnia w aplikacji globalnej (np. 16 języków, next-intl): hreflang dla każdej
+pary, **test parytetu** jako bramka CI, RTL dla języków pisanych od prawej, ciepły rejestr w
+każdym języku. Treści YMYL (zdrowie/wsparcie/finanse) — zero porad regulowanych, jasne autorstwo
+i operator, zasoby kryzysowe per region. Search Console od startu, żeby wiedzieć, **które języki
+i tematy** ciągną ruch. → [09](09-prawo-i-ochrona-tworcy.md), [13](13-wydajnosc-frontend-i-sql.md)

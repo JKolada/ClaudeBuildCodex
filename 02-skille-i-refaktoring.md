@@ -51,8 +51,8 @@ Rozdziel dwa tryby przeglądu (jak `/simplify` vs `/code-review` w WhiskyPolska)
 - **Przegląd poprawności** — adversarialne szukanie bugów.
 Nie mieszaj — każdy ma inny cel i inny próg pewności.
 
-## Dla EchoInsight
-- Skille na start: `/run-echoinsight` (serwer + smoke), `/run-tests` (unit + Playwright),
-  `/update-ai-readme`, `/add-migration` (jeśli relacyjna baza).
-- Refaktor logowania (jeden z Twoich celów) zrób **osobnym, otestowanym** krokiem — to
-  ścieżka krytyczna; najpierw test odtwarzający bug, potem fix. → [03](03-testowanie-i-weryfikacja.md), [08](08-echoinsight.md)
+## W praktyce
+- Skille na start: `/run` (serwer + smoke), `/run-tests` (unit + e2e), `/update-ai-readme`,
+  `/add-migration` (jeśli relacyjna baza). → [08](08-stack-i-technologie.md)
+- Refaktor ścieżki krytycznej (np. logowania) rób **osobnym, otestowanym** krokiem: najpierw
+  test odtwarzający bieżący stan/bug, potem zmiana. → [03](03-testowanie-i-weryfikacja.md)
