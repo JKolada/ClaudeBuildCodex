@@ -1,6 +1,6 @@
-# Changelog — Build Codex
+# Changelog — Claude Build Codex
 
-Wszystkie istotne zmiany doktryny **Build Codex / Rzemiosło**. Wersjonowanie **semantyczne**
+Wszystkie istotne zmiany doktryny **Claude Build Codex**. Wersjonowanie **semantyczne**
 (MAJOR.MINOR.PATCH). **Data wpisu = dzień publikacji** — wtedy wersja została zdeployowana na
 [codex.jakub.solutions](https://codex.jakub.solutions) i gotowa do pobrania.
 

@@ -5,7 +5,7 @@
 
 ## Czym jest ten projekt
 
-**Claude Build Codex** (sygnatura wewnętrzna: *Rzemiosło*) to **doktryna budowania i prowadzenia aplikacji end-to-end
+**Claude Build Codex** to **doktryna budowania i prowadzenia aplikacji end-to-end
 z Claude**: zwarty zestaw konkretnych **reguł, przykazań i antywzorców**. Nie podręcznik
 frameworka — *doktryna współpracy* człowiek + agent przez całe życie projektu (od pierwszego
 commita po prod z żywymi użytkownikami).
@@ -78,10 +78,10 @@ python build.py                 # regeneruje content.js z plików .md
   Warunek: każdy commit **aktualizuje AI_README** zgodnie ze zmianą i najlepiej odnosi się do numeru
   taska. **Wyraźnej zgody wymagają tylko:** deploy na produkcję, swap bazy na produkcji oraz
   **push/publikacja** do zdalnego repo. To sedno Przykazania VI — nie dotyczy lokalnych commitów.
-- **Wersja Build Codex mieszka tutaj** (treść = to, co wersjonujemy): `codex.json` (`version` +
+- **Wersja Claude Build Codex mieszka tutaj** (treść = to, co wersjonujemy): `codex.json` (`version` +
   `released`) i `CHANGELOG.md`. Wydanie = podnieś `codex.json`, dopisz wpis w `CHANGELOG.md` z datą
   publikacji, commit + **annotated tag** `vX.Y.Z` (Przykazanie VIII). `version` musi zgadzać się z
-  najwyższym wpisem changeloga. Witryna `BuildCodexWeb` konsumuje to przy buildzie i stempluje.
+  najwyższym wpisem changeloga. Witryna `Claude Build Codex Web` konsumuje to przy buildzie i stempluje.
 
 ## Stan bieżący (2026-06-18)
 

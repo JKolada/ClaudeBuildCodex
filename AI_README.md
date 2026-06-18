@@ -21,8 +21,8 @@ dla osób zaczynających z Claude. Szczegóły i polityki → [CLAUDE.md](CLAUDE
 | `CLAUDE.md` | Konstytucja repo: czym jest, stack, jak uruchomić, polityki, stan bieżący. |
 | `AI_README.md` | Ten plik — mapa katalogu. |
 | `README.md` | Wejście dla człowieka: spis rozdziałów + „jak czytać". |
-| `codex.json` | **Wersja wydania** (`version` + `released`). Źródło stempla dla witryny BuildCodexWeb. |
-| `CHANGELOG.md` | Historia wydań Build Codex (semver, data = dzień publikacji). |
+| `codex.json` | **Wersja wydania** (`version` + `released`). Źródło stempla dla witryny Claude Build Codex Web. |
+| `CHANGELOG.md` | Historia wydań Claude Build Codex (semver, data = dzień publikacji). |
 | `00-przykazania.md` | **Dekalog** — 10 przykazań, 7 grzechów, złota zasada altytudy. Rdzeń. |
 | `01-dokumentacja-i-ai-readme.md` | Trzy warstwy docs: CLAUDE.md / AI_README / docs. Kiedy aktualizować. |
 | `02-skille-i-refaktoring.md` | Kiedy zbudować skill/slash-command; dyscyplina refaktoringu. |
