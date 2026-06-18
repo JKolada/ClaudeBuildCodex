@@ -122,6 +122,9 @@ python test.py                  # smoke: parytet PL/EN, martwe linki, świeżoś
 
 ## Dla agenta zaczynającego sesję tutaj
 
+0. **Szukasz konkretnego tematu (tu albo w docelowym projekcie z `docs/rules/`)?** `grep -i <keyword>`
+   po **„Indeks tematów → plik"** w [AI_README.md](AI_README.md) → właściwy rozdział; czytaj tylko jego.
+   Oszczędność kontekstu (reguła → [01](01-documentation-and-ai-readme.md)).
 1. Przeczytaj [00 — Dekalog](00-commandments.md) — cała doktryna na jednym ekranie.
 2. Zmiana treści → odpowiedni plik `.md`. Zmiana wyglądu/nawigacji → `index.html`.
 3. Po zmianie listy rozdziałów zsynchronizuj **trzy** miejsca: `CHAPTERS`, `README.md`, `AI_README.md`.

@@ -48,6 +48,24 @@ jako obowiązkowe uzupełnienie — to konstytucja deleguje szczegóły katalogu
 mówi „gdzie i czym jest projekt"; `AI_README` mówi „co dokładnie jest w tym katalogu". Bez tego
 wskazania nowa sesja nie wie, że mapy istnieją.
 
+## AI_README pod grep — oszczędność kontekstu
+
+W docelowym projekcie agent **nie czyta wszystkiego** — przy konkretnym zadaniu **grepuje po słowach
+kluczowych** i czyta tylko trafiony plik. Dlatego `AI_README.md` projektuj jako **indeks pod grep**,
+nie jako prozę:
+
+- **Opis każdego pliku gęsty w keywordy.** Nie „różne reguły", lecz konkretne terminy, których ktoś
+  poszuka: nazwy funkcji, pojęcia, technologie, **synonimy** i **oba języki**, jeśli projekt jest
+  dwujęzyczny (`RODO`/`GDPR`, `migracja`/`migration`, `kolejka`/`queue`). `grep -i <temat>` ma trafić
+  w **jedną linię** i wskazać właściwy plik.
+- **Jeden plik = jeden temat.** Dziel treść tak, by trafienie było precyzyjne. Temat rozlany na pięć
+  plików = pięć trafień i przepalony kontekst; temat zwarty w jednym = jedno trafienie, jedno czytanie
+  (→ [12](12-flexibility-and-scalability.md): rozdziel warstwy).
+- **Mapa „temat → plik".** Trzymaj w `AI_README` zwięzły indeks (keywordy + nazwa pliku w jednej linii),
+  utrzymywany aktualnie. To nawigacja: grep po nim zwraca *gdzie iść*, nie całą treść.
+- **Po co:** kontekst to budżet. Im celniej `AI_README` kieruje, tym mniej tokenów schodzi na szukanie,
+  a więcej zostaje na robotę. To Przykazanie II (szukaj, zanim napiszesz) zastosowane do **czytania**.
+
 ## Struktura `/docs` i foldery
 
 Dokumentacja „cięższa niż mapa katalogu" mieszka w **`/docs`** — jedno miejsce na stabilną
@@ -110,6 +128,8 @@ każdy plik. Jeden plik, bez bundlera; działa z dwukliku i z serwera (ten codex
 - 🚫 „Zaktualizuję docs na końcu" → koniec nie nadchodzi, dokumentacja kłamie.
 - 🚫 AI_README opisujący *intencję* zamiast *stanu* — agent działa na tym, co napisane, nie na marzeniach.
 - 🚫 Duplikowanie stanu z `CLAUDE.md` do pięciu miejsc — jedno źródło prawdy, reszta linkuje.
+- 🚫 **Opis pliku zbyt ogólny** („różne reguły", „helpery") — grep nie trafia, agent skanuje wszystko
+  i przepala kontekst. Opisuj keywordami, nie etykietami.
 
 ## W praktyce
 Start nowego projektu: najpierw `CLAUDE.md` (stack, jak uruchomić, polityki i **twarde reguły

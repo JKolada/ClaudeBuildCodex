@@ -48,6 +48,23 @@ as a mandatory complement — the constitution delegates directory detail to its
 says "where and what the project is"; the `AI_README` says "what exactly is in this directory." Without that
 pointer, a new session doesn't know the maps exist.
 
+## AI_README for grep — saving context
+
+In the target project the agent **doesn't read everything** — for a specific task it **greps by
+keywords** and reads only the file it hits. So design `AI_README.md` as an **index built for grep**,
+not as prose:
+
+- **Make each file's description keyword-dense.** Not "various rules" but the concrete terms someone
+  will search for: function names, concepts, technologies, **synonyms**, and **both languages** if the
+  project is bilingual (`RODO`/`GDPR`, `migracja`/`migration`, `kolejka`/`queue`). `grep -i <topic>`
+  should hit **one line** and point to the right file.
+- **One file = one topic.** Split content so the hit is precise. A topic spread across five files = five
+  hits and burned context; a topic kept whole in one = one hit, one read (→ [12](12-flexibility-and-scalability.md): separate the layers).
+- **A "topic → file" map.** Keep a concise index in `AI_README` (keywords + filename on one line), kept
+  current. It's navigation: grepping it returns *where to go*, not the whole content.
+- **Why:** context is a budget. The more precisely `AI_README` directs, the fewer tokens go to searching
+  and the more remain for the work. This is Commandment II (search before you write) applied to **reading**.
+
 ## The `/docs` structure and folders
 
 Documentation "heavier than a directory map" lives in **`/docs`** — one place for stable
@@ -110,6 +127,8 @@ every file. One file, no bundler; works from a double-click and from a server (t
 - 🚫 "I'll update the docs at the end" → the end never comes, the documentation lies.
 - 🚫 An AI_README describing *intent* instead of *state* — the agent acts on what's written, not on wishes.
 - 🚫 Duplicating state from `CLAUDE.md` into five places — one source of truth, the rest link.
+- 🚫 **A file description too generic** ("various rules", "helpers") — grep misses, the agent scans
+  everything and burns context. Describe with keywords, not labels.
 
 ## In practice
 Starting a new project: first `CLAUDE.md` (stack, how to run it, policies and **hard domain
