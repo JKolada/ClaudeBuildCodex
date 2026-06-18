@@ -29,7 +29,7 @@ dla osób zaczynających z Claude. Szczegóły i polityki → [CLAUDE.md](CLAUDE
 > edycje i pakowanie wielojęzyczne dzieją się w **The Craft Web** (osobny projekt). Jeśli kusi Cię,
 > by tu dodać warstwę prezentacji/marketingu/edycji — to materiał dla Web, nie dla rdzenia.
 
-Kierunek wersji EN i pakowania per język → [docs/plans/0001-i18n-i-pakowanie.md](docs/plans/0001-i18n-i-pakowanie.md).
+Kierunek wersji EN i pakowania per język → [docs/plans/0001-i18n-and-packaging.md](docs/plans/0001-i18n-and-packaging.md).
 
 ## Indeks plików
 
@@ -48,22 +48,22 @@ Kierunek wersji EN i pakowania per język → [docs/plans/0001-i18n-i-pakowanie.
 | `README.md` | Wejście dla człowieka: spis rozdziałów + „jak czytać". |
 | `codex.json` | **Wersja wydania** (`version` + `released`) + nazwy marki (`name`/`name_short`/`name_en`). Źródło stempla dla witryny Rzemiosło Web. |
 | `CHANGELOG.md` | Historia wydań Rzemiosła (semver, data = dzień publikacji). |
-| `00-przykazania.md` | **Dekalog** — 10 przykazań, 7 grzechów, złota zasada altytudy. Rdzeń. |
-| `01-dokumentacja-i-ai-readme.md` | Trzy warstwy docs: CLAUDE.md / AI_README / docs. Kiedy aktualizować. |
-| `02-skille-i-refaktoring.md` | Kiedy zbudować skill/slash-command; dyscyplina refaktoringu; SOLID (z feature flags i rozdziel-warstwy). |
-| `03-testowanie-i-weryfikacja.md` | Piramida testów, „weryfikuj, nie deklaruj", smoke. |
-| `04-skrypty-i-bazy-danych.md` | Dry-run/`--execute`, idempotencja, migracje forward-only, backupy. |
-| `05-git-i-wdrozenia.md` | Szukaj w git, taguj deploy, swap bazy z zachowaniem kont. Najgęstszy rozdział. |
-| `06-wspolpraca-i-pamiec.md` | Plan→iteruj→review, pamięć, potwierdzaj nieodwracalne, raportuj uczciwie. |
-| `07-nowy-projekt-checklist.md` | Checklista „Dzień 0": brief produktowy (język, funkcje, monetyzacja, UX, animacje, marketing) + setup repo. |
-| `08-stack-i-technologie.md` | Uniwersalny stack: Python, bazy, web/API, Docker, serwery (Hetzner) + TDD jako twardy rdzeń. |
-| `09-prawo-i-ochrona-tworcy.md` | Regulamin, polityka prywatności, disclaimery jako ochrona twórcy / JDG. |
-| `10-seo-i-tlumaczenia.md` | hreflang, JSON-LD, E-E-A-T/YMYL, parytet językowy jako test. |
-| `11-model-danych-normalizacja.md` | Słowniki lookup, slug zamiast ID, active-row, świadoma denormalizacja. |
-| `12-elastycznosc-i-skalowalnosc.md` | Rozdziel warstwy, feature flags, scale-to-zero vs always-on, nie over-engineeruj. |
-| `13-wydajnosc-frontend-i-sql.md` | Mierz najpierw, indeksy + partial index, brak N+1, streaming czatu, CWV. |
-| `14-odpornosc-operacyjna.md` | Crash-proof runtime, wznawialne joby, zawodne API (backoff/rotacja), limity providera + poczta, kwoty kosztów. |
-| `15-scraping-ai-i-chatboty.md` | Skuteczny scraping (oficjalne źródło, walidacja kształtu, delta), AI-API do konkretnych zadań (kontrakt/cache/kwoty), konfigurowalne+ugruntowane chatboty. |
+| `00-commandments.md` | **Dekalog** — 10 przykazań, 7 grzechów, złota zasada altytudy. Rdzeń. |
+| `01-documentation-and-ai-readme.md` | Trzy warstwy docs: CLAUDE.md / AI_README / docs. Kiedy aktualizować. |
+| `02-skills-and-refactoring.md` | Kiedy zbudować skill/slash-command; dyscyplina refaktoringu; SOLID (z feature flags i rozdziel-warstwy). |
+| `03-testing-and-verification.md` | Piramida testów, „weryfikuj, nie deklaruj", smoke. |
+| `04-scripts-and-databases.md` | Dry-run/`--execute`, idempotencja, migracje forward-only, backupy. |
+| `05-git-and-deployments.md` | Szukaj w git, taguj deploy, swap bazy z zachowaniem kont. Najgęstszy rozdział. |
+| `06-collaboration-and-memory.md` | Plan→iteruj→review, pamięć, potwierdzaj nieodwracalne, raportuj uczciwie. |
+| `07-new-project-day-0.md` | Checklista „Dzień 0": brief produktowy (język, funkcje, monetyzacja, UX, animacje, marketing) + setup repo. |
+| `08-stack-and-technologies.md` | Uniwersalny stack: Python, bazy, web/API, Docker, serwery (Hetzner) + TDD jako twardy rdzeń. |
+| `09-law-and-protecting-the-creator.md` | Regulamin, polityka prywatności, disclaimery jako ochrona twórcy / JDG. |
+| `10-seo-and-translations.md` | hreflang, JSON-LD, E-E-A-T/YMYL, parytet językowy jako test. |
+| `11-data-model-and-normalization.md` | Słowniki lookup, slug zamiast ID, active-row, świadoma denormalizacja. |
+| `12-flexibility-and-scalability.md` | Rozdziel warstwy, feature flags, scale-to-zero vs always-on, nie over-engineeruj. |
+| `13-performance-frontend-and-sql.md` | Mierz najpierw, indeksy + partial index, brak N+1, streaming czatu, CWV. |
+| `14-operational-resilience.md` | Crash-proof runtime, wznawialne joby, zawodne API (backoff/rotacja), limity providera + poczta, kwoty kosztów. |
+| `15-scraping-ai-and-chatbots.md` | Skuteczny scraping (oficjalne źródło, walidacja kształtu, delta), AI-API do konkretnych zadań (kontrakt/cache/kwoty), konfigurowalne+ugruntowane chatboty. |
 
 Rozdziały dzielą się na **rdzeń** (`00`–`08`) i **pogłębienie** (`09`–`15`). Każdy = jedno
 przykazanie/temat, zwarty, zakończony antywzorcami.
@@ -110,7 +110,7 @@ Jeden plik, bez zależności build. Mechanika:
 - **Treść generyczna, nie „pod jeden projekt".** Konkretne projekty służą
   tylko za ilustrację (`np. …`, „projekt referencyjny"), nigdy za temat rozdziału. Nie czyń żadnego projektu bohaterem doktryny.
 - **Dwa języki: PL (kanon, root) + EN (`en/`).** Pisz reguły przekładalnie. Kierunek i konwencja →
-  [docs/plans/0001-i18n-i-pakowanie.md](docs/plans/0001-i18n-i-pakowanie.md). Paczki per język montuje Web.
+  [docs/plans/0001-i18n-and-packaging.md](docs/plans/0001-i18n-and-packaging.md). Paczki per język montuje Web.
 
 ## Liczby
 

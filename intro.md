@@ -56,7 +56,7 @@ poprawek „bo ktoś poprosił o usunięcie konta".
 `docs/rules/` do **każdej** nowej aplikacji, wypełniasz [brief](index.html#brief) i ruszasz — a każdy
 kolejny projekt korzysta z lekcji poprzedniego.
 
-> **Spróbuj raz.** Weź następny pomysł, dołącz The Craft, zacznij od [Dnia 0](07-nowy-projekt-checklist.md)
+> **Spróbuj raz.** Weź następny pomysł, dołącz The Craft, zacznij od [Dnia 0](07-new-project-day-0.md)
 > i zbuduj go jak rzemieślnik — wolno tam, gdzie błąd jest drogi; szybko tam, gdzie jest tani.
 > Zobaczysz różnicę nie pierwszego dnia, ale **trzeciego miesiąca** — gdy aplikacja wciąż jest
-> przyjemna do rozwijania. Zacznij od [Dekalogu](00-przykazania.md): cała doktryna na jednym ekranie.
+> przyjemna do rozwijania. Zacznij od [Dekalogu](00-commandments.md): cała doktryna na jednym ekranie.

@@ -55,7 +55,7 @@ scrambles "because someone asked to delete their account."
 to **every** new app, fill in the [brief](index.html#brief), and go — and each new project benefits
 from the lessons of the last.
 
-> **Try it once.** Take your next idea, attach The Craft, start from [Day 0](07-nowy-projekt-checklist.md),
+> **Try it once.** Take your next idea, attach The Craft, start from [Day 0](07-new-project-day-0.md),
 > and build it like a craftsman — slow where a mistake is expensive, fast where it's cheap. You'll see
 > the difference not on day one, but in **month three** — when the app is still a pleasure to work on.
-> Start with the [Decalogue](00-przykazania.md): the whole doctrine on a single screen.
+> Start with the [Decalogue](00-commandments.md): the whole doctrine on a single screen.
