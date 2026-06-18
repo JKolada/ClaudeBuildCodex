@@ -4,10 +4,11 @@
 > Destylat doświadczeń z realnych projektów, pisany pod **każdy kolejny projekt z Claude**.
 >
 > **Edycja: Techniczna** — dla osób ogarniających kod i stack. Edycje *BIZ-TECH* i *Biznesowa*
-> (ta sama doktryna prostszym językiem) — w planach.
+> (ta sama doktryna prostszym językiem) — w planach. To repo to **zwarty rdzeń**; przystępniejsze
+> rozwinięcia tematów robi siostrzany projekt *Claude Build Codex Web*.
 >
 > Warsztat **[jakub.solutions](https://jakub.solutions)** · Jakub Kolada — Insurance Systems Architect & IT Consultant.
-> Marka, paleta (fiolet→cyan) i typografia (Playfair Display + Outfit) spójne z [Jakub.Solutions](../Jakub.Solutions).
+> Marka, paleta (fiolet→cyan) i typografia (Playfair Display + Outfit) spójne z [jakub.solutions](https://jakub.solutions).
 
 To nie jest podręcznik frameworka. To **doktryna współpracy** — zestaw zasad, o których
 Claude ma pamiętać **rozpoczynając i prowadząc projekt z użytkownikiem**, żeby aplikacja przez całe
@@ -31,18 +32,19 @@ dla agenta, testowalna, bezpieczna w zmianie i godna zaufania.
 |---|----------|--------|
 | 00 | [Dekalog](00-przykazania.md) | 10 przykazań — rdzeń doktryny, do zapamiętania |
 | 01 | [Dokumentacja i AI_README](01-dokumentacja-i-ai-readme.md) | `AI_README.md` w każdym katalogu, `CLAUDE.md` jako źródło prawdy, docs jako kod |
-| 02 | [Skille i refaktoring](02-skille-i-refaktoring.md) | Kiedy zbudować skill, slash-command, dyscyplina refaktoringu |
+| 02 | [Skille i refaktoring](02-skille-i-refaktoring.md) | Kiedy zbudować skill/slash-command, dyscyplina refaktoringu, SOLID |
 | 03 | [Testowanie i weryfikacja](03-testowanie-i-weryfikacja.md) | Piramida testów, „weryfikuj, nie deklaruj", smoke testy |
 | 04 | [Skrypty i bazy danych](04-skrypty-i-bazy-danych.md) | Idempotencja, dry-run/--execute, migracje forward-only, backupy |
 | 05 | [Git i wdrożenia](05-git-i-wdrozenia.md) | Szukaj w git przed kodowaniem, taguj każdy deploy, swap bazy z zachowaniem kont |
 | 06 | [Współpraca i pamięć](06-wspolpraca-i-pamiec.md) | Plan→iteruj→review, pamięć, potwierdzaj nieodwracalne, raportuj uczciwie |
-| 07 | [Nowy projekt: Dzień 0](07-nowy-projekt-checklist.md) | Konkretna checklista startu nowego projektu |
+| 07 | [Nowy projekt: Dzień 0](07-nowy-projekt-checklist.md) | Brief produktowy (pytania na start) + checklista startu nowego projektu |
 | 08 | [Stack i technologie](08-stack-i-technologie.md) | Python, bazy, web/API, Docker, serwery (Hetzner), TDD — uniwersalny, prosty, skalowalny default |
-| 09 | [Prawo i ochrona twórcy](09-prawo-i-ochrona-tworcy.md) | Regulamin, polityka prywatności, disclaimery jako zbroja osoby prywatnej / JDG |
+| 09 | [Prawo i ochrona twórcy](09-prawo-i-ochrona-tworcy.md) | Regulamin, polityka prywatności, disclaimery jako zbroja twórcy / JDG |
 | 10 | [SEO i tłumaczenia](10-seo-i-tlumaczenia.md) | hreflang, JSON-LD, programmatic SEO, E-E-A-T/YMYL, parytet językowy jako test |
 | 11 | [Model danych i normalizacja](11-model-danych-normalizacja.md) | Słowniki lookup, slug zamiast ID, active-row, świadoma denormalizacja |
 | 12 | [Elastyczność i skalowalność](12-elastycznosc-i-skalowalnosc.md) | Rozdziel warstwy, feature flags, scale-to-zero vs always-on, nie over-engineeruj |
 | 13 | [Wydajność: frontend i SQL](13-wydajnosc-frontend-i-sql.md) | Mierz najpierw, indeksy + partial index, brak N+1, streaming czatu, CWV |
+| 14 | [Odporność operacyjna](14-odpornosc-operacyjna.md) | Crash-proof runtime, wznawialne joby, zawodne API (backoff/rotacja), limity providera, kwoty kosztów |
 
 ## Filozofia w jednym zdaniu
 

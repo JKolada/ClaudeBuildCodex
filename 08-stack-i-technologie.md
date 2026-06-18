@@ -66,16 +66,11 @@ i testowalność — nie hype.
 - **Sekrety** w env / secret store — **nigdy** w repo (→ [09](09-prawo-i-ochrona-tworcy.md)).
 
 ## TDD i pokrycie zmian — twardy rdzeń
-Najważniejsza reguła tego rozdziału. Stack ma być **testowalny od pierwszej linijki**.
-
-- **Test najpierw.** Nowa funkcja: czerwony test opisujący oczekiwanie → kod, aż zielony →
-  refactor. Bug: **najpierw test odtwarzający**, potem fix. → [03](03-testowanie-i-weryfikacja.md)
-- **Każda zmiana w commicie niesie test.** Twarda reguła: commit zmieniający zachowanie bez
-  nowego/zmienionego testu jest **niekompletny**. Nowy endpoint → test trasy; nowy próg → test
-  progu; bug → test regresji. → [00 — siedem grzechów](00-przykazania.md)
-- **Testuj kontrakt, nie implementację** — żeby refactor (→ [02](02-skille-i-refaktoring.md)) nie kruszył testów bez regresji.
-- **Suite szybki i deterministyczny** — wolny lub migający suite przestaje być uruchamiany.
-- **CI bramkuje** — czerwone testy blokują merge/deploy. Piramida i narzędzia: → [03](03-testowanie-i-weryfikacja.md).
+Najważniejsze kryterium doboru stacku: ma być **testowalny od pierwszej linijki**. Technologia,
+której nie umiesz łatwo objąć testem (test-first, szybki i deterministyczny suite, CI bramkujące),
+jest złym wyborem — nawet jeśli modna. Mechanika TDD i pokrycie zmian = kanon w → [03](03-testowanie-i-weryfikacja.md);
+tu tylko twarda konsekwencja: **wybieraj tech, która to umożliwia, i traktuj „commit bez testu" jako
+niekompletny** (→ [00](00-przykazania.md)).
 
 ## Reguła wyboru technologii
 1. **Najprostsze, co uniesie dzisiejsze wymaganie**, z jawną ścieżką wzrostu (SQLite→PG, VPS→serverless).

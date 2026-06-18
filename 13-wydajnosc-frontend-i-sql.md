@@ -25,6 +25,9 @@ metryka wskazuje, i **udowodnij liczbą**, że poprawiłeś. Wydajność to też
 - **`content-visibility: auto`** na sekcjach poniżej folda — przeglądarka pomija render niewidocznego.
 - **GPU-promoted animacje** (`translateZ(0)`/`transform`) zamiast layoutujących właściwości.
 - **Cache statyków**: `immutable` + długi `max-age` na prodzie (np. 7 dni immutable prod).
+- **Cache-busting per deploy**: skoro CSS/JS są `immutable`, doklej `?v=<git-short-hash>` do
+  każdego linku — każdy deploy zmienia URL → świeży pobór. Bez tego user widzi **starą apkę**
+  (rozjechany layout) aż do twardego odświeżenia (→ [05](05-git-i-wdrozenia.md)).
 - **Streaming / SSE dla czatu** — odpowiedź LLM **token-by-token** (np. przez SSE), user widzi
   pierwsze słowa od razu, a nie pustkę do końca generacji. → [08](08-stack-i-technologie.md)
 - **Server-side pagination** — nigdy nie ślij całego katalogu do przeglądarki (np.

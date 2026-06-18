@@ -43,6 +43,36 @@ Co powinno być w `AI_README.md`:
 > **Test jakości AI_README:** czy agent po jego przeczytaniu może bezpiecznie zmienić kod w
 > tym katalogu, nie skanując wszystkich plików? Jeśli nie — czegoś brakuje.
 
+**Reguła wiążąca warstwy:** `CLAUDE.md` (root) **wskazuje na `AI_README.md` w każdym folderze**
+jako obowiązkowe uzupełnienie — to konstytucja deleguje szczegóły katalogu do jego mapy. Konstytucja
+mówi „gdzie i czym jest projekt"; `AI_README` mówi „co dokładnie jest w tym katalogu". Bez tego
+wskazania nowa sesja nie wie, że mapy istnieją.
+
+## Struktura `/docs` i foldery
+
+Dokumentacja „cięższa niż mapa katalogu" mieszka w **`/docs`** — jedno miejsce na stabilną
+referencję i plany, żeby nie puchły `AI_README` ani `CLAUDE.md`:
+
+```
+docs/
+  AI_README.md          # spis treści docs: „gdzie zacząć dla zadania X"
+  architecture.md       # warstwy, granice, przepływy
+  data_model.md         # schemat DB, ERD, controlled vocabulary (→ [11])
+  deployment_runbook.md # procedura + ponumerowane lekcje z incydentów (→ [05], [14])
+  plans/                # plany na przyszłość, RFC, decyzje (jeden plik = jeden temat)
+    NNNN-tytul.md
+```
+
+- **`/docs/plans/`** — żywy backlog decyzji i projektów. Plan to dokument, nie myśl w głowie:
+  problem → opcje → wybór → „dlaczego". Zrealizowany plan zostaje jako zapis decyzji.
+- **Folder bez `AI_README.md` to folder-zagadka.** Tworząc nowy istotny katalog — twórz go **razem**
+  z `AI_README.md` (choćby szkielet). To samo przy refaktorze: rozbijasz moduł na podkatalogi →
+  każdy nowy katalog dostaje mapę w tym samym kroku, nie „później".
+- **Im konkretniej, tym lepiej.** Lepsza struktura folderów (jasne granice: dane / ingest / web /
+  skrypty, → [12](12-elastycznosc-i-skalowalnosc.md)) + gęstszy, konkretny `AI_README` w każdym z
+  nich bije jeden ogólnikowy plik w rootcie. Ważne informacje (gotchas, kontrakty, liczby) trzymaj
+  **blisko kodu, którego dotyczą**.
+
 ## Kiedy aktualizować (a kiedy nie)
 
 | Zmiana | Aktualizować dokumentację? |

@@ -34,6 +34,10 @@ Ta sama doktryna w trzech rejestrach — różni się **język podania**, nie za
 Bieżąca edycja stemplowana w [codex.json](codex.json) (`edition`). Pisząc treść TECHNICZNĄ, twórz ją
 **przekładalnie na niższe rejestry** (zasada bez nieprzetłumaczalnego żargonu w samym sednie reguły).
 
+**Podział z `ClaudeBuildCodexWeb`:** to repo to **kanoniczny, zwarty rdzeń techniczny** (źródło prawdy);
+siostrzane `ClaudeBuildCodexWeb` **rozwija tematy w przystępniejszej, obszerniejszej formie** i robi
+edycje BIZ-TECH/biznesowe. Rdzeń trzymaj zwarty tutaj — rozwinięcia idą do Web (szczegóły → [AI_README](AI_README.md)).
+
 ## Stack i charakter repo
 
 | Warstwa | Tech | Lokalizacja |
@@ -99,7 +103,7 @@ python build.py                 # regeneruje content.js z plików .md
 
 ## Stan bieżący (2026-06-18)
 
-- **14 rozdziałów** (`00`–`13`) + `README.md`. Rdzeń: 00–08; pogłębienie: 09–13.
+- **15 rozdziałów** (`00`–`14`) + `README.md`. Rdzeń: 00–08; pogłębienie: 09–14.
 - `index.html` — SPA-czytnik: strona główna (dekalog + karty) i widok rozdziału (render `.md`,
   select rozdziałów, prev/next, responsywny mobile/desktop, przełącznik jasny/ciemny). Treść:
   fetch świeżych `.md`, a po `file://` — snapshot `content.js`.

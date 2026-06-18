@@ -55,7 +55,7 @@ ERD + controlled vocabulary w docs (np. `db_schema.md` z Mermaid ERD,
 którego nikt nie udokumentował, jest schematem, który następna sesja zgaduje. → [01](01-dokumentacja-i-ai-readme.md)
 
 ## Anty-wzorce
-- 🚫 **Free-text tam, gdzie powinien być słownik** (kraj jako string → 5 pisowni „Szkocja").
+- 🚫 **Free-text tam, gdzie powinien być słownik** (kraj jako string → 5 pisowni „USA"/„U.S.A."/„Stany Zjednoczone").
 - 🚫 **Duplikat źródła prawdy bez synchronizacji** (dane zewnętrzne w `products` *i* w cache → rozjazd).
 - 🚫 **Mapowanie user-danych po zmiennym ID** zamiast slug → recenzja na złym produkcie.
 - 🚫 **Składowanie wartości wyliczanej, która dryfuje** (`display_name` jako kolumna).

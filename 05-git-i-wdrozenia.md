@@ -81,6 +81,10 @@ To tu jest najwięcej pułapek. Lekcje z projektu referencyjnego:
 5. **Backup żywego proda PRZED swapem** (`.backup replaced-prod-<ts>.db`) — to Twój rollback.
 6. **Zweryfikuj scaloną bazę**: liczba kont = prod, 0 wiszących recenzji (slug-remap OK),
    `integrity_check: ok`, naruszenia FK ≤ stan zastany (nie więcej).
+7. **Sesje to osobny, ulotny stan — nie mieszaj ich z podmienianą bazą.** Trzymaj store sesji w
+   **osobnym pliku** (np. `sessions.db`) niż baza katalogowa, którą czasem podmieniasz w całości —
+   inaczej swap wyzeruje zalogowanych. Store w pamięci procesu wylogowuje wszystkich przy **każdym**
+   restarcie/deployu i przecieka pamięć (→ [14](14-odpornosc-operacyjna.md)).
 
 ### Sekwencja (faza nieinwazyjna → okno → finalizacja)
 **Faza 1 (serwis żyje):**
@@ -113,6 +117,13 @@ Obrazki/pliki, które są w `.gitignore`, **nie jadą przez `git pull`**. Albo j
 - 🚫 Migracja na starym snapshocie → utrata świeżych rejestracji.
 - 🚫 Brak tagu deployu → „co jest live?" staje się zgadywanką.
 - 🚫 Transfer 1.5 GB assetów **w** oknie maintenance → długi downtime (rób przed oknem).
+- 🚫 Sesje w bazie podmienianej swapem (albo w pamięci procesu) → deploy wylogowuje wszystkich.
+- 🚫 Niezmiennik skryptu deployu nietknięty testem — np. `$(date)` rozwinięty raz przy tworzeniu
+  pliku (każdy backup nadpisuje ten sam plik). Zabetonuj niezmienniki deploy-skryptu testem.
+
+> **Runbook to pamięć incydentów, nie głowa.** Każda awaria na prodzie → wpis w runbooku z datą
+> i ponumerowaną lekcją (np. „nigdy nie SCP żywej `.db` — użyj `.backup`; WAL trzyma świeże strony").
+> Następny swap czyta runbook, nie powtarza błędu (→ [06](06-wspolpraca-i-pamiec.md), [14](14-odpornosc-operacyjna.md)).
 
 ## Wspólna infrastruktura
 Projekty mogą dzielić jeden **Hetzner VPS**: statyczne (build `dist/`) idą przez

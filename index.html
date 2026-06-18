@@ -472,18 +472,19 @@
   var CHAPTERS = [
     {file:"00-przykazania.md",            no:"00", group:"core", title:"Dekalog",                     desc:"Rdzeń doktryny + siedem grzechów głównych."},
     {file:"01-dokumentacja-i-ai-readme.md",no:"01", group:"core", title:"Dokumentacja i AI_README",   desc:"AI_README w każdym katalogu, CLAUDE.md jako źródło prawdy."},
-    {file:"02-skille-i-refaktoring.md",   no:"02", group:"core", title:"Skille i refaktoring",        desc:"Kiedy zbudować skill; dyscyplina refaktoringu."},
+    {file:"02-skille-i-refaktoring.md",   no:"02", group:"core", title:"Skille i refaktoring",        desc:"Kiedy zbudować skill; dyscyplina refaktoringu; SOLID."},
     {file:"03-testowanie-i-weryfikacja.md",no:"03", group:"core", title:"Testowanie i weryfikacja",   desc:"Piramida testów, „weryfikuj, nie deklaruj”, smoke."},
     {file:"04-skrypty-i-bazy-danych.md",  no:"04", group:"core", title:"Skrypty i bazy danych",       desc:"Dry-run/--execute, idempotencja, migracje, backupy."},
     {file:"05-git-i-wdrozenia.md",        no:"05", group:"core", title:"Git i wdrożenia",             desc:"Szukaj w git, taguj deploy, swap bazy z zachowaniem kont."},
     {file:"06-wspolpraca-i-pamiec.md",    no:"06", group:"core", title:"Współpraca i pamięć",         desc:"Plan→iteruj→review, potwierdzaj nieodwracalne, raportuj uczciwie."},
-    {file:"07-nowy-projekt-checklist.md", no:"07", group:"core", title:"Nowy projekt: Dzień 0",       desc:"Konkretna checklista startu."},
+    {file:"07-nowy-projekt-checklist.md", no:"07", group:"core", title:"Nowy projekt: Dzień 0",       desc:"Brief produktowy + konkretna checklista startu."},
     {file:"08-stack-i-technologie.md",    no:"08", group:"core", title:"Stack i technologie",        desc:"Python, baza, web/API, Docker, serwer (Hetzner), TDD."},
     {file:"09-prawo-i-ochrona-tworcy.md", no:"09", group:"deep", title:"Prawo i ochrona twórcy",      desc:"Regulamin, polityka prywatności, disclaimery jako zbroja twórcy."},
     {file:"10-seo-i-tlumaczenia.md",      no:"10", group:"deep", title:"SEO i tłumaczenia",           desc:"hreflang, JSON-LD, E-E-A-T/YMYL, parytet językowy jako test."},
     {file:"11-model-danych-normalizacja.md",no:"11",group:"deep", title:"Model danych i normalizacja",desc:"Słowniki, slug zamiast ID, active-row, świadoma denormalizacja."},
     {file:"12-elastycznosc-i-skalowalnosc.md",no:"12",group:"deep",title:"Elastyczność i skalowalność",desc:"Rozdziel warstwy, feature flags, scale-to-zero vs always-on."},
-    {file:"13-wydajnosc-frontend-i-sql.md",no:"13", group:"deep", title:"Wydajność: frontend i SQL",  desc:"Mierz najpierw, indeksy i partial index, brak N+1, streaming."}
+    {file:"13-wydajnosc-frontend-i-sql.md",no:"13", group:"deep", title:"Wydajność: frontend i SQL",  desc:"Mierz najpierw, indeksy i partial index, brak N+1, streaming."},
+    {file:"14-odpornosc-operacyjna.md",   no:"14", group:"deep", title:"Odporność operacyjna",       desc:"Crash-proof runtime, wznawialne joby, zawodne API, limity providera, kwoty kosztów."}
   ];
 
   var slug = function(file){ return file.replace(/\.md$/,""); };

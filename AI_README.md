@@ -11,6 +11,21 @@ Treść to ręcznie pisany markdown; `index.html` jest jej przeglądarką (staty
 Cel: zestaw reguł reużywalny jako `/docs/rules/` w nowych projektach **oraz** materiał publiczny
 dla osób zaczynających z Claude. Szczegóły i polityki → [CLAUDE.md](CLAUDE.md).
 
+## Codex (to repo) vs Codex Web (siostrzane repo)
+
+**Podział ról — nie duplikuj między nimi:**
+
+- **To repo (`ClaudeBuildCodex`) = rdzeń kanoniczny.** Forma: **techniczna, zwarta, imperatywna,
+  po polsku** — źródło prawdy reguł, dołączane do projektów jako `/docs/rules/`. Optymalizowane pod
+  **agenta i osobę techniczną**: gęstość ponad przystępność. Tu wersjonujemy doktrynę (codex.json).
+- **Siostrzane `ClaudeBuildCodexWeb` = warstwa przystępna.** Bierze tę samą doktrynę i **rozwija
+  poszczególne tematy** w przyjaźniejszej, obszerniejszej formie (wielojęzyczna witryna-opakowanie,
+  edycje BIZ-TECH/biznesowa, przykłady, narracja). Konsumuje `codex.json`/treść przy buildzie.
+
+Zasada: **rdzeń trzymamy zwarty tutaj; rozwinięcia i „miększą" formę robi Web.** Jeśli kusi Cię,
+by w tym repo rozpisać temat szerzej „dla czytelności" — to materiał dla Web, nie dla rdzenia.
+Edycje (techniczna / BIZ-TECH / biznesowa) → [CLAUDE.md](CLAUDE.md) (sekcja „Edycje").
+
 ## Indeks plików
 
 | Plik | Po co to |
@@ -37,8 +52,9 @@ dla osób zaczynających z Claude. Szczegóły i polityki → [CLAUDE.md](CLAUDE
 | `11-model-danych-normalizacja.md` | Słowniki lookup, slug zamiast ID, active-row, świadoma denormalizacja. |
 | `12-elastycznosc-i-skalowalnosc.md` | Rozdziel warstwy, feature flags, scale-to-zero vs always-on, nie over-engineeruj. |
 | `13-wydajnosc-frontend-i-sql.md` | Mierz najpierw, indeksy + partial index, brak N+1, streaming czatu, CWV. |
+| `14-odpornosc-operacyjna.md` | Crash-proof runtime, wznawialne joby, zawodne API (backoff/rotacja), limity providera + poczta, kwoty kosztów. |
 
-Rozdziały dzielą się na **rdzeń** (`00`–`08`) i **pogłębienie** (`09`–`13`). Każdy = jedno
+Rozdziały dzielą się na **rdzeń** (`00`–`08`) i **pogłębienie** (`09`–`14`). Każdy = jedno
 przykazanie/temat, zwarty, zakończony antywzorcami.
 
 ## Architektura `index.html` (kontrakt)
@@ -80,7 +96,7 @@ Jeden plik, bez zależności build. Mechanika:
 
 ## Liczby
 
-- 14 rozdziałów (`00`–`13`) + `README.md`. Rdzeń: 9 plików (00–08). Pogłębienie: 5 (09–13).
+- 15 rozdziałów (`00`–`14`) + `README.md`. Rdzeń: 9 plików (00–08). Pogłębienie: 6 (09–14).
 - `index.html`: 1 plik; runtime z CDN (`marked` + Google Fonts). Build: `build.py` → `content.js`
-  (15 dokumentów, ~67 tys. znaków).
+  (16 dokumentów, ~82 tys. znaków).
 - Brak testów (repo dokumentacji). „Test" = podgląd przez serwer **i** z dwukliku (`file://`) + klik po rozdziałach.
