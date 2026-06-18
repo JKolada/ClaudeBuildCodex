@@ -37,8 +37,8 @@ Kierunek wersji EN i pakowania per język → [docs/plans/0001-i18n-i-pakowanie.
 |------|----------|
 | `index.html` | **Minimalny czytnik lokalny/dev** (podgląd treści dla autora/agenta) — NIE publiczna witryna. Strona główna (dekalog + karty) + widok rozdziału + brief + przełącznik języka treści (PL/EN). |
 | `intro.md` | **Manifest** — „Czym jest The Craft" + artykuł „dlaczego warto". Dokument specjalny (poza numerowaną listą), routowany jako `#intro`; jest też `en/intro.md`. |
-| `00`–`14` (root) | **Treść PL** (kanoniczna, źródło prawdy). Slugi/numery = stabilne kotwice, wspólne dla wszystkich języków. |
-| `en/` | **Treść EN** — równoległy zestaw `00-*.md`…`14-*.md` (te same nazwy plików, treść po angielsku). Tłumaczenie PL. |
+| `00`–`15` (root) | **Treść PL** (kanoniczna, źródło prawdy). Slugi/numery = stabilne kotwice, wspólne dla wszystkich języków. |
+| `en/` | **Treść EN** — równoległy zestaw `00-*.md`…`15-*.md` (te same nazwy plików, treść po angielsku). Tłumaczenie PL. |
 | `docs/` | Plany i decyzje meta repo (nie treść doktryny): `docs/AI_README.md`, `docs/plans/`. |
 | `content.js` | **Generowany** snapshot `.md` osadzony w JS — pozwala renderować treść po `file://`. Nie edytuj ręcznie. |
 | `build.py` | Skrypt buildu: łączy pliki `.md` → `content.js`. Uruchom po edycji treści (`python build.py`). |
@@ -62,8 +62,9 @@ Kierunek wersji EN i pakowania per język → [docs/plans/0001-i18n-i-pakowanie.
 | `12-elastycznosc-i-skalowalnosc.md` | Rozdziel warstwy, feature flags, scale-to-zero vs always-on, nie over-engineeruj. |
 | `13-wydajnosc-frontend-i-sql.md` | Mierz najpierw, indeksy + partial index, brak N+1, streaming czatu, CWV. |
 | `14-odpornosc-operacyjna.md` | Crash-proof runtime, wznawialne joby, zawodne API (backoff/rotacja), limity providera + poczta, kwoty kosztów. |
+| `15-scraping-ai-i-chatboty.md` | Skuteczny scraping (oficjalne źródło, walidacja kształtu, delta), AI-API do konkretnych zadań (kontrakt/cache/kwoty), konfigurowalne+ugruntowane chatboty. |
 
-Rozdziały dzielą się na **rdzeń** (`00`–`08`) i **pogłębienie** (`09`–`14`). Każdy = jedno
+Rozdziały dzielą się na **rdzeń** (`00`–`08`) i **pogłębienie** (`09`–`15`). Każdy = jedno
 przykazanie/temat, zwarty, zakończony antywzorcami.
 
 ## Architektura `index.html` (kontrakt)
@@ -99,7 +100,7 @@ Jeden plik, bez zależności build. Mechanika:
 - **`index.html` NIE zawiera treści rozdziałów** — czyta `.md`/`content.js`. Nie wklejaj treści do HTML.
 - **Dodajesz/zmieniasz rozdział → zsynchronizuj 3 miejsca + build:** `CHAPTERS` (index.html), tabela
   w `README.md`, tabela w tym pliku, potem `python build.py`. Rozjazd = martwy wpis (gorszy niż brak).
-- **Parytet PL↔EN:** zmiana reguły w `00`–`14` (PL) wymaga aktualizacji odpowiednika w `en/` (ta sama
+- **Parytet PL↔EN:** zmiana reguły w `00`–`15` (PL) wymaga aktualizacji odpowiednika w `en/` (ta sama
   lista, te same nazwy plików). EN to **tłumaczenie**, nie osobna doktryna. `content.js` trzyma oba języki.
 - **Nazwy plików = stabilne kotwice** (`#NN-nazwa`, cele linków względnych), **wspólne dla PL i EN**.
   Nie lokalizujemy nazw plików — tylko treść w środku. Nie zmieniaj bez powodu.
@@ -112,10 +113,10 @@ Jeden plik, bez zależności build. Mechanika:
 
 ## Liczby
 
-- 15 rozdziałów (`00`–`14`) + `README.md`, w **dwóch językach** (PL root + EN `en/`).
-  Rdzeń: 9 plików (00–08). Pogłębienie: 6 (09–14).
+- 16 rozdziałów (`00`–`15`) + `README.md`, w **dwóch językach** (PL root + EN `en/`).
+  Rdzeń: 9 plików (00–08). Pogłębienie: 7 (09–15).
 - `index.html`: 1 plik; runtime z CDN (`marked` + Google Fonts). Build: `build.py` → `content.js`
-  (PL: 17 dok. ~91 tys. znaków; EN: 16 dok. ~90 tys. znaków — rozdziały + `intro` + README; struktura `{lang:{slug:md}}`).
+  (PL: 18 dok. ~97 tys. znaków; EN: 17 dok. ~96 tys. znaków — rozdziały + `intro` + README; struktura `{lang:{slug:md}}`).
 - **Dokumenty specjalne (poza numerowaną listą):** `intro.md` (manifest, route `#intro`) i widok
   briefu (`#brief`) — routowane osobno, nie ma ich w tablicy `CHAPTERS`.
 - Brak testów (repo dokumentacji). „Test" = podgląd przez serwer **i** z dwukliku (`file://`) + klik po rozdziałach.

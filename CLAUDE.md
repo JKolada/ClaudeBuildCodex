@@ -107,7 +107,7 @@ python build.py                 # regeneruje content.js z plików .md
 
 ## Stan bieżący (2026-06-18)
 
-- **15 rozdziałów** (`00`–`14`) + `README.md`. Rdzeń: 00–08; pogłębienie: 09–14.
+- **16 rozdziałów** (`00`–`15`) + `README.md`. Rdzeń: 00–08; pogłębienie: 09–15.
 - **Dwa języki:** PL kanonicznie w rootcie, **EN w `en/`** (te same nazwy plików). `content.js`
   trzyma oba: `{lang:{slug:md}}`.
 - `index.html` — SPA-czytnik: strona główna (dekalog + karty) i widok rozdziału (render `.md`,

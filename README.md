@@ -48,6 +48,7 @@ dla agenta, testowalna, bezpieczna w zmianie i godna zaufania.
 | 12 | [Elastyczność i skalowalność](12-elastycznosc-i-skalowalnosc.md) | Rozdziel warstwy, feature flags, scale-to-zero vs always-on, nie over-engineeruj |
 | 13 | [Wydajność: frontend i SQL](13-wydajnosc-frontend-i-sql.md) | Mierz najpierw, indeksy + partial index, brak N+1, streaming czatu, CWV |
 | 14 | [Odporność operacyjna](14-odpornosc-operacyjna.md) | Crash-proof runtime, wznawialne joby, zawodne API (backoff/rotacja), limity providera, kwoty kosztów |
+| 15 | [Scraping, AI-API i chatboty](15-scraping-ai-i-chatboty.md) | Skuteczny scraping, AI do konkretnych zadań (kontrakt + cache), konfigurowalne i ugruntowane asystenty |
 
 ## Filozofia w jednym zdaniu
 
