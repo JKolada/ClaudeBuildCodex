@@ -116,7 +116,7 @@ python test.py                  # smoke: parytet PL/EN, martwe linki, świeżoś
 
 ## Stan bieżący (2026-06-18)
 
-- **16 rozdziałów** (`00`–`15`) + `README.md`. Rdzeń: 00–08; pogłębienie: 09–15.
+- **17 rozdziałów** (`00`–`16`) + `README.md`. Rdzeń: 00–08; pogłębienie: 09–16.
 - **Dwa języki:** **EN kanonicznie w rootcie (baza)**, PL w `pl/` (te same nazwy plików). `content.js`
   trzyma oba: `{lang:{slug:md}}`.
 - `index.html` — SPA-czytnik: strona główna (dekalog + karty) i widok rozdziału (render `.md`,

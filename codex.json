@@ -5,7 +5,7 @@
   "version": "1.0.0",
   "released": "2026-06-18",
   "url": "https://codex.jakub.solutions",
-  "chapters": 16,
+  "chapters": 17,
   "languages": ["en", "pl"],
   "default_language": "en",
   "lang_paths": { "en": ".", "pl": "pl" },

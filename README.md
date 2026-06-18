@@ -49,6 +49,7 @@ under [`pl/`](pl/00-commandments.md) (same chapters, same filenames). The in-bro
 | 13 | [Performance: frontend and SQL](13-performance-frontend-and-sql.md) | Measure first, indexes + partial index, no N+1, chat streaming, CWV |
 | 14 | [Operational resilience](14-operational-resilience.md) | Crash-proof runtime, resumable jobs, unreliable APIs (backoff/rotation), provider limits, cost quotas |
 | 15 | [Scraping, AI APIs, and chatbots](15-scraping-ai-and-chatbots.md) | Effective scraping, AI for specific tasks (contract + cache), configurable & grounded assistants |
+| 16 | [Driving Claude](16-driving-claude.md) | Skills/slash-commands, picking the model, autopilot (preferred), background work, agentic workflows |
 
 ## The philosophy in one sentence
 

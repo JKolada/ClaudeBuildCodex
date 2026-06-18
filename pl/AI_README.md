@@ -68,8 +68,9 @@ Kierunek wersji EN i pakowania per język → [docs/plans/0001-i18n-and-packagin
 | `13-performance-frontend-and-sql.md` | Mierz najpierw, indeksy + partial index, brak N+1, streaming czatu, CWV. |
 | `14-operational-resilience.md` | Crash-proof runtime, wznawialne joby, zawodne API (backoff/rotacja), limity providera + poczta, kwoty kosztów. |
 | `15-scraping-ai-and-chatbots.md` | Skuteczny scraping (oficjalne źródło, walidacja kształtu, delta), AI-API do konkretnych zadań (kontrakt/cache/kwoty), konfigurowalne+ugruntowane chatboty. |
+| `16-driving-claude.md` | Prowadzenie Claude Code: skille/slash-komendy, dobór modelu, autopilot (preferowany), praca w tle, agentowe workflow/subagenci. |
 
-Rozdziały dzielą się na **rdzeń** (`00`–`08`) i **pogłębienie** (`09`–`15`). Każdy = jedno
+Rozdziały dzielą się na **rdzeń** (`00`–`08`) i **pogłębienie** (`09`–`16`). Każdy = jedno
 przykazanie/temat, zwarty, zakończony antywzorcami.
 
 ## Indeks tematów → plik (grep-friendly)
@@ -95,6 +96,7 @@ przykazanie/temat, zwarty, zakończony antywzorcami.
 - **`13-performance-frontend-and-sql.md`** — wydajność, performance, mierz najpierw, measure first, Lighthouse, Core Web Vitals, CWV, LCP, CLS, INP, indeks, index, partial index, EXPLAIN QUERY PLAN, N+1, SELECT *, WAL, WebP, cache busting, lazy load, streaming, SSE, pagination, paginacja.
 - **`14-operational-resilience.md`** — odporność, resilience, runtime, crash, unhandledRejection, uncaughtException, restart loop, retry, backoff, timeout, 429, rate limit, rotacja, rotation, User-Agent, resumable, wznawialne, checkpoint, scraper, długie joby, long jobs, SMTP, 587, STARTTLS, deliverability, SPF, DKIM, email, poczta, kwota, quota, koszt, cost, abuse, sesje, sessions, MemoryStore.
 - **`15-scraping-ai-and-chatbots.md`** — scraping, scraper, crawler, robots.txt, selektor, selector, parsing, BeautifulSoup, requests, fuzzy match, rapidfuzz, dedup, delta, incremental, AI API, LLM, model, JSON schema, tool use, kontrakt wyjścia, output contract, cache, kwota, quota, chatbot, asystent, assistant, system prompt, grounding, RAG, prompt injection, halucynacja, hallucination, eval, golden set, disclaimer.
+- **`16-driving-claude.md`** — Claude Code, skill, skille, slash-command, slash, /run, /run-tests, hook, model, modele, przełączanie modeli, model switch, autopilot, auto-accept, autonomiczny, autonomous, tło, background, run_in_background, długie zadania, long jobs, agentic, agentowe, subagent, subagenci, workflow, fan-out, równolegle, parallel, orkiestracja, orchestration, bariery, guardrails.
 
 ## Architektura `index.html` (kontrakt)
 
@@ -144,10 +146,10 @@ Jeden plik, bez zależności build. Mechanika:
 
 ## Liczby
 
-- 16 rozdziałów (`00`–`15`) + `README.md`, w **dwóch językach** (EN root = baza + PL `pl/`).
+- 17 rozdziałów (`00`–`16`) + `README.md`, w **dwóch językach** (EN root = baza + PL `pl/`).
   Rdzeń: 9 plików (00–08). Pogłębienie: 7 (09–15).
 - `index.html`: 1 plik; runtime z CDN (`marked` + Google Fonts). Build: `build.py` → `content.js`
-  (EN: 18 dok. ~102 tys. znaków; PL: 17 dok. ~94 tys. znaków — rozdziały + `intro` + README; struktura `{lang:{slug:md}}`).
+  (EN: 19 dok. ~110 tys. znaków; PL: 18 dok. ~102 tys. znaków — rozdziały + `intro` + README; struktura `{lang:{slug:md}}`).
 - **Dokumenty specjalne (poza numerowaną listą):** `intro.md` (manifest, route `#intro`) i widok
   briefu (`#brief`) — routowane osobno, nie ma ich w tablicy `CHAPTERS`.
 - **Smoke test:** `python test.py` (parytet PL↔EN, martwe linki, świeżość `content.js`, spójność
