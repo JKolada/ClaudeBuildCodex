@@ -1,11 +1,11 @@
-# CLAUDE.md — Rzemiosło (The Build Codex)
+# CLAUDE.md — Claude Build Codex
 
 > Konstytucja tego repozytorium. Instrukcje tutaj **mają pierwszeństwo** przed domyślnym
 > zachowaniem agenta. Czytane co sesję — utrzymuj je aktualne (Przykazanie I).
 
 ## Czym jest ten projekt
 
-**Rzemiosło — The Build Codex** to **doktryna budowania i prowadzenia aplikacji end-to-end
+**Claude Build Codex** (sygnatura wewnętrzna: *Rzemiosło*) to **doktryna budowania i prowadzenia aplikacji end-to-end
 z Claude**: zwarty zestaw konkretnych **reguł, przykazań i antywzorców**. Nie podręcznik
 frameworka — *doktryna współpracy* człowiek + agent przez całe życie projektu (od pierwszego
 commita po prod z żywymi użytkownikami).

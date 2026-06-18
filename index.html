@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Rzemiosło — The Build Codex · jakub.solutions</title>
-<meta name="description" content="Rzemiosło — The Build Codex. Doktryna budowania i prowadzenia aplikacji end-to-end z Claude. Przykazania, reguły i antywzorce. Warsztat jakub.solutions.">
+<title>Claude Build Codex · jakub.solutions</title>
+<meta name="description" content="Claude Build Codex. Doktryna budowania i prowadzenia aplikacji end-to-end z Claude. Przykazania, reguły i antywzorce. Warsztat jakub.solutions.">
 <meta name="theme-color" content="#0e0e18" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#f3f2ee" media="(prefers-color-scheme: light)">
 <script>
@@ -213,9 +213,9 @@
 
 <div class="topbar">
   <div class="wrap">
-    <a class="brand" href="#" aria-label="Rzemiosło — strona główna">
+    <a class="brand" href="#" aria-label="Claude Build Codex — strona główna">
       <span class="dot"></span>
-      <span>Rzemiosło <span class="en">· The Build Codex</span></span>
+      <span>Claude <span class="en">Build Codex</span></span>
     </a>
     <span class="spacer"></span>
     <nav>
@@ -257,7 +257,7 @@
   <header class="hero">
     <div class="barline"></div>
     <div class="kicker">Doktryna budowania z Claude</div>
-    <h1>Rzemiosło <span class="en">· The Build Codex</span></h1>
+    <h1>Claude <span class="en">Build Codex</span></h1>
     <p class="tagline">Zwarta doktryna budowania i prowadzenia aplikacji <b>end-to-end</b> z Claude —
     zestaw konkretnych <b>reguł, przykazań i antywzorców</b>. Pomyślana jak <code>/docs/rules/</code>
     dołączane do każdego nowego projektu.</p>
@@ -309,7 +309,7 @@
   </div>
 
   <footer>
-    <span class="pill">Rzemiosło</span><br/><br/>
+    <span class="pill">Claude Build Codex</span><br/><br/>
     Wersja żywa — aktualizuj po każdym projekcie, który czegoś nauczył.<br/>
     Doktryna, która się nie zmienia, jest martwa. · Warsztat <a href="https://jakub.solutions">jakub.solutions</a> · Start: <a href="#07-nowy-projekt-checklist">Dzień 0</a>
   </footer>
@@ -430,14 +430,14 @@
 
   function showHome(){
     document.body.classList.remove("reading");
-    document.title = "Rzemiosło — The Build Codex · jakub.solutions";
+    document.title = "Claude Build Codex · jakub.solutions";
     window.scrollTo(0,0);
   }
 
   function showChapter(c){
     document.body.classList.add("reading");
     sel.value = slug(c.file);
-    document.title = c.no + " — " + c.title + " · Rzemiosło";
+    document.title = c.no + " — " + c.title + " · Claude Build Codex";
     prevNext(c);
 
     if(cache[c.file]){ contentEl.innerHTML = cache[c.file]; rewriteLinks(contentEl); window.scrollTo(0,0); return; }

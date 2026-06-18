@@ -1,4 +1,4 @@
-# Rzemiosło — The Build Codex
+# Claude Build Codex
 
 > Przykazania budowania i prowadzenia aplikacji **end-to-end** z Claude.
 > Destylat doświadczeń z realnych projektów (m.in. WhiskyPolska), pisany pod **każdy kolejny projekt z Claude**.

@@ -1,4 +1,4 @@
-# AI_README — katalog Rzemiosło
+# AI_README — katalog Claude Build Codex
 
 > Mapa katalogu dla następnej sesji / innego agenta. Czytaj **przed** dotknięciem plików tutaj.
 > Konstytucja repo: [CLAUDE.md](CLAUDE.md). Test jakości tego pliku: czy po przeczytaniu możesz
@@ -6,7 +6,7 @@
 
 ## Co to za katalog
 
-Repozytorium **dokumentacji** (nie aplikacja): doktryna „Rzemiosło — The Build Codex".
+Repozytorium **dokumentacji** (nie aplikacja): doktryna „Claude Build Codex".
 Treść to ręcznie pisany markdown; `index.html` jest jej przeglądarką (statyczna SPA, bez build-stepu).
 Cel: zestaw reguł reużywalny jako `/docs/rules/` w nowych projektach **oraz** materiał publiczny
 dla osób zaczynających z Claude. Szczegóły i polityki → [CLAUDE.md](CLAUDE.md).
