@@ -80,8 +80,10 @@ not as prose:
 
 ## The `/docs` structure and folders
 
-Documentation "heavier than a directory map" lives in **`/docs`** — one place for stable
-reference and plans, so the `AI_README`s and `CLAUDE.md` don't balloon:
+Documentation "heavier than a directory map" lives in **`/docs`** — one place for current-state
+reference and live plans, so the `AI_README`s and `CLAUDE.md` don't balloon. **`docs/` describes the system
+as it is *now* (the latest version) — not a history.** History lives in git and the `CHANGELOG`; when
+something changes you **update** the doc, you don't keep an old version beside the new one.
 
 ```
 docs/
@@ -93,8 +95,11 @@ docs/
     NNNN-tytul.md
 ```
 
-- **`/docs/plans/`** — a living backlog of decisions and designs. A plan is a document, not a thought
-  in your head: problem → options → choice → "why." A finished plan stays as a record of the decision.
+- **`/docs/plans/` is a *living* backlog — kept current, no finished tasks lingering.** A plan is a
+  document, not a thought in your head: problem → options → choice → "why." **When a plan lands, fold its
+  decision into the doc / `CLAUDE.md` / chapter it governs, then close (remove) the plan** — git keeps the
+  record. `plans/` holds only open, active directions; a folder full of "done" plans is just noise — git
+  already holds the history, so there's no reason to park a finished plan (a zombie) here.
 - **A folder without an `AI_README.md` is a mystery folder.** When you create a new significant directory, create it
   **together** with an `AI_README.md` (even a skeleton). Same when refactoring: you break a module into subdirectories →
   each new directory gets its map in the same step, not "later."

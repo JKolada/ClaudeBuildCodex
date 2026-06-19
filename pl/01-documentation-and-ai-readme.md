@@ -81,8 +81,10 @@ nie jako prozę:
 
 ## Struktura `/docs` i foldery
 
-Dokumentacja „cięższa niż mapa katalogu" mieszka w **`/docs`** — jedno miejsce na stabilną
-referencję i plany, żeby nie puchły `AI_README` ani `CLAUDE.md`:
+Dokumentacja „cięższa niż mapa katalogu" mieszka w **`/docs`** — jedno miejsce na referencję
+bieżącego stanu i żywe plany, żeby nie puchły `AI_README` ani `CLAUDE.md`. **`docs/` opisuje system
+*taki, jaki jest teraz* (najnowsza wersja) — nie historię.** Historię trzyma git i `CHANGELOG`; gdy coś
+się zmienia, **aktualizujesz** dokument, nie zostawiasz starej wersji obok nowej.
 
 ```
 docs/
@@ -94,8 +96,11 @@ docs/
     NNNN-tytul.md
 ```
 
-- **`/docs/plans/`** — żywy backlog decyzji i projektów. Plan to dokument, nie myśl w głowie:
-  problem → opcje → wybór → „dlaczego". Zrealizowany plan zostaje jako zapis decyzji.
+- **`/docs/plans/` to *żywy* backlog — utrzymywany na bieżąco, bez zalegających skończonych zadań.** Plan
+  to dokument, nie myśl w głowie: problem → opcje → wybór → „dlaczego". **Gdy plan wchodzi, wtop jego
+  decyzję w dokument / `CLAUDE.md` / rozdział, którego dotyczy, a plan zamknij (usuń)** — historię trzyma
+  git. `plans/` trzyma tylko otwarte, aktywne kierunki; folder pełen „zrobionych" planów to szum — historię
+  i tak masz w git, więc nie ma po co trzymać skończonego planu (zombie) tutaj.
 - **Folder bez `AI_README.md` to folder-zagadka.** Tworząc nowy istotny katalog — twórz go **razem**
   z `AI_README.md` (choćby szkielet). To samo przy refaktorze: rozbijasz moduł na podkatalogi →
   każdy nowy katalog dostaje mapę w tym samym kroku, nie „później".
