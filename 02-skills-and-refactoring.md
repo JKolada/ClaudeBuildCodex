@@ -6,7 +6,8 @@
 
 A skill is a repeatable procedure wrapped in a single invocation (`/run-projekt`, `/run-tests`,
 `/update-ai-readme`, `/add-migration`). In the reference project, skills proved to be a lever, because they
-**codify "how we do it"** — the agent doesn't guess, it follows a proven recipe.
+**codify "how we do it"** — the agent doesn't guess, it follows a proven recipe. Skills are part of the
+broader toolkit for **operating Claude** (models, autopilot, background, agentic work) → [16](16-driving-claude.md).
 
 ### Build a skill when:
 - you repeat the procedure **≥3 times** (start server + 22 smoke-checks, run tests, add a scraper);

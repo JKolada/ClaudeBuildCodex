@@ -30,7 +30,7 @@ Everything here is **mature, well-documented, and easy to test and host on a sin
 
 | Layer | Tools |
 |-------|-------|
-| **Primary tool / process** | **Anthropic Claude — Claude Desktop / Claude Code** (the agent you build with) · **Git** (history, → [05](05-git-and-deployments.md)) · **GitHub** (remote repo, PR) · **GitHub Issues** (tasks, → [07](07-new-project-day-0.md)) |
+| **Primary tool / process** | **Anthropic Claude — Claude Desktop / Claude Code** (the agent you build with; operate it well → [16](16-driving-claude.md)) · **Git** (history, → [05](05-git-and-deployments.md)) · **GitHub** (remote repo, PR) · **GitHub Issues** (tasks, → [07](07-new-project-day-0.md)) |
 | **Format / content** | HTML5 (server-rendered), Markdown (docs), **JSON** (API, config), XML when an integration forces it |
 | **Data / queries** | **SQL** — SQLite (WAL) to start → PostgreSQL at scale; forward-only migrations |
 | **Backend / scripts** | **Python** (data, scrapers, migrations on stdlib) · **Node.js + Express** (web/API) · EJS (server-side templates) |

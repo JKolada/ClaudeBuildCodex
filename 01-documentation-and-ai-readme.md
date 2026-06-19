@@ -127,9 +127,10 @@ docs/
 
 ## The documentation reader and regeneration
 
-`.md` is the source of truth, but a human reads more comfortably in a browser. Add a **simple reader
-`documentation.html` in the repo root** — it renders the `.md` (e.g. `marked`), versioned in git like
-every file. One file, no bundler; works from a double-click and from a server (this codex itself works that way).
+`.md` is the source of truth, but a human reads more comfortably in a browser. Add a **single-file reader
+in the repo root** (e.g. `index.html` or `documentation.html`) — it renders the `.md` (e.g. `marked`),
+versioned in git like every file. One file, no bundler; works from a double-click and from a server
+(this codex itself ships exactly that, as `index.html`).
 
 - **The generated artifact (snapshot/HTML) is a derivative, not the source.** Commit it, but **never
   edit it by hand** — the build will overwrite it.

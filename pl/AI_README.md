@@ -41,8 +41,8 @@ Kierunek wersji EN i pakowania per język → [docs/plans/0001-i18n-and-packagin
 |------|----------|
 | `index.html` | **Minimalny czytnik lokalny/dev** (podgląd treści dla autora/agenta) — NIE publiczna witryna. Strona główna (dekalog + karty) + widok rozdziału + brief + przełącznik języka EN/PL (domyślnie EN). |
 | `intro.md` | **Manifest** — „Czym jest The Craft" + artykuł „dlaczego warto". Dokument specjalny (poza numerowaną listą), routowany jako `#intro`; jest też `pl/intro.md`. |
-| `00`–`15` (root) | **Treść EN — kanoniczna, baza, źródło prawdy.** Slugi/numery = stabilne kotwice, wspólne dla wszystkich języków. |
-| `pl/` | **Treść PL** — równoległy zestaw `00-*.md`…`15-*.md` (te same nazwy plików, treść po polsku). Tłumaczenie EN. |
+| `00`–`16` (root) | **Treść EN — kanoniczna, baza, źródło prawdy.** Slugi/numery = stabilne kotwice, wspólne dla wszystkich języków. |
+| `pl/` | **Treść PL** — równoległy zestaw `00-*.md`…`16-*.md` (te same nazwy plików, treść po polsku). Tłumaczenie EN. |
 | `docs/` | Plany i decyzje meta repo (nie treść doktryny): `docs/AI_README.md`, `docs/plans/`. |
 | `content.js` | **Generowany** snapshot `.md` osadzony w JS — pozwala renderować treść po `file://`. Nie edytuj ręcznie. |
 | `build.py` | Skrypt buildu: łączy pliki `.md` → `content.js`. Uruchom po edycji treści (`python build.py`). |
@@ -134,7 +134,7 @@ Jeden plik, bez zależności build. Mechanika:
 - **`index.html` NIE zawiera treści rozdziałów** — czyta `.md`/`content.js`. Nie wklejaj treści do HTML.
 - **Dodajesz/zmieniasz rozdział → zsynchronizuj 3 miejsca + build:** `CHAPTERS` (index.html), tabela
   w `README.md`, tabela w tym pliku, potem `python build.py`. Rozjazd = martwy wpis (gorszy niż brak).
-- **Parytet EN↔PL:** zmiana reguły w `00`–`15` (EN, kanon) wymaga aktualizacji odpowiednika w `pl/` (ta sama
+- **Parytet EN↔PL:** zmiana reguły w `00`–`16` (EN, kanon) wymaga aktualizacji odpowiednika w `pl/` (ta sama
   lista, te same nazwy plików). PL to **tłumaczenie**, nie osobna doktryna. `content.js` trzyma oba języki.
 - **Nazwy plików = stabilne kotwice** (`#NN-nazwa`, cele linków względnych), **wspólne dla EN i PL**.
   Nie lokalizujemy nazw plików — tylko treść w środku. Nie zmieniaj bez powodu.
@@ -148,7 +148,7 @@ Jeden plik, bez zależności build. Mechanika:
 ## Liczby
 
 - 17 rozdziałów (`00`–`16`) + `README.md`, w **dwóch językach** (EN root = baza + PL `pl/`).
-  Rdzeń: 9 plików (00–08). Pogłębienie: 7 (09–15).
+  Rdzeń: 9 plików (00–08). Pogłębienie: 8 (09–16).
 - `index.html`: 1 plik; runtime z CDN (`marked` + Google Fonts). Build: `build.py` → `content.js`
   (EN: 19 dok. ~110 tys. znaków; PL: 18 dok. ~102 tys. znaków — rozdziały + `intro` + README; struktura `{lang:{slug:md}}`).
 - **Dokumenty specjalne (poza numerowaną listą):** `intro.md` (manifest, route `#intro`) i widok

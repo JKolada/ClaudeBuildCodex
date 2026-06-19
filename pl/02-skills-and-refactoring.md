@@ -6,7 +6,8 @@
 
 Skill to powtarzalna procedura zamknięta w jednym wywołaniu (`/run-projekt`, `/run-tests`,
 `/update-ai-readme`, `/add-migration`). W projekcie referencyjnym skille okazały się dźwignią, bo
-**kodyfikują „jak my to robimy"** — agent nie zgaduje, tylko wykonuje sprawdzony przepis.
+**kodyfikują „jak my to robimy"** — agent nie zgaduje, tylko wykonuje sprawdzony przepis. Skille to część
+szerszego zestawu **prowadzenia Claude** (modele, autopilot, tło, agentowe workflow) → [16](16-driving-claude.md).
 
 ### Zbuduj skill, gdy:
 - procedurę powtarzasz **≥3 razy** (uruchom serwer + 22 smoke-checki, odpal testy, dodaj scraper);

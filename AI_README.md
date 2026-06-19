@@ -41,8 +41,8 @@ Direction for the EN version and per-language packaging → [docs/plans/0001-i18
 |------|----------|
 | `index.html` | **Minimal local/dev reader** (content preview for the author/agent) — NOT a public site. Home page (decalogue + cards) + chapter view + brief + EN/PL language switcher (EN by default). |
 | `intro.md` | **Manifesto** — "What The Craft is" + a "why it's worth it" article. A special document (outside the numbered list), routed as `#intro`; there's also `pl/intro.md`. |
-| `00`–`15` (root) | **EN content — canonical, base, source of truth.** Slugs/numbers = stable anchors, shared across all languages. |
-| `pl/` | **PL content** — a parallel set of `00-*.md`…`15-*.md` (the same file names, content in Polish). Translation of the EN. |
+| `00`–`16` (root) | **EN content — canonical, base, source of truth.** Slugs/numbers = stable anchors, shared across all languages. |
+| `pl/` | **PL content** — a parallel set of `00-*.md`…`16-*.md` (the same file names, content in Polish). Translation of the EN. |
 | `docs/` | Plans and meta decisions for the repo (not doctrine content): `docs/AI_README.md`, `docs/plans/`. |
 | `content.js` | **Generated** snapshot of the `.md` embedded in JS — lets content render over `file://`. Do not edit by hand. |
 | `build.py` | Build script: concatenates `.md` files → `content.js`. Run after editing content (`python build.py`). |
@@ -135,7 +135,7 @@ A single file, no build dependencies. Mechanics:
 - **`index.html` does NOT contain chapter content** — it reads `.md`/`content.js`. Don't paste content into the HTML.
 - **Add/change a chapter → sync 3 places + build:** `CHAPTERS` (index.html), the table
   in `README.md`, the table in this file, then `python build.py`. A mismatch = a dead entry (worse than none).
-- **EN↔PL parity:** changing a rule in `00`–`15` (EN, canon) requires updating the counterpart in `pl/` (the same
+- **EN↔PL parity:** changing a rule in `00`–`16` (EN, canon) requires updating the counterpart in `pl/` (the same
   list, the same file names). PL is a **translation**, not a separate doctrine. `content.js` holds both languages.
 - **File names = stable anchors** (`#NN-name`, targets of relative links), **shared between EN and PL**.
   We don't localize file names — only the content inside. Don't change them without reason.
@@ -149,7 +149,7 @@ A single file, no build dependencies. Mechanics:
 ## Numbers
 
 - 17 chapters (`00`–`16`) + `README.md`, in **two languages** (EN root = base + PL `pl/`).
-  Core: 9 files (00–08). Deep dive: 7 (09–15).
+  Core: 9 files (00–08). Deep dive: 8 (09–16).
 - `index.html`: 1 file; runtime from a CDN (`marked` + Google Fonts). Build: `build.py` → `content.js`
   (EN: 19 docs ~110k chars; PL: 18 docs ~102k chars — chapters + `intro` + README; structure `{lang:{slug:md}}`).
 - **Special documents (outside the numbered list):** `intro.md` (manifesto, route `#intro`) and the

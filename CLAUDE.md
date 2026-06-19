@@ -114,7 +114,7 @@ python test.py                  # smoke: parytet PL/EN, martwe linki, świeżoś
   publikacji, commit + **annotated tag** `vX.Y.Z` (Przykazanie VIII). `version` musi zgadzać się z
   najwyższym wpisem changeloga. Witryna `ClaudeBuildCodexWeb` (Rzemiosło Web) konsumuje to przy buildzie i stempluje.
 
-## Stan bieżący (2026-06-18)
+## Stan bieżący (2026-06-19)
 
 - **17 rozdziałów** (`00`–`16`) + `README.md`. Rdzeń: 00–08; pogłębienie: 09–16.
 - **Dwa języki:** **EN kanonicznie w rootcie (baza)**, PL w `pl/` (te same nazwy plików). `content.js`

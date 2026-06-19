@@ -128,9 +128,10 @@ docs/
 
 ## Czytnik dokumentacji i regeneracja
 
-`.md` jest źródłem prawdy, ale człowiek czyta wygodniej w przeglądarce. Dodaj **prosty czytnik
-`documentation.html` w rootcie repo** — renderuje `.md` (np. `marked`), wersjonowany w git jak
-każdy plik. Jeden plik, bez bundlera; działa z dwukliku i z serwera (ten codex sam tak działa).
+`.md` jest źródłem prawdy, ale człowiek czyta wygodniej w przeglądarce. Dodaj **jednoplikowy czytnik
+w rootcie repo** (np. `index.html` albo `documentation.html`) — renderuje `.md` (np. `marked`),
+wersjonowany w git jak każdy plik. Jeden plik, bez bundlera; działa z dwukliku i z serwera (ten codex
+sam to dostarcza jako `index.html`).
 
 - **Wygenerowany artefakt (snapshot/HTML) jest pochodną, nie źródłem.** Commituj go, ale **nigdy
   nie edytuj ręcznie** — nadpisze go build.

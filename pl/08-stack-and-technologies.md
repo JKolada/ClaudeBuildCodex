@@ -30,7 +30,7 @@ Wszystko **dojrzałe, dobrze udokumentowane, łatwe do testowania i hostowania n
 
 | Warstwa | Narzędzia |
 |---------|-----------|
-| **Narzędzie główne / proces** | **Anthropic Claude — Claude Desktop / Claude Code** (agent, którym budujesz) · **Git** (historia, → [05](05-git-and-deployments.md)) · **GitHub** (zdalne repo, PR) · **GitHub Issues** (taski, → [07](07-new-project-day-0.md)) |
+| **Narzędzie główne / proces** | **Anthropic Claude — Claude Desktop / Claude Code** (agent, którym budujesz; prowadź go dobrze → [16](16-driving-claude.md)) · **Git** (historia, → [05](05-git-and-deployments.md)) · **GitHub** (zdalne repo, PR) · **GitHub Issues** (taski, → [07](07-new-project-day-0.md)) |
 | **Format / treść** | HTML5 (server-rendered), Markdown (docs), **JSON** (API, config), XML gdy wymusza integracja |
 | **Dane / zapytania** | **SQL** — SQLite (WAL) na start → PostgreSQL przy skali; migracje forward-only |
 | **Backend / skrypty** | **Python** (dane, scrapery, migracje na stdlib) · **Node.js + Express** (web/API) · EJS (szablony serwerowe) |
