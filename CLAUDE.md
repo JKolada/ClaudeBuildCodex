@@ -87,7 +87,7 @@ python test.py                  # smoke: parytet PL/EN, martwe linki, świeżoś
 - **Po edycji `.md` uruchom `python build.py`** — regeneruje `content.js` (snapshot dla `file://`).
   `content.js` jest **generowany** (commituj go, ale nie edytuj ręcznie — nadpisze go build).
 - **Przed commitem uruchom `python test.py`** — smoke test (parytet PL↔EN, martwe linki, świeżość
-  `content.js`, spójność `CHAPTERS`/tabel/`codex.json`, **statyczna nawigacja `index.html`**: linki
+  `content.js`, spójność `CHAPTERS`/tabel/`craft.json`, **statyczna nawigacja `index.html`**: linki
   `href="#..."`, klucze `data-i18n`↔`UI`, `data-bf-label`↔`BRIEF_FIELDS`). Zielone = struktura i ścieżki
   spójne; nie łapie **zachowania** runtime JS (od tego podgląd w przeglądarce, Przykazanie III).
 - **Lista rozdziałów żyje w jednym miejscu** — tablica `CHAPTERS` w `<script>` w `index.html`.
@@ -109,8 +109,8 @@ python test.py                  # smoke: parytet PL/EN, martwe linki, świeżoś
   Warunek: każdy commit **aktualizuje AI_README** zgodnie ze zmianą i najlepiej odnosi się do numeru
   taska. **Wyraźnej zgody wymagają tylko:** deploy na produkcję, swap bazy na produkcji oraz
   **push/publikacja** do zdalnego repo. To sedno Przykazania VI — nie dotyczy lokalnych commitów.
-- **Wersja Rzemiosła mieszka tutaj** (treść = to, co wersjonujemy): `codex.json` (`version` +
-  `released`) i `CHANGELOG.md`. Wydanie = podnieś `codex.json`, dopisz wpis w `CHANGELOG.md` z datą
+- **Wersja Rzemiosła mieszka tutaj** (treść = to, co wersjonujemy): `craft.json` (`version` +
+  `released`) i `CHANGELOG.md`. Wydanie = podnieś `craft.json`, dopisz wpis w `CHANGELOG.md` z datą
   publikacji, commit + **annotated tag** `vX.Y.Z` (Przykazanie VIII). `version` musi zgadzać się z
   najwyższym wpisem changeloga. Witryna `ClaudeBuildCodexWeb` (Rzemiosło Web) konsumuje to przy buildzie i stempluje.
 

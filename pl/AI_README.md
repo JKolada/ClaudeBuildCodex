@@ -21,11 +21,11 @@ dla osób zaczynających z Claude. Szczegóły i polityki → [CLAUDE.md](CLAUDE
 
 - **To repo (`ClaudeBuildCodex`, marka „Rzemiosło") = rdzeń kanoniczny.** Forma: **techniczna, zwarta, imperatywna;
   bazą jest angielski** (PL tłumaczenie w `pl/`) — źródło prawdy reguł, dołączane do projektów jako `/docs/rules/`. Optymalizowane pod
-  **agenta i osobę techniczną**: gęstość ponad przystępność. Tu wersjonujemy doktrynę (codex.json).
+  **agenta i osobę techniczną**: gęstość ponad przystępność. Tu wersjonujemy doktrynę (craft.json).
 - **Siostrzane `ClaudeBuildCodexWeb` (marka „Rzemiosło Web") = projekt prezentacyjny.** Bierze tę samą doktrynę i **rozwija
   poszczególne tematy** w przyjaźniejszej, obszerniejszej formie. **To Web — nie to repo — odpowiada za:**
   publiczną stronę, **edycje** (techniczna / BIZ-TECH / biznesowa), **wersje językowe** i **budowanie paczek
-  `docs/rules/` w konkretnym języku**. Konsumuje treść tego repo + `codex.json` przy buildzie.
+  `docs/rules/` w konkretnym języku**. Konsumuje treść tego repo + `craft.json` przy buildzie.
 
 > **To repo jest TYLKO zestawem reguł.** Nie jest produktem prezentacyjnym. `index.html` tutaj to
 > **minimalny czytnik lokalny/dev** (podgląd treści dla autora i agenta), **nie** publiczna witryna —
@@ -46,11 +46,11 @@ Kierunek wersji EN i pakowania per język → [docs/plans/0001-i18n-and-packagin
 | `docs/` | Plany i decyzje meta repo (nie treść doktryny): `docs/AI_README.md`, `docs/plans/`. |
 | `content.js` | **Generowany** snapshot `.md` osadzony w JS — pozwala renderować treść po `file://`. Nie edytuj ręcznie. |
 | `build.py` | Skrypt buildu: łączy pliki `.md` → `content.js`. Uruchom po edycji treści (`python build.py`). |
-| `test.py` | **Smoke test** (czysty Python): parytet PL↔EN, martwe linki, świeżość `content.js`, spójność `CHAPTERS`/tabel/`codex.json`, oraz **statyczna nawigacja `index.html`** (linki `href="#…"`, `data-i18n`↔`UI`, `data-bf-label`↔`BRIEF_FIELDS`). `python test.py`. |
+| `test.py` | **Smoke test** (czysty Python): parytet PL↔EN, martwe linki, świeżość `content.js`, spójność `CHAPTERS`/tabel/`craft.json`, oraz **statyczna nawigacja `index.html`** (linki `href="#…"`, `data-i18n`↔`UI`, `data-bf-label`↔`BRIEF_FIELDS`). `python test.py`. |
 | `CLAUDE.md` | Konstytucja repo: czym jest, stack, jak uruchomić, polityki, stan bieżący. |
 | `AI_README.md` | Ten plik — mapa katalogu. |
 | `README.md` | Wejście dla człowieka: spis rozdziałów + „jak czytać". |
-| `codex.json` | **Wersja wydania** (`version` + `released`) + nazwy marki (`name`/`name_short`/`name_en`). Źródło stempla dla witryny Rzemiosło Web. |
+| `craft.json` | **Wersja wydania** (`version` + `released`) + nazwy marki (`name`/`name_short`/`name_en`). Źródło stempla dla witryny Rzemiosło Web. |
 | `CHANGELOG.md` | Historia wydań Rzemiosła (semver, data = dzień publikacji). |
 | `00-commandments.md` | **Dekalog** — 10 przykazań, 7 grzechów, złota zasada altytudy. Rdzeń. |
 | `01-documentation-and-ai-readme.md` | Trzy warstwy docs: CLAUDE.md / AI_README / docs. Kiedy aktualizować. |
@@ -154,6 +154,6 @@ Jeden plik, bez zależności build. Mechanika:
 - **Dokumenty specjalne (poza numerowaną listą):** `intro.md` (manifest, route `#intro`) i widok
   briefu (`#brief`) — routowane osobno, nie ma ich w tablicy `CHAPTERS`.
 - **Smoke test:** `python test.py` (parytet PL↔EN, martwe linki, świeżość `content.js`, spójność
-  `CHAPTERS`/tabel/`codex.json`, statyczna nawigacja `index.html`: linki `href="#…"` + `data-i18n`↔`UI`
+  `CHAPTERS`/tabel/`craft.json`, statyczna nawigacja `index.html`: linki `href="#…"` + `data-i18n`↔`UI`
   + `data-bf-label`↔`BRIEF_FIELDS`). Plus „test ręczny" = podgląd przez serwer **i** z dwukliku (`file://`)
   + klik po rozdziałach i przełącznik EN/PL (zachowanie runtime JS, którego smoke nie łapie).

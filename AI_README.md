@@ -21,11 +21,11 @@ people starting out with Claude. Details and policies → [CLAUDE.md](CLAUDE.md)
 
 - **This repo (`ClaudeBuildCodex`, the "Rzemiosło" brand) = canonical core.** Form: **technical, terse, imperative;
   English is the base** (PL translation in `pl/`) — the source of truth for the rules, attached to projects as `/docs/rules/`. Optimized for
-  **the agent and the technical reader**: density over approachability. This is where we version the doctrine (codex.json).
+  **the agent and the technical reader**: density over approachability. This is where we version the doctrine (craft.json).
 - **The sibling `ClaudeBuildCodexWeb` (the "Rzemiosło Web" brand) = the presentation project.** It takes the same doctrine and **expands
   individual topics** into a friendlier, more extensive form. **Web — not this repo — is responsible for:**
   the public site, **editions** (technical / BIZ-TECH / business), **language versions**, and **building
-  `docs/rules/` packages in a specific language**. It consumes this repo's content + `codex.json` at build time.
+  `docs/rules/` packages in a specific language**. It consumes this repo's content + `craft.json` at build time.
 
 > **This repo is ONLY a rule set.** It is not a presentation product. The `index.html` here is a
 > **minimal local/dev reader** (content preview for the author and agent), **not** a public site —
@@ -46,11 +46,11 @@ Direction for the EN version and per-language packaging → [docs/plans/0001-i18
 | `docs/` | Plans and meta decisions for the repo (not doctrine content): `docs/AI_README.md`, `docs/plans/`. |
 | `content.js` | **Generated** snapshot of the `.md` embedded in JS — lets content render over `file://`. Do not edit by hand. |
 | `build.py` | Build script: concatenates `.md` files → `content.js`. Run after editing content (`python build.py`). |
-| `test.py` | **Smoke test** (pure Python): PL↔EN parity, dead links, `content.js` freshness, consistency of `CHAPTERS`/tables/`codex.json`, and **static `index.html` navigation** (`href="#…"` links, `data-i18n`↔`UI`, `data-bf-label`↔`BRIEF_FIELDS`). `python test.py`. |
+| `test.py` | **Smoke test** (pure Python): PL↔EN parity, dead links, `content.js` freshness, consistency of `CHAPTERS`/tables/`craft.json`, and **static `index.html` navigation** (`href="#…"` links, `data-i18n`↔`UI`, `data-bf-label`↔`BRIEF_FIELDS`). `python test.py`. |
 | `CLAUDE.md` | Repo constitution: what it is, the stack, how to run it, policies, current state. |
 | `AI_README.md` | This file — the directory map. |
 | `README.md` | Entry point for a human: chapter list + "how to read it". |
-| `codex.json` | **Release version** (`version` + `released`) + brand names (`name`/`name_short`/`name_en`). The source of the stamp for the Rzemiosło Web site. |
+| `craft.json` | **Release version** (`version` + `released`) + brand names (`name`/`name_short`/`name_en`). The source of the stamp for the Rzemiosło Web site. |
 | `CHANGELOG.md` | Rzemiosło release history (semver, date = publication day). |
 | `00-commandments.md` | **Decalogue** — 10 commandments, 7 sins, the golden rule of altitude. The core. |
 | `01-documentation-and-ai-readme.md` | Three layers of docs: CLAUDE.md / AI_README / docs. When to update them. |
@@ -155,6 +155,6 @@ A single file, no build dependencies. Mechanics:
 - **Special documents (outside the numbered list):** `intro.md` (manifesto, route `#intro`) and the
   brief view (`#brief`) — routed separately, not present in the `CHAPTERS` array.
 - **Smoke test:** `python test.py` (PL↔EN parity, dead links, `content.js` freshness, consistency of
-  `CHAPTERS`/tables/`codex.json`, static `index.html` navigation: `href="#…"` links + `data-i18n`↔`UI` +
+  `CHAPTERS`/tables/`craft.json`, static `index.html` navigation: `href="#…"` links + `data-i18n`↔`UI` +
   `data-bf-label`↔`BRIEF_FIELDS`). Plus a "manual test" = preview via a server **and** from a double-click
   (`file://`) + clicking through chapters and the EN/PL switcher (runtime JS behavior the smoke test doesn't catch).

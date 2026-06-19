@@ -2,7 +2,7 @@
 """Prosty smoke test repo (czysty Python, zero zależności).
 
 Łapie regresje strukturalne, o które prosi sama doktryna: parytet PL↔EN, martwe
-linki między rozdziałami, nieaktualny content.js, rozjazd CHAPTERS/tabel/codex.json.
+linki między rozdziałami, nieaktualny content.js, rozjazd CHAPTERS/tabel/craft.json.
 NIE testuje runtime JS (od tego jest podgląd w przeglądarce — Przykazanie III).
 
 Użycie:  python test.py      # exit 0 = zielone, exit 1 = lista problemów
@@ -69,7 +69,7 @@ def main():
     if expected != actual:
         err("content.js jest nieaktualny — uruchom: python build.py")
 
-    # 4) CHAPTERS (index.html) ↔ pliki ↔ codex.json.
+    # 4) CHAPTERS (index.html) ↔ pliki ↔ craft.json.
     html = (ROOT / "index.html").read_text(encoding="utf-8")
     chapters = re.findall(r'file:"(\d\d-[a-z0-9-]+\.md)"', html)
     for f in chapters:
@@ -80,9 +80,9 @@ def main():
     missing_in_chapters = sorted(set(base) - set(chapters))
     if missing_in_chapters:
         err(f"CHAPTERS: rozdziały na dysku nieobecne w index.html: {missing_in_chapters}")
-    codex = json.loads((ROOT / "codex.json").read_text(encoding="utf-8"))
+    codex = json.loads((ROOT / "craft.json").read_text(encoding="utf-8"))
     if codex.get("chapters") != len(chapters):
-        err(f"codex.json chapters={codex.get('chapters')} ≠ liczba rozdziałów ({len(chapters)})")
+        err(f"craft.json chapters={codex.get('chapters')} ≠ liczba rozdziałów ({len(chapters)})")
 
     # 5) Każdy rozdział wymieniony w README i AI_README (reguła „trzy miejsca w zgodzie").
     readme = (ROOT / "README.md").read_text(encoding="utf-8")

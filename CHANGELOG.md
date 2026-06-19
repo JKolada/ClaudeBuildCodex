@@ -4,7 +4,7 @@ Wszystkie istotne zmiany doktryny **Rzemiosło — The Craft (Kolada Build)**. W
 (MAJOR.MINOR.PATCH). **Data wpisu = dzień publikacji** — wtedy wersja została zdeployowana na
 [thecraft.jakub.solutions](https://thecraft.jakub.solutions) i gotowa do pobrania.
 
-Zasada: jedno źródło prawdy. `version` w [codex.json](codex.json) zawsze odpowiada najwyższemu
+Zasada: jedno źródło prawdy. `version` w [craft.json](craft.json) zawsze odpowiada najwyższemu
 wpisowi poniżej. Każde wydanie tagujemy w gicie (`vMAJOR.MINOR.PATCH`) — Przykazanie VIII.
 
 > **MAJOR** — przebudowa/usunięcie reguł lub rozdziału (zmiana niekompatybilna z dotychczasowym
