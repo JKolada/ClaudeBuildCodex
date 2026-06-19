@@ -33,6 +33,45 @@ kolumnie/fladze nieznanego pochodzenia, datowaniu regresji, przed każdym refakt
 - Wiadomości po angielsku, opisowe (co + dlaczego), `fixes #N`/`refs #N` do issue.
 - Linkuj PR/issue pełnym URL-em, nie „PR #123".
 
+## Praca zespołowa: issues i proste gałęzie
+
+> Solo na `main` z dyscypliną commitów wystarcza. **Od drugiej osoby** w projekcie potrzebujesz
+> dwóch rzeczy: **wspólnej listy zadań** (issues) i **lekkiego rozgałęziania** — żeby nie deptać
+> sobie po palcach i żeby „co kto robi" było widoczne.
+
+### Issues = jednostki pracy (jedno źródło „co i dlaczego")
+- **Jedno zadanie = jeden issue.** Tytuł = rezultat („Koszyk gubi pozycje po odświeżeniu"), treść =
+  kontekst, kryteria zaliczenia, linki. To tu mieszka **dlaczego** — nie w głowie i nie na czacie.
+- **Numer issue spina pracę:** gałąź, commity (`refs #N`), PR i dyskusję. `fixes #N` w PR **zamyka**
+  issue po merge'u (→ „Co kończy commit").
+- **Issue zanim kod** przy czymkolwiek nietrywialnym lub cudzym zgłoszeniu — żeby zakres i decyzja
+  były zapisane, zanim powstanie diff. Małe, konkretne issues > jeden wielki „epik na wszystko".
+- **Backlog to lista, nie pamięć.** Etykiety (`bug`/`feat`/`chore`, priorytet), zamykaj nieaktualne.
+  Issue martwy tygodniami = decyzja do podjęcia (robimy / odpuszczamy), nie zombie.
+
+### Proste gałęzie (małe zespoły, trunk-based)
+- **`main` jest zawsze wdrażalny.** W pracy wieloosobowej nie commituj wprost na `main` — to wspólny
+  stół, na którym stoi to, co idzie na prod.
+- **Krótka gałąź na zadanie:** `feat/NN-koszyk`, `fix/NN-logowanie` (NN = numer issue). Żyje
+  **godziny–dni, nie tygodnie** — im dłużej żyje, tym boleśniejszy merge.
+- **Mały PR > wielki PR.** Jeden temat, do przejrzenia w kwadrans. Wielkiego PR nikt nie czyta
+  uważnie — przechodzi „na zaufanie", czyli bez review.
+- **Merge i kasuj gałąź.** Po wejściu do `main`: usuń branch, ściągnij `main`, następne zacznij od
+  świeżego. Stare gałęzie to dług i ściema o stanie projektu.
+- **Synchronizuj się z `main` często** (merge/rebase w swoją gałąź) — konflikty małe i częste zamiast
+  jednego gigantycznego na końcu.
+
+> **Review to nie formalność — to druga para oczu przed prodem.** W zespole każdy PR ma recenzenta;
+> solo „recenzentem" jest świadomy drugi przegląd diffu (i Claude jako adwokat diabła). Zmiana wchodzi
+> na `main` przejrzana, nie „bo działa u mnie".
+
+### Anty-wzorce
+- 🚫 Commit wprost na `main`, gdy w projekcie jest ktoś jeszcze → cudza praca ląduje na pół-gotowym stanie.
+- 🚫 Długo żyjąca gałąź „mój wielki refaktor" → merge-piekło i tygodnie dryfu od `main`.
+- 🚫 Praca bez issue → zakres i „dlaczego" giną; po miesiącu nikt nie wie, czemu to powstało.
+- 🚫 `fixes #N` w commicie do gałęzi roboczej → issue zamyka się przedwcześnie (zamyka **PR/merge**, nie każdy commit).
+- 🚫 PR „na wszystko naraz" → review fikcyjne, regresje przechodzą niezauważone.
+
 ## Wdrożenia — POLITYKA NADRZĘDNA
 
 > ⛔ **Nigdy nie deployuj na prod automatycznie.** `git pull` na serwerze, `pm2 reload`,

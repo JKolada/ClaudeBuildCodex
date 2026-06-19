@@ -33,6 +33,45 @@ already?", a column/flag of unknown origin, dating a regression, and before ever
 - Messages in English, descriptive (what + why), `fixes #N`/`refs #N` to the issue.
 - Link the PR/issue with the full URL, not "PR #123".
 
+## Teamwork: issues and simple branches
+
+> Solo on `main` with commit discipline is enough. **From the second person** onward you need two
+> things: a **shared task list** (issues) and **lightweight branching** — so you don't step on each
+> other and "who's doing what" stays visible.
+
+### Issues = units of work (one source of "what and why")
+- **One task = one issue.** Title = the outcome ("Cart drops items after refresh"), body = context,
+  acceptance criteria, links. This is where the **why** lives — not in your head, not in chat.
+- **The issue number ties the work together:** branch, commits (`refs #N`), PR, and discussion.
+  `fixes #N` in the PR **closes** the issue on merge (→ "What finishes a commit").
+- **Issue before code** for anything non-trivial or someone else's report — so scope and decision are
+  written down before a diff exists. Small, concrete issues > one big "epic for everything".
+- **The backlog is a list, not memory.** Labels (`bug`/`feat`/`chore`, priority); close what's stale.
+  An issue dead for weeks = a decision to make (do it / drop it), not a zombie.
+
+### Simple branches (small teams, trunk-based)
+- **`main` is always deployable.** In multi-person work, don't commit straight to `main` — it's the
+  shared table holding what goes to prod.
+- **A short branch per task:** `feat/NN-cart`, `fix/NN-login` (NN = issue number). It lives
+  **hours–days, not weeks** — the longer it lives, the more painful the merge.
+- **A small PR > a big PR.** One topic, reviewable in fifteen minutes. Nobody reads a giant PR
+  carefully — it passes "on trust", i.e. without review.
+- **Merge, then delete the branch.** Once it's in `main`: delete the branch, pull `main`, start the
+  next one fresh. Stale branches are debt and a lie about the project's state.
+- **Sync with `main` often** (merge/rebase into your branch) — small, frequent conflicts instead of
+  one giant conflict at the end.
+
+> **Review isn't a formality — it's a second pair of eyes before prod.** On a team every PR has a
+> reviewer; solo, the "reviewer" is a deliberate second pass over the diff (and Claude as devil's
+> advocate). A change lands on `main` reviewed, not "because it works on my machine".
+
+### Anti-patterns
+- 🚫 Committing straight to `main` while someone else is in the project → their work lands on a half-done state.
+- 🚫 A long-lived "my big refactor" branch → merge hell and weeks of drift from `main`.
+- 🚫 Working without an issue → scope and the "why" vanish; a month later nobody knows why it exists.
+- 🚫 `fixes #N` in a commit to a work branch → the issue closes prematurely (the **PR/merge** closes it, not every commit).
+- 🚫 An "everything at once" PR → review becomes fiction, regressions slip through.
+
 ## Deployments — THE OVERRIDING POLICY
 
 > ⛔ **Never deploy to prod automatically.** `git pull` on the server, `pm2 reload`,
