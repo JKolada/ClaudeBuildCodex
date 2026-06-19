@@ -69,50 +69,58 @@ Pytanie: gdzie żyje kanoniczna treść tłumaczeń i jak rozdzielić to od wars
 - Renderuje publiczną witrynę i **edycje** (techniczna → BIZ-TECH → biznesowa) jako warstwę podania
   nad tą samą treścią. Macierz `język × edycja` żyje po stronie Web; rdzeń dostarcza język × TECHNICZNA.
 
-## Co pakować do zipa `docs/rules/<lang>/` (spec dla Web)
+## Co pakować do zipa `docs/rules/` (spec dla Web)
 
-Zasada: paczka zawiera **tylko to, co agent realnie czyta** w docelowym projekcie — nic z tooling/prezentacji/
-meta tego repo. Jeden język = jeden zip (źródło: root = EN, `pl/` = PL).
+Paczka = **przeglądalny pakiet codexu**: agent go grepuje (`AI_README`), a człowiek **przegląda wprost w
+projekcie** czytnikiem (dwuklik `index.html`, nie surowy `.md`). Zostaje doktryna + czytnik; wypada tylko
+meta utrzymania **tego** repo.
 
-**Pakuj:**
+**Pakuj — treść:**
 
-- **`AI_README.md`** — *wejście agenta*: mapa rozdziałów + grep-index w danym języku. Web **przycina**
-  sekcje repo-wewnętrzne (architektura `index.html`, gotchas builda, „Rdzeń vs Web") — w paczce zostaje
-  **indeks rozdziałów + „temat → plik"** i nota „czytaj tylko trafiony plik".
-- **`00-commandments.md` … `16-driving-claude.md`** — komplet rozdziałów w danym języku (17).
-- **`intro.md`** — manifest (opcjonalnie). Jeśli pakujesz, **przepisz lub usuń** linki do `index.html#brief`
-  (w paczce nie ma czytnika) → URL briefu na stronie Web, albo zdejmij link.
-- **Stempel wersji** — `craft.json` (lub `VERSION.md`): `version`, `language`, `edition`, `released`,
-  `source` (commit/URL repo). Żeby projekt wiedział, którą wersję ma i czy jest update. Pola z `codex.json`.
+- **`AI_README.md`** — *wejście agenta*: mapa rozdziałów + grep-index. (Bez przycinania — czytnik/build są
+  w paczce, więc opis `index.html`/`build.py` jest tu prawdziwy.)
+- **`00-commandments.md` … `16-driving-claude.md`** — komplet rozdziałów (17).
+- **`intro.md`** — manifest.
+- **`pl/`** (i kolejne `<lang>/`) — wersje w innych językach, jeśli chcesz pełny **przełącznik EN/PL** w
+  czytniku. Per-jeden-język: pomiń pozostałe (czytnik wtedy jednojęzyczny).
+- **`craft.json`** — stempel: `version`, `language`(/`languages`), `edition`, `released`, `source` (commit/URL).
+  Żeby projekt wiedział, którą wersję ma i czy jest update. Pola z `codex.json`.
 
-**NIE pakuj** (to rdzeń/prezentacja/meta, nie doktryna):
+**Pakuj — czytnik (do swobodnego przeglądania):**
 
-- `index.html`, `content.js`, `build.py`, `test.py` (czytnik + tooling),
+- **`index.html` + `content.js`** — czytnik SPA: dwuklik → ładny render doktryny, tryb jasny/ciemny,
+  przełącznik języka. Działa po `file://` dzięki snapshotowi `content.js` (bez serwera).
+- **`build.py`** — żeby po ewentualnej edycji `.md` w projekcie odświeżyć snapshot (`python build.py`).
+- **`public/logo.png`** — bo `index.html` referuje logo/favicon (inaczej broken).
+
+**NIE pakuj** (meta utrzymania tego repo, nie doktryna):
+
 - `CLAUDE.md` (konstytucja **tego** repo — docelowy projekt ma własny `CLAUDE.md`),
-- `README.md` (front door GitHuba), `docs/`, `public/`, `CHANGELOG.md`,
-- drugi język (gdy pakujesz EN — nie wkładaj `pl/`, i odwrotnie).
+- `README.md` (front door GitHuba), `docs/` (plany repo), `CHANGELOG.md`, `test.py` (CI tego repo), `.git*`.
 
-**Struktura zipa:**
+**Struktura zipa (pełna, dwujęzyczna — zalecana do przeglądania):**
 
 ```
 docs/rules/
-  AI_README.md          # mapa + grep-index w <lang> (przycięty z repo-wewnętrznych sekcji)
-  intro.md              # manifest (opcjonalnie, z naprawionymi linkami)
-  00-commandments.md
-  …
-  16-driving-claude.md
-  craft.json            # version + language + edition + released + source
+  AI_README.md          # mapa + grep-index (EN/baza)
+  index.html  content.js  build.py  public/logo.png   # czytnik
+  intro.md
+  00-commandments.md … 16-driving-claude.md           # treść EN
+  pl/  AI_README.md  intro.md  00-…16-….md             # treść PL
+  craft.json
 ```
 
 **Gotchas pakowania:**
 
 - **Cross-linki** w rozdziałach (`[NN](NN-nazwa.md)`) działają w `docs/rules/` (te same nazwy, jeden
-  katalog) — **nie ruszaj**. Linki spoza katalogu (np. `index.html#brief` w intro) — napraw/zdejmij.
-- **Slug wspólny dla języków** → identyczny układ paczki niezależnie od `<lang>`; różni się tylko treść.
+  katalog) — **nie ruszaj**. `intro.md` linkuje do `index.html#brief` — w paczce z czytnikiem **działa**.
+- **Slug wspólny dla języków** → ten sam układ niezależnie od liczby języków; różni się tylko treść.
+- **Per-język vs pełna paczka:** pełna (root + `pl/` + czytnik) = działający przełącznik EN/PL; jednojęzyczna
+  = mniejszy zip, czytnik bez drugiego języka. Wybór po stronie Web (przycisk „pobierz: EN / PL / EN+PL").
 - **Edycja:** na teraz tylko **TECHNICZNA**; BIZ-TECH/biznesowa to ten sam zestaw plików, inny rejestr →
   pole `edition` w stemplu, gdy powstaną.
 - **Wpięcie u klienta** (→ [07](../../07-new-project-day-0.md)): submodule albo kopia + wpis w `CLAUDE.md`
-  projektu „czytaj `docs/rules/` co sesję; grep po `docs/rules/AI_README.md`".
+  projektu „czytaj `docs/rules/` co sesję; grep po `docs/rules/AI_README.md`; do przeglądania otwórz `docs/rules/index.html`".
 
 ## Otwarte (do rozstrzygnięcia przy starcie EN)
 
