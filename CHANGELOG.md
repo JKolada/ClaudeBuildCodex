@@ -13,18 +13,16 @@ wpisowi poniżej. Każde wydanie tagujemy w gicie (`vMAJOR.MINOR.PATCH`) — Prz
 
 ## 1.0.0 — 2026-06-19
 
-Pierwsze publiczne wydanie. Pełna doktryna gotowa do użycia jako `/docs/rules/` w nowym projekcie.
+Pierwsze publiczne wydanie — **kompletna doktryna The Craft**, gotowa do wpięcia jako `docs/rules/`
+w nowym projekcie. Od pierwszego commita po prod: jak budować z Claude tak, żeby projekt został
+zrozumiały, bezpieczny w zmianie i godny zaufania.
 
 ### Dodane
-- **Dekalog** (rozdział 00) — 10 przykazań, 7 grzechów głównych, złota zasada altytudy.
-- **Rdzeń (01–08):** dokumentacja i AI_README · skille i refaktoring · testowanie i weryfikacja
-  (z TDD jako twardym rdzeniem) · skrypty i bazy danych · git i wdrożenia · współpraca i pamięć ·
-  nowy projekt „Dzień 0" · **stack i technologie** (Python, bazy, web/API, Docker, Hetzner, TDD).
-- **Pogłębienie (09–13):** prawo i ochrona twórcy · SEO i tłumaczenia · model danych i
-  normalizacja · elastyczność i skalowalność · wydajność frontend i SQL.
-- **Czytnik HTML** (`index.html`): render `.md` w przeglądarce, działa też z dwukliku
-  (`file://`) dzięki snapshotowi `content.js`, tryb jasny/ciemny, ikony Lucide (SVG).
-- **Rzemiosło Web** — przyjazna, wielojęzyczna witryna-opakowanie z pobieraniem tej paczki.
+- **17 rozdziałów w dwóch językach** (EN kanon + PL — te same rozdziały, te same kotwice):
+  **Dekalog** (00) + rdzeń (01–08) + pogłębienie (09–16) — od dokumentacji, testów, gita i wdrożeń,
+  przez prawo, SEO i model danych, po wydajność, odporność operacyjną, scraping/AI i prowadzenie Claude.
+- **Czytnik HTML** paczki — render `.md` z dwukliku (`file://`), tryb jasny/ciemny, przełącznik EN/PL.
+- **Witryna** [codex.jakub.solutions](https://codex.jakub.solutions) — przyjazne opakowanie z pobieraniem.
 
 ---
 
