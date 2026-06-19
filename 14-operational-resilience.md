@@ -64,6 +64,24 @@ An endpoint calling a paid API (LLM, geocoding, email) with no limit is an open 
 - **Rate-limit + security headers** (helmet/limiter) as a permanent part of the stack (→ [08](08-stack-and-technologies.md)).
 - Tie it to the law and the terms of service: a limit and how you communicate it are also protection against abuse (→ [09](09-law-and-protecting-the-creator.md)).
 
+## 6. Know prod is healthy — observability
+
+The defenses above keep prod from dying; **observability tells you it's alive** — *after* the deploy window
+closes, before a user emails you. "Verify, don't declare" (→ [03](03-testing-and-verification.md)) applied to a running system:
+
+- **Structured logs with levels.** `error` / `warn` / `info` (not `print` everywhere). Errors carry context
+  (request id, user, what failed) — but **never secrets or full PII**. You grep logs at 2 a.m.; make them greppable.
+- **A health endpoint.** `/healthz` returning 200 + a cheap check (DB reachable, version) — for the load
+  balancer and an uptime monitor. **An external uptime ping** tells you it's down before the customer does.
+- **Alert on what hurts**, not on noise: spikes in 5xx, failed payments/emails, a job that didn't run, the
+  selector-drift / "200 + error page" case (→ § 3). One actionable alert beats a hundred dashboards.
+- **A few real metrics** over vanity: error rate, p95 latency, queue depth, daily cost of paid APIs (→ § 5).
+  Measure before you optimize (→ [13](13-performance-frontend-and-sql.md)).
+- **Errors → a place you'll see them** (a log drain / error tracker), not just stdout that scrolls away.
+
+Start tiny: logs with levels + a health check + one uptime ping covers most of the value. Grow only when a
+real incident shows the gap (capture the lesson in the runbook → [05](05-git-and-deployments.md)).
+
 ## Anti-patterns
 - 🚫 **No global error catcher** — one bad request restarts the service for everyone.
 - 🚫 **A scraper with no checkpoints** run from the session background — crash = run from scratch, vanishing runner = perpetual failure.
@@ -71,6 +89,8 @@ An endpoint calling a paid API (LLM, geocoding, email) with no limit is an open 
 - 🚫 **"I sent the email" ≠ I delivered it** — no verification of port/domain/deliverability.
 - 🚫 **A paid API with no quota** — a surprise bill and an open abuse vector.
 - 🚫 **Sessions in process memory** — every deploy logs everyone out (→ [05](05-git-and-deployments.md)).
+- 🚫 **No logs/alerts** — you find out prod is down from the user, not the system; "it works" with no way to know.
+- 🚫 **Secrets/PII in logs** — the log drain becomes the breach.
 
 ## For new projects
 Add to Day 0 (→ [07](07-new-project-day-0.md)) **before** the first real user shows up:

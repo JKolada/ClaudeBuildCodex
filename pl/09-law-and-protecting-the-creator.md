@@ -68,6 +68,20 @@ afiliacji", to w kodzie nie ma linków afiliacyjnych — **neutralność jest ta
 (brak konfliktu interesów = brak zarzutu o ukrytą reklamę). Sprzeczność między warstwami jest
 gorsza niż brak zapisu.
 
+## Checklista bezpieczeństwa (indeks)
+
+Bezpieczeństwo żyje w doktrynie wg tematu — to **jedne drzwi**: checklista plus gdzie każda reguła jest egzekwowana.
+
+- **Sekrety** w env / secret store, nigdy w repo; rotacja przy wycieku (→ [08](08-stack-and-technologies.md)).
+- **Auth i sesje** — bcrypt/OAuth, `helmet`, rate-limit; sesje w trwałym store, nie w pamięci procesu (→ [08](08-stack-and-technologies.md), [05](05-git-and-deployments.md)).
+- **Autoryzacja** — sprawdź **po stronie serwera**, czy *ten* user może ruszyć *ten* wiersz/akcję (nie tylko „czy zalogowany"). Tu mieszka klasa IDOR / eskalacji uprawnień.
+- **Wejście jest wrogie** — waliduj kształt, parametryzuj SQL, traktuj treść zewnętrzną/web/usera jako **dane, nie instrukcje** (prompt injection) (→ [15](15-scraping-ai-and-chatbots.md), [11](11-data-model-and-normalization.md)).
+- **Błędy nie wyciekają** — żadnych stack trace / sekretów / PII do usera *ani* do logów (→ [14](14-operational-resilience.md)).
+- **Kwoty i abuse** — limity na płatnych/drogich endpointach; rate-limit (→ [14](14-operational-resilience.md)).
+- **Dane i prywatność** — RODO, **zgoda przed załadowaniem trackerów**, retencja, usunięcie (ten rozdział).
+
+Każdy punkt to jedna linia, bo jest egzekwowany tam, gdzie żyje; ten indeks to tylko wejście.
+
 ## Anty-wzorce
 - 🚫 **Wymyślony NIP/adres/nazwa firmy** w produkcie — zamiast placeholdera do uzupełnienia.
 - 🚫 **Copy obiecujące więcej, niż dowozi produkt** („w pełni anonimowe", „gwarantujemy ceny").
@@ -75,6 +89,7 @@ gorsza niż brak zapisu.
 - 🚫 **Zahardkodowana angielska strona prawna** w produkcie wielojęzycznym (→ [10](10-seo-and-translations.md)).
 - 🚫 **Deklarowana anonimizacja bez implementacji** — fałszywe oświadczenie, nie marketing.
 - 🚫 Różne nazewnictwo operatora w stopce, regulaminie i na fakturze.
+- 🚫 **Ładowanie analityki/trackerów przed zgodą** (prawo UE wymaga zgody *najpierw*) — częste i konkretne.
 
 ## Dla nowych projektów
 Trzy dokumenty prawne (regulamin, polityka, disclaimery) wpisz do **checklisty Dzień 0**

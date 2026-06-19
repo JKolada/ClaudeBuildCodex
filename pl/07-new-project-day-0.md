@@ -101,6 +101,31 @@ Brief to wejście do reszty Dnia 0: z niego rodzi się `CLAUDE.md` (krok 2) i wp
 - [ ] **Polityki nadrzędne**: „nigdy nie deployuj automatycznie", privacy/compliance, git workflow.
 - [ ] Sekcja „Current state" z datą i liczbami.
 
+**Szkielet na start** (uzupełnij, potem wytnij, co nie pasuje — trzymaj krótko, czytane co sesję):
+
+```
+# CLAUDE.md — <Projekt>
+
+## Czym to jest
+<jeden akapit: co robi, dla kogo>
+
+## Stack i jak uruchomić
+<warstwa → tech → lokalizacja, jako mała tabela>
+# uruchom: <dokładna komenda, np. python -m http.server 8080 → http://localhost:8080>
+
+## Polityki (nadpisują domyślne zachowanie)
+- Nigdy deploy/push bez jawnego „wdrażaj". Commituj swobodnie; potwierdzaj nieodwracalne.
+- Dry-run domyślny; --execute świadomy. Prod święty; dane usera nienaruszalne.
+- Mów do mnie w <język natywny usera>; znam <języki / technologie programisty>.
+- Czytaj docs/rules/ co sesję (The Craft); temat: grep -i <keyword> docs/rules/AI_README.md.
+- <twarde reguły projektu: privacy/compliance, ograniczenia domeny>
+
+## Stan bieżący (<data>)
+- <liczby: rekordy, zastosowane migracje, co jest live>
+```
+
+Szczegóły tu nie idą — żyją w `AI_README.md` per folder i w `docs/` (→ [01](01-documentation-and-ai-readme.md)).
+
 ## 3. Higiena repo
 - [ ] `.gitignore`: zależności, lokalne bazy, backupy (`*.bak`), assety generowane, temp, scratch.
       (Pamiętaj: `#` komentarz w osobnej linii.)

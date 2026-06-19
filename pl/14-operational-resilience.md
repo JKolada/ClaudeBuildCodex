@@ -63,6 +63,24 @@ Endpoint wołający płatne API (LLM, geokodowanie, e-mail) bez limitu to otwart
 - **Rate-limit + nagłówki bezpieczeństwa** (helmet/limiter) jako stały element stacku (→ [08](08-stack-and-technologies.md)).
 - Powiąż z prawem i regulaminem: limit i jego komunikacja to też ochrona przed abuse (→ [09](09-law-and-protecting-the-creator.md)).
 
+## 6. Wiedz, że prod żyje — observability
+
+Powyższe obrony chronią proda przed śmiercią; **observability mówi Ci, że żyje** — *po* zamknięciu okna
+deployu, zanim user napisze maila. „Weryfikuj, nie deklaruj" (→ [03](03-testing-and-verification.md)) zastosowane do działającego systemu:
+
+- **Logi strukturalne z poziomami.** `error` / `warn` / `info` (nie `print` wszędzie). Błędy niosą kontekst
+  (request id, user, co padło) — ale **nigdy sekretów ani pełnego PII**. Grepujesz logi o 2 w nocy; zrób je grepowalne.
+- **Endpoint zdrowia.** `/healthz` zwracający 200 + tani check (baza osiągalna, wersja) — dla load balancera
+  i monitora uptime. **Zewnętrzny ping uptime** powie Ci o awarii zanim powie klient.
+- **Alertuj na to, co boli**, nie na szum: skoki 5xx, nieudane płatności/maile, job który nie wystartował,
+  drift selektora / „200 + strona błędu" (→ § 3). Jeden działający alert bije sto dashboardów.
+- **Kilka realnych metryk** zamiast vanity: error rate, p95 latency, głębokość kolejki, dzienny koszt płatnych
+  API (→ § 5). Mierz, zanim optymalizujesz (→ [13](13-performance-frontend-and-sql.md)).
+- **Błędy → tam, gdzie je zobaczysz** (log drain / error tracker), nie tylko stdout, który ucieka.
+
+Zacznij malutko: logi z poziomami + health check + jeden ping uptime łapią większość wartości. Rozwijaj
+dopiero, gdy realny incydent pokaże lukę (zapisz lekcję w runbooku → [05](05-git-and-deployments.md)).
+
 ## Anty-wzorce
 - 🚫 **Brak globalnego łapacza błędów** — jeden zły request restartuje serwis dla wszystkich.
 - 🚫 **Scraper bez checkpointów** odpalany z tła sesji — crash = run od zera, znikający runner = wieczna porażka.
@@ -70,6 +88,8 @@ Endpoint wołający płatne API (LLM, geokodowanie, e-mail) bez limitu to otwart
 - 🚫 **„Wysłałem maila" ≠ dostarczyłem** — brak weryfikacji portu/domeny/dostarczalności.
 - 🚫 **Płatne API bez kwoty** — niespodziewany rachunek i otwarty wektor nadużyć.
 - 🚫 **Sesje w pamięci procesu** — każdy deploy wylogowuje wszystkich (→ [05](05-git-and-deployments.md)).
+- 🚫 **Brak logów/alertów** — o awarii proda dowiadujesz się od usera, nie od systemu; „działa" bez sposobu, by to wiedzieć.
+- 🚫 **Sekrety/PII w logach** — log drain staje się wyciekiem.
 
 ## Dla nowych projektów
 Wpisz do Dnia 0 (→ [07](07-new-project-day-0.md)) **zanim** pojawi się pierwszy realny user:

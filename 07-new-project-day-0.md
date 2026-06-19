@@ -101,6 +101,31 @@ The brief is the entry point to the rest of Day 0: from it spring `CLAUDE.md` (s
 - [ ] **Overriding policies**: "never deploy automatically", privacy/compliance, git workflow.
 - [ ] A "Current state" section with a date and numbers.
 
+**Skeleton to start from** (fill in, then prune what doesn't apply — keep it short, it's read every session):
+
+```
+# CLAUDE.md — <Project>
+
+## What this is
+<one paragraph: what it does, who it's for>
+
+## Stack & how to run
+<layer → tech → location, as a small table>
+# run: <exact command, e.g. python -m http.server 8080 → http://localhost:8080>
+
+## Policies (override default behavior)
+- Never deploy/push without an explicit "deploy". Commit freely; confirm the irreversible.
+- Dry-run is the default; --execute is deliberate. Prod is sacred; user data is inviolable.
+- Talk to me in <user's native language>; I know <languages / tech the dev knows>.
+- Read docs/rules/ every session (The Craft); for a topic: grep -i <keyword> docs/rules/AI_README.md.
+- <project-specific hard rules: privacy/compliance, domain constraints>
+
+## Current state (<date>)
+- <counts: records, migrations applied, what's live>
+```
+
+Detail doesn't go here — it lives in per-folder `AI_README.md` and `docs/` (→ [01](01-documentation-and-ai-readme.md)).
+
 ## 3. Repo hygiene
 - [ ] `.gitignore`: dependencies, local databases, backups (`*.bak`), generated assets, temp, scratch.
       (Remember: `#` comment on its own line.)

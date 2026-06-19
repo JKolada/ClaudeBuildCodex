@@ -68,6 +68,20 @@ affiliation", then there are no affiliate links in the code — **neutrality is 
 (no conflict of interest = no charge of hidden advertising). A contradiction between layers is
 worse than a missing clause.
 
+## Security checklist (index)
+
+Security lives across the doctrine by topic — this is the **single door**: the checklist plus where each rule is enforced.
+
+- **Secrets** in env / a secret store, never in repo; rotate on leak (→ [08](08-stack-and-technologies.md)).
+- **Auth & sessions** — bcrypt/OAuth, `helmet`, rate-limit; sessions in a persistent store, not process memory (→ [08](08-stack-and-technologies.md), [05](05-git-and-deployments.md)).
+- **Authorization** — check **server-side** that *this* user may touch *this* row/action (not just "are they logged in"). The IDOR/privilege-escalation class lives here.
+- **Input is hostile** — validate shape, parameterize SQL, treat external/web/user content as **data, not instructions** (prompt injection) (→ [15](15-scraping-ai-and-chatbots.md), [11](11-data-model-and-normalization.md)).
+- **Errors don't leak** — no stack traces / secrets / PII to the user *or* the logs (→ [14](14-operational-resilience.md)).
+- **Quotas & abuse** — limits on paid/expensive endpoints; rate-limit (→ [14](14-operational-resilience.md)).
+- **Data & privacy** — GDPR, **consent before loading trackers**, retention, erasure (this chapter).
+
+Each is one line because it's enforced where it lives; this index is just the entry point.
+
 ## Anti-patterns
 - 🚫 **An invented tax ID/address/company name** in the product — instead of a placeholder to be filled in.
 - 🚫 **Copy promising more than the product delivers** ("fully anonymous", "we guarantee prices").
@@ -75,6 +89,7 @@ worse than a missing clause.
 - 🚫 **A hardcoded English legal page** in a multilingual product (→ [10](10-seo-and-translations.md)).
 - 🚫 **Declared anonymization without implementation** — a false statement, not marketing.
 - 🚫 Different naming of the operator in the footer, the terms and on the invoice.
+- 🚫 **Loading analytics/trackers before consent** (EU law requires consent *first*) — common and concrete.
 
 ## For new projects
 Put the three legal documents (terms of service, policy, disclaimers) into the **Day 0 checklist**
